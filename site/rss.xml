@@ -22,13 +22,13 @@
         https://www.autosar.org/news-events/detail/capi-release-event-10
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:452230298020822328
+        pitboard:2026-11-03:hot:452230298020822328
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:55am
+        Tuesday, November 3rd, 2026 3:58:04am
       </pubDate>
     </item>
     <item>
@@ -39,13 +39,13 @@
         https://www.autosar.org/news-events/detail/18th-aoc-call-for-papers-is-now-open
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:589093559816198046
+        pitboard:2026-11-03:hot:589093559816198046
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:55am
+        Tuesday, November 3rd, 2026 3:58:04am
       </pubDate>
     </item>
     <item>
@@ -56,13 +56,13 @@
         https://www.autosar.org/news-events/detail/autosar-jaspar-japan-day-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:338103721121799486
+        pitboard:2026-11-03:hot:338103721121799486
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:55am
+        Tuesday, November 3rd, 2026 3:58:04am
       </pubDate>
     </item>
     <item>
@@ -73,13 +73,13 @@
         https://www.autosar.org/news-events/detail/autosar-engages-industry-at-automotive-world-autumn-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:857039607367647829
+        pitboard:2026-11-03:hot:857039607367647829
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:55am
+        Tuesday, November 3rd, 2026 3:58:04am
       </pubDate>
     </item>
     <item>
@@ -90,13 +90,13 @@
         https://www.autosar.org/news-events/detail/autosar-2026%E5%B9%B4%E7%AC%AC%E4%B8%89%E5%AD%A3%E5%BA%A6%E4%B8%AD%E6%96%87%E9%80%9A%E8%AE%AF%E7%AE%80%E6%8A%A5
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:441567329149913855
+        pitboard:2026-11-03:hot:441567329149913855
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:55am
+        Tuesday, November 3rd, 2026 3:58:04am
       </pubDate>
     </item>
     <item>
@@ -107,13 +107,47 @@
         https://www.autosar.org/news-events/detail/english-q3-newsletter-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:276833536875461247
+        pitboard:2026-11-03:hot:276833536875461247
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:55am
+        Tuesday, November 3rd, 2026 3:58:04am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        carla-simulator/carla
+      </title>
+      <link>
+        https://github.com/carla-simulator/carla
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-03:hot:371904745613176677
+      </guid>
+      <description>
+        Open-source simulator for autonomous driving research.
+      </description>
+      <pubDate>
+        Monday, November 2nd, 2026 10:23:14pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        BYD sold more EVs last month than the US did all quarter
+      </title>
+      <link>
+        https://electrek.co/2026/11/02/byd-sold-more-evs-last-month-than-the-us-did-all-quarter
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-03:hot:660650191248998379
+      </guid>
+      <description>
+        
+      </description>
+      <pubDate>
+        Monday, November 2nd, 2026 5:24:44pm
       </pubDate>
     </item>
     <item>
@@ -124,234 +158,200 @@
         https://github.com/autowarefoundation/autoware
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:565200565018763934
+        pitboard:2026-11-03:hot:565200565018763934
       </guid>
       <description>
         Autoware - the world's leading open-source software project for autonomous driving
       </description>
       <pubDate>
-        Sunday, November 1st, 2026 6:32:57pm
+        Monday, November 2nd, 2026 2:28:11pm
       </pubDate>
     </item>
     <item>
       <title>
-        中国方案向全球，供应链递交“中国答卷” ｜2026金辑奖中国汽车新供应链百强榜
+        cauliflowermossgrape/idrive7-8-ssh-root
       </title>
       <link>
-        https://auto.gasgoo.com/news/202610/31I70476376C103.shtml
+        https://github.com/cauliflowermossgrape/idrive7-8-ssh-root
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:775848958989124207
+        pitboard:2026-11-03:hot:755768210576413905
+      </guid>
+      <description>
+        Enable root SSH on BMW MGU head units (iDrive 7 / ID8 BDC3 / ID8 BCP) over ENET - flash the debug image, enroll, persistent SSH with no B7F8E5 DTC, and a unique per-car key.
+      </description>
+      <pubDate>
+        Monday, November 2nd, 2026 2:51:49pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        commaai/opendbc
+      </title>
+      <link>
+        https://github.com/commaai/opendbc
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-03:hot:737223512686484068
+      </guid>
+      <description>
+        a Python API for your car
+      </description>
+      <pubDate>
+        Monday, November 2nd, 2026 2:03:32pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        ecubus/EcuBus-Pro
+      </title>
+      <link>
+        https://github.com/ecubus/EcuBus-Pro
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-03:hot:487205003557968962
+      </guid>
+      <description>
+        A powerful automotive ECU development tool. UDS, CAN-TP, DOIP, LIN , Script(TS) like CAPL, HIL Test
+      </description>
+      <pubDate>
+        Monday, November 2nd, 2026 4:38:24am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        坦克品牌多车型开启OTA进化月升级，覆盖坦克300等
+      </title>
+      <link>
+        https://auto.gasgoo.com/news/202611/3I70476741C109.shtml
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-03:hot:17220795600097806
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:58am
+        Tuesday, November 3rd, 2026 3:58:07am
       </pubDate>
     </item>
     <item>
       <title>
-        E周看点 | 小米17亿入股欣旺达动力；东风与宁德时代锁定下一个五年合作
+        2026年9月轿车/SUV车型销量榜：比亚迪元、银河星愿领跑，自主品牌占据多席位丨盖世汽车研究院
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/1I70476510C501.shtml
+        https://auto.gasgoo.com/news/202611/3I70476656C110.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:122923964057519372
+        pitboard:2026-11-03:hot:347645403138245921
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:58am
+        Tuesday, November 3rd, 2026 3:58:07am
       </pubDate>
     </item>
     <item>
       <title>
-        领胜 V100 正式上市：重载货运的这笔账，该重新算了
+        第一批具身智能公司，倒在热钱翻涌中
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/1I70476546C107.shtml
+        https://auto.gasgoo.com/news/202611/3I70476657C601.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:1104453743212385889
+        pitboard:2026-11-03:hot:156616228381918528
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:58am
+        Tuesday, November 3rd, 2026 3:58:07am
       </pubDate>
     </item>
     <item>
       <title>
-        为旌科技VS919L斩获2026金辑奖最佳应用实践奖，以中国 “芯” 方案面向全球
+        最后防线被攻破后，BBA需要证明什么？
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/2I70476354C103.shtml
+        https://auto.gasgoo.com/news/202611/3I70476620C108.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:777789922803195150
+        pitboard:2026-11-03:hot:414389944613677164
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:58am
+        Tuesday, November 3rd, 2026 3:58:07am
       </pubDate>
     </item>
     <item>
       <title>
-        奇瑞集团1-10月累计销量250.3万辆，同比增长9.3%
+        领益智造与京津冀润泽签署战略合作协议 拟在湖南衡南设立合资公司
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/2I70476577C110.shtml
+        https://auto.gasgoo.com/news/202611/3I70476694C601.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:566514240113465562
+        pitboard:2026-11-03:hot:265799976818976975
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:58am
+        Tuesday, November 3rd, 2026 3:58:07am
       </pubDate>
     </item>
     <item>
       <title>
-        地瓜机器人联手宇树，推出具身智能教育解决方案
+        全新一代智己LS6累计交付突破8000台
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/2I70476587C601.shtml
+        https://auto.gasgoo.com/news/202611/3I70476691C109.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:538735320201913727
+        pitboard:2026-11-03:hot:235723134134781450
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:58am
+        Tuesday, November 3rd, 2026 3:58:07am
       </pubDate>
     </item>
     <item>
       <title>
-        曹操出行启动乌镇智慧出行示范项目
+        腾势Z入选《时代》最佳发明，京西智行磁流变悬架成亮点
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/2I70476535C601.shtml
+        https://auto.gasgoo.com/news/202611/3I70476733C103.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:374229380809743080
+        pitboard:2026-11-03:hot:81143682698119224
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:37:58am
+        Tuesday, November 3rd, 2026 3:58:07am
       </pubDate>
     </item>
     <item>
       <title>
-        文章 小5四周年谈对三代5系车的一些小期待 10月23日，老6迎来20万公里；10月29日，小5也满四周年。今天和大家聊聊小5的这四年。小5平时主要是太太上下班通勤用，但自从2024年春节开着老6开启全家 森林ks 点赞 11 评论 13
+        航空电池、零碳能源双线进展 宁德时代敲定两大合作 18分钟前 34 0 [汽车之家 资讯] 11月3日，我们从官方了解到，宁德时代连续敲定两项重磅合作：与蓝色向量达成航空电池独家配套合作，同上海电气签约布局零碳能源与海外...
       </title>
       <link>
-        https://www.xchuxing.com/article/179451
+        https://www.autohome.com.cn/news/202611/1318128.html#pvareaid=102624
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:996873398232116737
+        pitboard:2026-11-03:hot:551475582431451929
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 2nd, 2026 2:38:00am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        探店 145期：预计 7-8 周可交付 探店全新一代理想 i6
-      </title>
-      <link>
-        https://www.xchuxing.com/article/179369
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:875780878765662844
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Monday, November 2nd, 2026 2:38:00am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        新出行图文详解 259期：静态体验比亚迪第二代海豹 07
-      </title>
-      <link>
-        https://www.xchuxing.com/article/179118
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:576248941776340720
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Monday, November 2nd, 2026 2:38:00am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        15万级纯电运动轿车新王来了！吉利银河TT正式上市
-      </title>
-      <link>
-        https://www.d1ev.com/carnews/xinche/312528
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:51674962671344249
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Monday, November 2nd, 2026 2:38:04am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        33.5万起，27款坦克500上市，再次刷新全域科技豪华SUV价值标尺
-      </title>
-      <link>
-        https://www.d1ev.com/carnews/xinche/314648
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:896782463035703442
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Monday, November 2nd, 2026 2:38:04am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        开启蓝牌MPV新时代，魏牌高山8 HEV限时权益价25.98万元起
-      </title>
-      <link>
-        https://www.d1ev.com/carnews/xinche/314657
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-02:hot:1134510020883564301
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Monday, November 2nd, 2026 2:38:04am
+        Tuesday, November 3rd, 2026 3:58:39am
       </pubDate>
     </item>
   </channel>
