@@ -43,23 +43,7 @@ jobs:
       - name: Rebuild from committed editions
         run: raco pitboard export --data data --out site --domain pitboard.jrtx.site
       - name: Check exported text for template leaks
-        run: |
-          python3 - <<'PY'
-          import pathlib, re
-          allowed = {"amp", "lt", "gt", "quot", "apos"}
-          pattern = re.compile(r"<unquote|~[asv]|&([a-zA-Z][a-zA-Z0-9]+);")
-          failures = []
-          for path in pathlib.Path("site").rglob("*"):
-              if path.suffix not in {".html", ".xml", ".md", ".txt", ".svg"}:
-                  continue
-              for match in pattern.finditer(path.read_text(encoding="utf-8")):
-                  if match.group(1) and match.group(1) in allowed:
-                      continue
-                  failures.append(f"{path}: {match.group(0)!r}")
-          if failures:
-              raise SystemExit("\n".join(failures))
-          print("Exported template scan passed")
-          PY
+        run: python3 scripts/check-exported-template-leaks.py --root site
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
