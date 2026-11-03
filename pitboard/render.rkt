@@ -146,7 +146,7 @@
                    " · "
                    (a ((href "/rss.xml") (data-i18n "footer.rss")) "RSS 订阅")
                    " · "
-                   (a ((href "https://github.com/turinglambdaai/pitboard/blob/main/docs/READING.md") (data-i18n "footer.help")) "阅读与更正"))))))
+                   (a ((href "https://github.com/turlamai/pitboard/blob/main/docs/READING.md") (data-i18n "footer.help")) "阅读与更正"))))))
 
 ;; ---- cluster card -----------------------------------------------------------
 
@@ -461,11 +461,11 @@
                    (li (code "/api/events") " — SSE 出刊推送"))
                   (h2 (data-i18n "about.selfhost") "自托管")
                   (p "一个 Racket 进程，不需要外部数据库服务：" (br)
-                     (code "raco pkg install --auto https://github.com/turinglambdaai/pitboard.git") (br)
+                     (code "raco pkg install --auto https://github.com/turlamai/pitboard.git") (br)
                      (code "raco pitboard fetch && raco pitboard serve --port 8090"))
                   (h2 (data-i18n "about.license") "许可")
                   (p "MIT 许可，源码开源于 "
-                     (a ((href "https://github.com/turinglambdaai/pitboard")) "GitHub") "。"))))))
+                     (a ((href "https://github.com/turlamai/pitboard")) "GitHub") "。"))))))
 
 (define (render-empty-page ctx)
   (xexpr->html-bytes
