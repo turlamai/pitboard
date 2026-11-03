@@ -25,6 +25,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - name: Verify exported-template scanner on real HTML entities
+        if: matrix.os == 'ubuntu-latest'
+        run: python3 scripts/check-exported-template-leaks.py --self-test
       - name: Set up Racket
         uses: Bogdanp/setup-racket@v1.15
         with:
