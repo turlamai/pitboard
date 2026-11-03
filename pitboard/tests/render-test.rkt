@@ -53,6 +53,12 @@
   (check-true (string-contains? page "★1200"))
   (check-true (string-contains? page "Second story &lt;with&gt; markup")))
 
+
+(test-case "canonical GitHub links in generated pages"
+  (for ([p (in-list (list page (bytes->string/utf-8 (render-about-page ctx))))])
+    (check-false (string-contains? p "github.com/turinglambdaai/pitboard"))
+    (check-true (string-contains? p "github.com/turlamai/pitboard"))))
+
 (test-case "scored mode hides llm chip"
   ;; "LLM 增强" chip must NOT appear when mode is scored
   (check-false (string-contains? page "LLM 增强")))
