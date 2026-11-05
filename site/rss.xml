@@ -22,13 +22,13 @@
         https://www.autosar.org/news-events/detail/capi-release-event-10
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:452230298020822328
+        pitboard:2026-11-05:hot:452230298020822328
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:35am
+        Thursday, November 5th, 2026 3:36:13am
       </pubDate>
     </item>
     <item>
@@ -39,64 +39,13 @@
         https://www.autosar.org/news-events/detail/18th-aoc-call-for-papers-is-now-open
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:589093559816198046
+        pitboard:2026-11-05:hot:589093559816198046
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:35am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        AUTOSAR &amp; JASPAR Japan Day 2026
-      </title>
-      <link>
-        https://www.autosar.org/news-events/detail/autosar-jaspar-japan-day-2026
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:338103721121799486
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Wednesday, November 4th, 2026 3:04:35am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        AUTOSAR Engages Industry at Automotive World Autumn 2026
-      </title>
-      <link>
-        https://www.autosar.org/news-events/detail/autosar-engages-industry-at-automotive-world-autumn-2026
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:857039607367647829
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Wednesday, November 4th, 2026 3:04:35am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        AUTOSAR 2026年第三季度中文通讯简报
-      </title>
-      <link>
-        https://www.autosar.org/news-events/detail/autosar-2026%E5%B9%B4%E7%AC%AC%E4%B8%89%E5%AD%A3%E5%BA%A6%E4%B8%AD%E6%96%87%E9%80%9A%E8%AE%AF%E7%AE%80%E6%8A%A5
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:441567329149913855
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Wednesday, November 4th, 2026 3:04:35am
+        Thursday, November 5th, 2026 3:36:13am
       </pubDate>
     </item>
     <item>
@@ -107,30 +56,47 @@
         https://www.autosar.org/news-events/detail/english-q3-newsletter-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:276833536875461247
+        pitboard:2026-11-05:hot:276833536875461247
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:35am
+        Thursday, November 5th, 2026 3:36:13am
       </pubDate>
     </item>
     <item>
       <title>
-        申报目录 | 荣威家越 06 纯电/插混 车型登录工信部申报目录
+        AUTOSAR &amp; JASPAR Japan Day 2026
       </title>
       <link>
-        https://www.xchuxing.com/article/179667
+        https://www.autosar.org/news-events/detail/autosar-jaspar-japan-day-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:883156545475578652
+        pitboard:2026-11-05:hot:338103721121799486
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:41am
+        Thursday, November 5th, 2026 3:36:13am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        AUTOSAR 2026年第三季度中文通讯简报
+      </title>
+      <link>
+        https://www.autosar.org/news-events/detail/autosar-2026%E5%B9%B4%E7%AC%AC%E4%B8%89%E5%AD%A3%E5%BA%A6%E4%B8%AD%E6%96%87%E9%80%9A%E8%AE%AF%E7%AE%80%E6%8A%A5
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-05:hot:441567329149913855
+      </guid>
+      <description>
+        
+      </description>
+      <pubDate>
+        Thursday, November 5th, 2026 3:36:13am
       </pubDate>
     </item>
     <item>
@@ -141,13 +107,13 @@
         https://github.com/carla-simulator/carla
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:371904745613176677
+        pitboard:2026-11-05:hot:371904745613176677
       </guid>
       <description>
         Open-source simulator for autonomous driving research.
       </description>
       <pubDate>
-        Tuesday, November 3rd, 2026 8:50:10pm
+        Wednesday, November 4th, 2026 10:47:27pm
       </pubDate>
     </item>
     <item>
@@ -158,13 +124,30 @@
         https://github.com/commaai/opendbc
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:737223512686484068
+        pitboard:2026-11-05:hot:737223512686484068
       </guid>
       <description>
         a Python API for your car
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 12:34:57am
+        Thursday, November 5th, 2026 1:28:09am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        ecubus/EcuBus-Pro
+      </title>
+      <link>
+        https://github.com/ecubus/EcuBus-Pro
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-05:hot:487205003557968962
+      </guid>
+      <description>
+        A powerful automotive ECU development tool. UDS, CAN-TP, DOIP, LIN , Script(TS) like CAPL, HIL Test
+      </description>
+      <pubDate>
+        Wednesday, November 4th, 2026 2:27:17pm
       </pubDate>
     </item>
     <item>
@@ -175,30 +158,13 @@
         https://github.com/autowarefoundation/autoware
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:565200565018763934
+        pitboard:2026-11-05:hot:565200565018763934
       </guid>
       <description>
         Autoware - the world's leading open-source software project for autonomous driving
       </description>
       <pubDate>
-        Tuesday, November 3rd, 2026 7:08:30pm
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        cauliflowermossgrape/idrive7-8-ssh-root
-      </title>
-      <link>
-        https://github.com/cauliflowermossgrape/idrive7-8-ssh-root
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:755768210576413905
-      </guid>
-      <description>
-        Enable root SSH on BMW MGU head units (iDrive 7 / ID8 BDC3 / ID8 BCP) over ENET - flash the debug image, enroll, persistent SSH with no B7F8E5 DTC, and a unique per-car key.
-      </description>
-      <pubDate>
-        Tuesday, November 3rd, 2026 7:32:20pm
+        Wednesday, November 4th, 2026 1:54:54pm
       </pubDate>
     </item>
     <item>
@@ -209,149 +175,183 @@
         https://github.com/cantools/cantools
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:192973104646746202
+        pitboard:2026-11-05:hot:192973104646746202
       </guid>
       <description>
         CAN bus tools.
       </description>
       <pubDate>
-        Tuesday, November 3rd, 2026 11:51:45am
+        Wednesday, November 4th, 2026 11:36:57am
       </pubDate>
     </item>
     <item>
       <title>
-        GPT-6之后，智驾公司只剩一条路？
+        光束汽车因内后视镜粘合缺陷存脱落风险召回714辆纯电MINI
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/4I70476834C601.shtml
+        https://auto.gasgoo.com/news/202611/5I70476972C108.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:950894240299549432
+        pitboard:2026-11-05:hot:1006057463053482166
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:38am
+        Thursday, November 5th, 2026 3:36:15am
       </pubDate>
     </item>
     <item>
       <title>
-        官宣！博世将设半导体事业部
+        欧洲汽车工业协会首次以参展方身份亮相第九届进博会
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/4I70476839C103.shtml
+        https://auto.gasgoo.com/news/202611/5I70476988C108.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:230067576622351593
+        pitboard:2026-11-05:hot:658119515926122577
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:38am
+        Thursday, November 5th, 2026 3:36:15am
       </pubDate>
     </item>
     <item>
       <title>
-        富赛荣获第八届金辑奖·中国汽车新供应链百强奖
+        方程豹钛9、享界V8，11月都有哪些重磅新车值得关注？
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/4I70476581C103.shtml
+        https://auto.gasgoo.com/news/202611/5I70476923C107.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:462807663093427929
+        pitboard:2026-11-05:hot:127857063605677778
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:38am
+        Thursday, November 5th, 2026 3:36:15am
       </pubDate>
     </item>
     <item>
       <title>
-        机器人进社区！保利发展与银河通用达成战略合作
+        盖世集团CEO周晓莺受邀出席2026 FISITA世界移动出行峰会
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/4I70476795C601.shtml
+        https://auto.gasgoo.com/news/202611/5I70476864C108.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:711258835845148407
+        pitboard:2026-11-05:hot:211915870649416172
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:38am
+        Thursday, November 5th, 2026 3:36:15am
       </pubDate>
     </item>
     <item>
       <title>
-        北汽新能源10月销量3.25万辆，环比增长34.98%
+        均胜电子生产交付机器人高算力控制器突破2000套
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/4I70476788C501.shtml
+        https://auto.gasgoo.com/news/202611/5I70476973C601.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:1060495409112937230
+        pitboard:2026-11-05:hot:586746664256210584
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:38am
+        Thursday, November 5th, 2026 3:36:15am
       </pubDate>
     </item>
     <item>
       <title>
-        黑白灰靠边站，这四种颜色明年会火？
+        Honda携eVTOL等技术亮相进博会，全尺寸验证机已完成首飞
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/4I70476799C108.shtml
+        https://auto.gasgoo.com/news/202611/5I70476983C601.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:521913033456764314
+        pitboard:2026-11-05:hot:134509511788649698
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:38am
+        Thursday, November 5th, 2026 3:36:15am
       </pubDate>
     </item>
     <item>
       <title>
-        20多万买纯电轿车，选车之前不妨先看这一篇
+        特斯拉上海工厂零部件本土化率升至98%
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/4I70476800C107.shtml
+        https://auto.gasgoo.com/news/202611/5I70476989C501.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:154782478339404736
+        pitboard:2026-11-05:hot:241905319370648281
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:38am
+        Thursday, November 5th, 2026 3:36:15am
       </pubDate>
     </item>
     <item>
       <title>
-        奇瑞新能源逼近百万辆，六成卖到海外
+        2027款极氪7X预售22.98万起 900V架构 10%至80%充电10.5分钟 20分钟前 138 0 [汽车之家 资讯] 11月5日，2027款极氪7X开启预售，共推出后驱Max版、后驱Max+版和四驱Ultra版三种版型，预售价格22.98万元起。...
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/4I70476793C501.shtml
+        https://www.autohome.com.cn/news/202611/1318175.html#pvareaid=102624
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-04:hot:454941783341387126
+        pitboard:2026-11-05:hot:1104415539981654445
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 4th, 2026 3:04:38am
+        Thursday, November 5th, 2026 3:37:07am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        上半年热销轿车盘点：比亚迪无缘前十 燃油车依然是主力？
+      </title>
+      <link>
+        https://www.autohome.com.cn/news/202607/1315940.html#pvareaid=102623
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-05:hot:1049025938651351299
+      </guid>
+      <description>
+        
+      </description>
+      <pubDate>
+        Thursday, November 5th, 2026 3:37:07am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        新闻 预售价 13.98-17.58 万元 iCAR V25 将于 11 月 19 日上市 11 月 4 日，iCAR V25 将于 11 月 19 日正式上市。新车此前已开启预售，共推出 4 款配置，预售价区间 13.98-17.58 万元。外观方面 阿迪同学 点赞 9 评论 2
+      </title>
+      <link>
+        https://www.xchuxing.com/article/179712
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-05:hot:190148899598688989
+      </guid>
+      <description>
+        
+      </description>
+      <pubDate>
+        Thursday, November 5th, 2026 3:36:18am
       </pubDate>
     </item>
   </channel>
