@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Newsreader";
+  src: url("/fonts/newsreader-latin-var.woff2") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* pitboard — editorial design system.
    Warm palette aligned with the product line (moonbeam/taskly values),
    full dark theme, zero dependencies. The masthead is a pit board. */
@@ -10,9 +18,10 @@
   --faint: #a89f92;
   --line: #e9e2d8;
   --line-strong: #d8cfbf;
-  --accent: #c15f3c;
-  --accent-deep: #a0431f;
-  --accent-soft: #f7e5dd;
+  /* Family palette (site-kit): one terracotta across jrtx.site. */
+  --accent: #D97757;
+  --accent-deep: #A94E31;
+  --accent-soft: #FBEDE7;
   --chip-bg: #f1ece2;
   --chip-line: #e2dacb;
   --new-bg: #e6f1e2;
@@ -33,8 +42,8 @@
   --faint: #6f6960;
   --line: #2e2a25;
   --line-strong: #413a31;
-  --accent: #d08a6e;
-  --accent-deep: #e2ab90;
+  --accent: #E08A6B;
+  --accent-deep: #E89E82;
   --accent-soft: #382920;
   --chip-bg: #28241f;
   --chip-line: #38322a;
@@ -526,3 +535,16 @@ a.chip:hover { text-decoration: none; border-color: var(--accent); color: var(--
   transition: border-color .15s ease, color .15s ease;
 }
 .btn-install:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---- family typography: serif display for the masthead ---- */
+.hero-date,
+.board-sub,
+.lane-title {
+  font-family: "Newsreader", "Songti SC", "Noto Serif SC", "SimSun", Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+/* ---- icon visibility per theme (kit theme toggle) ---- */
+html[data-theme="light"] .kit-icon-moon { display: none; }
+html[data-theme="dark"] .kit-icon-sun { display: none; }

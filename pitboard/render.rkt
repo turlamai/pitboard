@@ -3,6 +3,7 @@
 ;; HTML / RSS / Markdown / llms.txt rendering.  Pure: jsexpr in, bytes out.
 
 (require xml
+         json
          racket/string
          racket/pretty
          racket/list
@@ -11,6 +12,7 @@
          racket/date
          racket/port
          "util.rkt"
+         "i18n.rkt"
          (only-in "store.rkt" list-dates load-digest))
 
 (provide (struct-out site-ctx)
@@ -43,10 +45,23 @@
 ;; ---- plumbing -------------------------------------------------------------
 
 (define (xexpr->html-bytes x)
-  (string->bytes/utf-8
-   (string-append "<!DOCTYPE html>\n"
-                  (with-output-to-string
-                    (λ () (display-xml/content (xexpr->xml x)))))))
+  (define raw
+    (string-append "<!DOCTYPE html>\n"
+                   (with-output-to-string
+                     (λ () (display-xml/content (xexpr->xml x))))))
+  ;; display-xml escapes & < > everywhere, including inside <script> — but
+  ;; HTML5 script content is raw text, so the JSON in the kit-i18n block
+  ;; must be unescaped or the browser shows double-escaped copy.
+  (define out
+    (regexp-replace*
+     #rx"<script type=\"application/json\" id=\"kit-i18n\">((?:(?!</script>).)*)</script>"
+     raw
+     (λ (whole body)
+       (format "<script type=\"application/json\" id=\"kit-i18n\">~a</script>"
+               (string-replace (string-replace (string-replace body "&lt;" "<")
+                                               "&gt;" ">")
+                               "&amp;" "&")))))
+  (string->bytes/utf-8 out))
 
 (define (v s)
   ;; jsexpr string-or-null → display string
@@ -84,8 +99,14 @@
 
 ;; ---- shell ------------------------------------------------------------------
 
+;; jsexpr requires symbol keys; the i18n table is authored with strings.
+(define (symbolize-hash h)
+  (for/hasheq ([(k v) (in-hash h)])
+    (values (string->symbol k)
+            (if (hash? v) (symbolize-hash v) v))))
+
 (define brand-mark
-  `(svg ((class "brand-mark") (viewBox "0 0 24 24") (width "20") (height "20")
+  `(svg ((class "kit-brand-mark") (viewBox "0 0 24 24")
          (aria-hidden "true"))
      (rect ((x "1.25") (y "6") (width "21.5") (height "12") (rx "2.6")
             (fill "none") (stroke "currentColor") (stroke-width "1.7")))
@@ -97,56 +118,89 @@
             (fill "currentColor") (opacity "0.28")))))
 
 (define (page-shell ctx title active body)
-  `(html ((lang "zh"))
+  `(html ((lang "zh") (data-kit-id "pitboard") (data-kit-lang-key "pitboard-lang"))
      (head
       (meta ((charset "utf-8")))
       (meta ((name "viewport") (content "width=device-width, initial-scale=1")))
       (title ,title)
       (meta ((name "description")
              (content "pitboard — 汽车行业每日热点：开源项目、行业资讯、前沿论文，一天一块板。")))
+      ;; Theme + language pre-paint: no flash before the stylesheet paints.
+      (script
+       "(function(){var t;try{t=localStorage.getItem('pitboard-theme')}catch(e){}if(t!=='dark'&&t!=='light'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t;var l;try{l=localStorage.getItem('pitboard-lang')}catch(e){}if(l!=='zh'&&l!=='en'){l=(navigator.language||'zh').toLowerCase().indexOf('zh')===0?'zh':'en'}document.documentElement.lang=l==='zh'?'zh-CN':'en'})()")
+      (link ((rel "stylesheet") (href "/family.css")))
       (link ((rel "stylesheet") (href "/styles.css")))
+      (link ((rel "preload") (href "/fonts/newsreader-latin-var.woff2") (as "font") (type "font/woff2") (crossorigin "anonymous")))
       (link ((rel "alternate") (type "application/rss+xml")
              (title "pitboard RSS") (href "/rss.xml")))
       (link ((rel "icon") (href "/favicon.svg") (type "image/svg+xml")))
+      (script ((defer "defer") (src "/family.js")))
       (script ((defer "defer") (src "/app.js")))
-      ;; Analytics must live in this shell (and in site-tpl/*.html), never
-      ;; in generated site/ pages — every export regenerates those.
-      (script
-       "var _hmt = _hmt || [];\n(function() {\n  var hm = document.createElement(\"script\");\n  hm.src = \"https://hm.baidu.com/hm.js?8e2445912635226bcba0c400bfb6079d\";\n  var s = document.getElementsByTagName(\"script\")[0];\n  s.parentNode.insertBefore(hm, s);\n})();"))
+      (script ((type "application/json") (id "kit-i18n"))
+              ,(jsexpr->string (symbolize-hash site-i18n))))
      (body
-      (nav ((class "nav"))
-           (div ((class "nav-inner"))
-                (a ((class "brand") (href "/"))
-                   ,brand-mark
-                   (span ((class "brand-name")) "pitboard"))
-                (div ((class "nav-links"))
-                     ,@(for/list ([p (in-list '(("index" "/" "今日" "nav.today")
-                                                ("topics" "/topics/" "话题" "nav.topics")
-                                                ("bookmarks" "/bookmarks.html" "书签" "nav.bookmarks")
-                                                ("archive" "/archive" "归档" "nav.archive")
-                                                ("about" "/about" "关于" "nav.about")
-                                                ("rss" "/rss.xml" "RSS" #f)))])
-                         `(a ((href ,(cadr p))
-                              ,@(if (equal? (car p) active) '((class "active")) '())
-                              ,@(if (fourth p) `((data-i18n ,(fourth p))) '()))
-                            ,(caddr p)))
-                     (button ((class "lang-btn") (id "lang-btn")
-                              (type "button") (aria-label "Switch language")) "EN")
-                     (button ((class "theme-btn") (id "theme-btn")
-                              (type "button") (aria-label "切换主题")) "◐"))))
+      (header ((class "kit-nav"))
+              (div ((class "kit-container kit-nav-inner"))
+                   (a ((class "kit-brand") (href "/"))
+                      ,brand-mark
+                      (span "pitboard"))
+                   (nav ((class "kit-nav-links"))
+                        ,@(for/list ([p (in-list '(("index" "/" "今日" "nav.today")
+                                                   ("topics" "/topics/" "话题" "nav.topics")
+                                                   ("bookmarks" "/bookmarks.html" "书签" "nav.bookmarks")
+                                                   ("archive" "/archive" "归档" "nav.archive")
+                                                   ("about" "/about" "关于" "nav.about")
+                                                   ("rss" "/rss.xml" "RSS" #f)))])
+                            `(a ((href ,(cadr p))
+                                 ,@(if (equal? (car p) active) '((class "active")) '())
+                                 ,@(if (fourth p) `((data-i18n ,(fourth p))) '()))
+                               ,(caddr p))))
+                   (div ((class "kit-nav-actions"))
+                        (div ((class "kit-lang"))
+                             (button ((class "kit-lang-btn") (type "button") (aria-haspopup "true") (aria-expanded "false"))
+                                     (svg ((viewBox "0 0 16 16") (fill "none") (stroke "currentColor") (stroke-width "1.4") (aria-hidden "true"))
+                                          (circle ((cx "8") (cy "8") (r "6.2")))
+                                          (path ((d "M1.8 8h12.4M8 1.8c-4.6 4-4.6 8.4 0 12.4 4.6-4 4.6-8.4 0-12.4z"))))
+                                     (span ((class "kit-lang-current")) "简体中文"))
+                             (ul ((class "kit-lang-menu"))
+                                 (li (button ((type "button") (data-kit-lang "zh")) "简体中文"))
+                                 (li (button ((type "button") (data-kit-lang "en")) "English"))))
+                        (button ((class "kit-icon-btn kit-theme-toggle") (type "button") (aria-pressed "false") (aria-label "Theme"))
+                                (svg ((class "kit-icon-sun") (viewBox "0 0 20 20") (fill "none") (stroke "currentColor") (stroke-width "1.5") (aria-hidden "true"))
+                                     (circle ((cx "10") (cy "10") (r "4")))
+                                     (path ((d "M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M4 4l1.4 1.4M14.6 14.6L16 16M16 4l-1.4 1.4M5.4 14.6L4 16"))))
+                                (svg ((class "kit-icon-moon") (viewBox "0 0 20 20") (fill "none") (stroke "currentColor") (stroke-width "1.5") (aria-hidden "true"))
+                                     (path ((d "M16.5 12.2A7 7 0 0 1 7.8 3.5a7 7 0 1 0 8.7 8.7z"))))))))
       (main ,@body)
-      (footer ((class "footer"))
-              (div ((class "footer-brand")) "pitboard")
-              (div ((data-i18n "footer.tagline"))
-                   "汽车行业每日热点 · Racket 全栈自托管 · 每日自动出刊")
-              (div ((class "muted"))
-                   (span ((data-i18n "footer.license")) "MIT 开源")
-                   " · "
-                   (a ((href "/llms.txt")) "llms.txt")
-                   " · "
-                   (a ((href "/rss.xml") (data-i18n "footer.rss")) "RSS 订阅")
-                   " · "
-                   (a ((href "https://github.com/turlamai/pitboard/blob/main/docs/READING.md") (data-i18n "footer.help")) "阅读与更正"))))))
+      (footer ((class "kit-footer"))
+              (div ((class "kit-container"))
+                   (div ((class "kit-footer-grid"))
+                        (div
+                         (a ((class "kit-brand") (href "/"))
+                            ,brand-mark
+                            (span "pitboard"))
+                         (p ((class "kit-footer-tagline") (data-i18n "footer.tagline"))
+                            "汽车行业每日热点 · Racket 全栈自托管 · 每日自动出刊"))
+                        (div
+                         (h4 ((data-i18n "footer.board")) "版面")
+                         (ul
+                          (li (a ((href "/") (data-i18n "nav.today")) "今日"))
+                          (li (a ((href "/topics/") (data-i18n "nav.topics")) "话题"))
+                          (li (a ((href "/archive") (data-i18n "nav.archive")) "归档"))))
+                        (div
+                         (h4 ((data-i18n "footer.data")) "数据")
+                         (ul
+                          (li (a ((href "/llms.txt")) "llms.txt"))
+                          (li (a ((href "/rss.xml") (data-i18n "footer.rss")) "RSS 订阅"))))
+                        (div
+                         (h4 ((data-i18n "footer.about")) "关于")
+                         (ul
+                          (li (a ((href "/about") (data-i18n "nav.about")) "关于"))
+                          (li (a ((href "https://github.com/turlamai/pitboard/blob/main/docs/READING.md") (data-i18n "footer.help")) "阅读与更正"))
+                          (li (span ((data-i18n "footer.license")) "MIT 开源")))))
+                   (div ((class "kit-footer-bottom"))
+                        (span "© 2026 TuringLambda AI")
+                        (span ((class "kit-mono")) "site-kit v1.0.3")))))))
 
 ;; ---- cluster card -----------------------------------------------------------
 
@@ -435,13 +489,13 @@
                   (p "pitboard 是一张举给汽车行业从业者的「pit 板」：每天把开源项目、"
                      "行业资讯、前沿论文抓到一起，聚簇去重，按独立来源数与时间衰减算出热度，"
                      "把真正在发生的事顶到最上面。")
-                  (h2 (data-i18n "about.how") "它怎么工作")
+                  (h2 ((data-i18n "about.how")) "它怎么工作")
                   (ul
                    (li (b "抓取") " — RSS 媒体源、GitHub 汽车话题仓库、arXiv 论文检索，全部免 key。")
                    (li (b "聚簇") " — 中英分词（CJK 二元语法）+ Jaccard 相似度，同一事件的多方报道并成一条。")
                    (li (b "热度") " — 独立来源越多越靠前，48 小时窗口内按新旧衰减；可选用 OpenAI 兼容 LLM 把头条翻译成中文摘要。")
                    (li (b "出刊") " — 每日定时生成一期刊物，写进 data/ 归档，站点与 API 同步刷新。"))
-                  (h2 (data-i18n "about.agents") "给 Agent 的出口")
+                  (h2 ((data-i18n "about.agents")) "给 Agent 的出口")
                   (section ((class "install-box"))
                      (p ((class "kicker") (data-i18n "install.kicker")) "一句话安装")
                      (p ((class "install-line"))
@@ -459,11 +513,11 @@
                    (li (code "/skill/pitboard/SKILL.md") " — 可安装的 agent 技能：把链接发给 agent 即可安装")
                    (li (code "raco pitboard mcp") " — 自托管 MCP（latest_digest / get_edition / get_topic）")
                    (li (code "/api/events") " — SSE 出刊推送"))
-                  (h2 (data-i18n "about.selfhost") "自托管")
+                  (h2 ((data-i18n "about.selfhost")) "自托管")
                   (p "一个 Racket 进程，不需要外部数据库服务：" (br)
                      (code "raco pkg install --auto https://github.com/turlamai/pitboard.git") (br)
                      (code "raco pitboard fetch && raco pitboard serve --port 8090"))
-                  (h2 (data-i18n "about.license") "许可")
+                  (h2 ((data-i18n "about.license")) "许可")
                   (p "MIT 许可，源码开源于 "
                      (a ((href "https://github.com/turlamai/pitboard")) "GitHub") "。"))))))
 

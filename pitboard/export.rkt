@@ -157,10 +157,19 @@
          "\"/llms.txt\":{\"get\":{\"summary\":\"Agent 索引\"}},"
          "\"/healthz\":{\"get\":{\"summary\":\"健康检查\"}}}}")))
   ;; static assets (flat at site root, matching serve-time URLs) + cname
-  (for ([f (in-list (list "styles.css" "app.js" "favicon.svg"))])
+  (for ([f (in-list (list "styles.css" "app.js" "favicon.svg"
+                          "family.css" "family.js"))])
     (define src (build-path assets-dir f))
     (when (file-exists? src)
       (copy-file src (build-path out f) #t)
+      (set! count (add1 count))))
+  ;; self-hosted family fonts (site-kit)
+  (define fonts-src (build-path assets-dir "fonts"))
+  (when (directory-exists? fonts-src)
+    (define fonts-out (build-path out "fonts"))
+    (make-directory* fonts-out)
+    (for ([f (in-list (directory-list fonts-src))])
+      (copy-file (build-path fonts-src f) (build-path fonts-out f) #t)
       (set! count (add1 count))))
   (put "CNAME" (string->bytes/utf-8 (string-append domain "\n")))
   count)

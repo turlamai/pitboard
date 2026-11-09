@@ -267,16 +267,18 @@
   (check-equal? (cdr (cadr entries)) (list "by-wire" "线控制动")))
 
 (test-case "bookmarks/search share the main nav shell"
-  ;; regression guard for the hand-written site-tpl era: those static
-  ;; copies missed every nav/head change (书签 entry, lang-btn,
-  ;; theme-btn, app.js, analytics). Both pages must carry all of it.
+  ;; regression guard, now for the site-kit era: every page must carry the
+  ;; kit shell (kit-lang, kit-theme-toggle, family.js) plus app.js, and must
+  ;; NOT reintroduce hand-rolled analytics or the old hand-written toggles.
   (define (has? b needle) (string-contains? (bytes->string/utf-8 b) needle))
   (for ([p (list (render-bookmarks-page ctx) (render-search-page ctx))])
-    (check-true (has? p "lang-btn") "missing EN switch button")
-    (check-true (has? p "theme-btn") "missing theme button")
-    (check-true (has? p "nav.bookmarks") "missing 书签 nav entry")
+    (check-true (has? p "kit-lang") "missing kit language switch")
+    (check-true (has? p "kit-theme-toggle") "missing kit theme toggle")
+    (check-true (has? p "data-kit-id=\"pitboard\"") "missing kit id")
+    (check-true (has? p "/family.js") "missing family.js")
     (check-true (has? p "/app.js") "missing app.js")
-    (check-true (has? p "hm.baidu.com/hm.js") "missing analytics snippet"))
+    (check-true (has? p "nav.bookmarks") "missing 书签 nav entry")
+    (check-false (has? p "hm.baidu.com") "analytics must not come back"))
   (check-true (has? (render-bookmarks-page ctx) "导出 JSON"))
   (check-true (has? (render-search-page ctx) "搜索标题关键词")))
 
@@ -313,12 +315,13 @@
   (check-true (has? "r.ok") "missing HTTP status check")
   (check-true (has? ".catch(") "missing fetch error branch")
   (check-true (has? "search-retry"))
-  (check-true (has? "\"search.loading\""))
-  (check-true (has? "\"search.error\""))
-  (check-true (has? "\"search.retry\""))
-  (check-true (has? "\"search.empty\""))
+  (check-true (has? "search-empty"))
   (check-true (has? "Array.isArray(j)") "missing index shape validation")
-  (define (dict-value key)
-    (cadr (regexp-match (format "\"~a\": \"([^\"]+)\"" key) js)))
-  (check-false (equal? (dict-value "search.error") (dict-value "search.empty"))
+  ;; en state copy ships in the generated kit-i18n dict (pitboard/i18n.rkt);
+  ;; app.js only toggles the data-i18n state elements. The failure and
+  ;; no-match messages must remain distinct in that dict.
+  (define en-json (bytes->string/utf-8 (render-search-page ctx)))
+  (define (en-value key)
+    (cadr (regexp-match (format "\"~a\":\"([^\"]+)\"" key) en-json)))
+  (check-false (equal? (en-value "search.error") (en-value "search.empty"))
                "en failure and no-match copy must differ"))

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh">
+<html lang="zh" data-kit-id="pitboard" data-kit-lang-key="pitboard-lang">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,26 +8,27 @@
       pitboard — 汽车行业每日热点
     </title>
     <meta name="description" content="pitboard — 汽车行业每日热点：开源项目、行业资讯、前沿论文，一天一块板。" />
+    <script>
+      (function(){var t;try{t=localStorage.getItem('pitboard-theme')}catch(e){}if(t!=='dark'&amp;&amp;t!=='light'){t=window.matchMedia&amp;&amp;matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t;var l;try{l=localStorage.getItem('pitboard-lang')}catch(e){}if(l!=='zh'&amp;&amp;l!=='en'){l=(navigator.language||'zh').toLowerCase().indexOf('zh')===0?'zh':'en'}document.documentElement.lang=l==='zh'?'zh-CN':'en'})()
+    </script>
+    <link rel="stylesheet" href="/family.css" />
     <link rel="stylesheet" href="/styles.css" />
+    <link rel="preload" href="/fonts/newsreader-latin-var.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
     <link rel="alternate" type="application/rss+xml" title="pitboard RSS" href="/rss.xml" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script defer="defer" src="/family.js">
+    </script>
     <script defer="defer" src="/app.js">
     </script>
-    <script>
-      var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?8e2445912635226bcba0c400bfb6079d";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
+    <script type="application/json" id="kit-i18n">
+      {"en":{"about.agents":"Agent endpoints","about.how":"How it works","about.license":"License","about.selfhost":"Self-hosting","about.selfhost.body":"One Racket process, no external database service:","archive.hot":" hot topics","archive.title":"Archive","board.sub":"PITBOARD · DAILY","card.more1":"Show all ","card.more2":" sources","card.seen":"First seen ","card.sources":" independent sources","card.track":"Track →","chip.new":"New","chip.progress":"Update","chip.rising":"↑ Rising","empty.hint":"Run the first fetch:","empty.title":"No edition yet","footer.about":"About","footer.board":"Board","footer.data":"Data","footer.help":"Reading & corrections","footer.license":"MIT code; sources retain rights","footer.rss":"RSS feed","footer.tagline":"Automotive industry daily digest · Racket full-stack, self-hosted · auto-published daily","index.empty":"Not enough hot topics today.","install.hint":"Send that line to your agent (Claude Code, ZCode, …) — it installs itself.","install.kicker":"One-sentence install","kind.github":"Repo","kind.news":"News","kind.paper":"Paper","lane.opensource":"Open Source Radar","meta.hot":" hot topics","meta.items":" source items","meta.sources":" sources","nav.about":"About","nav.archive":"Archive","nav.bookmarks":"Saved","nav.today":"Today","nav.topics":"Topics","notfound.back":"← Back to today","notfound.title":"Nothing on this board","period.archive":" Archive","period.meta1":"Compiled from the daily digest · ","period.meta2":" top stories · deduped by heat","period.stories":" stories","quick.label":"CURRENT HOT","search.empty":"No matches. Try different keywords.","search.error":"Search index failed to load — check your connection and try again.","search.loading":"Loading search index…","search.placeholder":"Search titles / summaries… (press /)","search.retry":"Retry","tab.all":"All","tab.github":"Repos","tab.news":"News","tab.papers":"Papers","toolbar.hint":"Ranked by independent sources","topic.meta":" related items · cross-edition tracking","topics.meta":"Cross-edition tracking of every story that matters.","topics.title":"Topic Radar"},"ph":{"search.placeholder":"搜索标题关键词…"},"zh":{"about.agents":"给 Agent 的出口","about.how":"它怎么工作","about.license":"许可","about.selfhost":"自托管","about.selfhost.body":"一个 Racket 进程，不依赖外部数据库服务：","archive.hot":" 个热点","archive.title":"往期归档","board.sub":"PITBOARD · 每日出刊","card.more1":"展开全部 ","card.more2":" 条来源","card.seen":"首见 ","card.sources":" 个独立来源","card.track":"追踪 →","chip.new":"新","chip.progress":"进展","chip.rising":"↑ 上升","empty.hint":"先跑一次抓取：","empty.title":"还没有出刊","footer.about":"关于","footer.board":"版面","footer.data":"数据","footer.help":"阅读与更正","footer.license":"MIT 开源","footer.rss":"RSS 订阅","footer.tagline":"汽车行业每日热点 · Racket 全栈自托管 · 每日自动出刊","index.empty":"今天还没有足够的热点。","install.hint":"把这句话发给你的 agent（Claude Code、ZCode……），它会自己装好。","install.kicker":"一句话安装","kind.github":"开源","kind.news":"资讯","kind.paper":"论文","lane.opensource":"开源雷达","meta.hot":" 个热点","meta.items":" 条原始条目","meta.sources":" 个信源","nav.about":"关于","nav.archive":"归档","nav.bookmarks":"书签","nav.today":"今日","nav.topics":"话题","notfound.back":"← 回今日热点","notfound.title":"这块板上没写东西","period.archive":"归档","period.meta1":"从当期日报汇编 · ","period.meta2":" 条要闻 · 按热度去重","period.stories":" 条要闻","quick.label":"当前热点","search.empty":"没有匹配内容，换个关键词试试。","search.error":"搜索索引加载失败：可能是网络中断或站点部署不完整。","search.loading":"正在加载搜索索引…","search.placeholder":"搜索标题 / 摘要…(按 /)","search.retry":"重试","tab.all":"全部","tab.github":"开源","tab.news":"资讯","tab.papers":"论文","toolbar.hint":"按独立来源数排序","topic.meta":" 条相关内容 · 跨期归档追踪","topics.meta":"每个热点话题的跨期追踪，天天见底。","topics.title":"话题雷达"}}
     </script>
   </head>
   <body>
-    <nav class="nav">
-      <div class="nav-inner">
-        <a class="brand" href="/">
-          <svg class="brand-mark" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <header class="kit-nav">
+      <div class="kit-container kit-nav-inner">
+        <a class="kit-brand" href="/">
+          <svg class="kit-brand-mark" viewBox="0 0 24 24" aria-hidden="true">
             <rect x="1.25" y="6" width="21.5" height="12" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7">
             </rect>
             <rect x="4.4" y="9.2" width="2.7" height="5.6" rx="0.6" fill="var(--accent)">
@@ -37,11 +38,11 @@
             <rect x="9.2" y="13" width="10.4" height="1.9" rx="0.9" fill="currentColor" opacity="0.28">
             </rect>
           </svg>
-          <span class="brand-name">
+          <span>
             pitboard
           </span>
         </a>
-        <div class="nav-links">
+        <nav class="kit-nav-links">
           <a href="/" class="active" data-i18n="nav.today">
             今日
           </a>
@@ -60,15 +61,48 @@
           <a href="/rss.xml">
             RSS
           </a>
-          <button class="lang-btn" id="lang-btn" type="button" aria-label="Switch language">
-            EN
-          </button>
-          <button class="theme-btn" id="theme-btn" type="button" aria-label="切换主题">
-            ◐
+        </nav>
+        <div class="kit-nav-actions">
+          <div class="kit-lang">
+            <button class="kit-lang-btn" type="button" aria-haspopup="true" aria-expanded="false">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+                <circle cx="8" cy="8" r="6.2">
+                </circle>
+                <path d="M1.8 8h12.4M8 1.8c-4.6 4-4.6 8.4 0 12.4 4.6-4 4.6-8.4 0-12.4z">
+                </path>
+              </svg>
+              <span class="kit-lang-current">
+                简体中文
+              </span>
+            </button>
+            <ul class="kit-lang-menu">
+              <li>
+                <button type="button" data-kit-lang="zh">
+                  简体中文
+                </button>
+              </li>
+              <li>
+                <button type="button" data-kit-lang="en">
+                  English
+                </button>
+              </li>
+            </ul>
+          </div>
+          <button class="kit-icon-btn kit-theme-toggle" type="button" aria-pressed="false" aria-label="Theme">
+            <svg class="kit-icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="10" cy="10" r="4">
+              </circle>
+              <path d="M10 1.5v2M10 16.5v2M1.5 10h2M16.5 10h2M4 4l1.4 1.4M14.6 14.6L16 16M16 4l-1.4 1.4M5.4 14.6L4 16">
+              </path>
+            </svg>
+            <svg class="kit-icon-moon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M16.5 12.2A7 7 0 0 1 7.8 3.5a7 7 0 1 0 8.7 8.7z">
+              </path>
+            </svg>
           </button>
         </div>
       </div>
-    </nav>
+    </header>
     <main>
       <section class="hero">
         <div class="hero-grid">
@@ -1976,29 +2010,99 @@
         </article>
       </div>
     </main>
-    <footer class="footer">
-      <div class="footer-brand">
-        pitboard
-      </div>
-      <div data-i18n="footer.tagline">
-        汽车行业每日热点 · Racket 全栈自托管 · 每日自动出刊
-      </div>
-      <div class="muted">
-        <span data-i18n="footer.license">
-          MIT 开源
-        </span>
-         · 
-        <a href="/llms.txt">
-          llms.txt
-        </a>
-         · 
-        <a href="/rss.xml" data-i18n="footer.rss">
-          RSS 订阅
-        </a>
-         · 
-        <a href="https://github.com/turlamai/pitboard/blob/main/docs/READING.md" data-i18n="footer.help">
-          阅读与更正
-        </a>
+    <footer class="kit-footer">
+      <div class="kit-container">
+        <div class="kit-footer-grid">
+          <div>
+            <a class="kit-brand" href="/">
+              <svg class="kit-brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="1.25" y="6" width="21.5" height="12" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7">
+                </rect>
+                <rect x="4.4" y="9.2" width="2.7" height="5.6" rx="0.6" fill="var(--accent)">
+                </rect>
+                <rect x="9.2" y="9.4" width="7" height="1.9" rx="0.9" fill="currentColor" opacity="0.5">
+                </rect>
+                <rect x="9.2" y="13" width="10.4" height="1.9" rx="0.9" fill="currentColor" opacity="0.28">
+                </rect>
+              </svg>
+              <span>
+                pitboard
+              </span>
+            </a>
+            <p class="kit-footer-tagline" data-i18n="footer.tagline">
+              汽车行业每日热点 · Racket 全栈自托管 · 每日自动出刊
+            </p>
+          </div>
+          <div>
+            <h4 data-i18n="footer.board">
+              版面
+            </h4>
+            <ul>
+              <li>
+                <a href="/" data-i18n="nav.today">
+                  今日
+                </a>
+              </li>
+              <li>
+                <a href="/topics/" data-i18n="nav.topics">
+                  话题
+                </a>
+              </li>
+              <li>
+                <a href="/archive" data-i18n="nav.archive">
+                  归档
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 data-i18n="footer.data">
+              数据
+            </h4>
+            <ul>
+              <li>
+                <a href="/llms.txt">
+                  llms.txt
+                </a>
+              </li>
+              <li>
+                <a href="/rss.xml" data-i18n="footer.rss">
+                  RSS 订阅
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 data-i18n="footer.about">
+              关于
+            </h4>
+            <ul>
+              <li>
+                <a href="/about" data-i18n="nav.about">
+                  关于
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/turlamai/pitboard/blob/main/docs/READING.md" data-i18n="footer.help">
+                  阅读与更正
+                </a>
+              </li>
+              <li>
+                <span data-i18n="footer.license">
+                  MIT 开源
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="kit-footer-bottom">
+          <span>
+            © 2026 TuringLambda AI
+          </span>
+          <span class="kit-mono">
+            site-kit v1.0.3
+          </span>
+        </div>
       </div>
     </footer>
   </body>
