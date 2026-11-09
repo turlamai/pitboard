@@ -22,13 +22,13 @@
         https://www.autosar.org/news-events/detail/18th-aoc-call-for-papers-is-now-open
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:589093559816198046
+        pitboard:2026-11-09:hot:589093559816198046
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:14am
+        Monday, November 9th, 2026 2:48:46am
       </pubDate>
     </item>
     <item>
@@ -39,13 +39,13 @@
         https://www.autosar.org/news-events/detail/english-q3-newsletter-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:276833536875461247
+        pitboard:2026-11-09:hot:276833536875461247
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:14am
+        Monday, November 9th, 2026 2:48:46am
       </pubDate>
     </item>
     <item>
@@ -56,13 +56,13 @@
         https://www.autosar.org/news-events/detail/autosar-capi-10-release-event-join-us-live
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:414053159472329802
+        pitboard:2026-11-09:hot:414053159472329802
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:14am
+        Monday, November 9th, 2026 2:48:46am
       </pubDate>
     </item>
     <item>
@@ -73,13 +73,13 @@
         https://www.autosar.org/news-events/detail/autosar-2026%E5%B9%B4%E7%AC%AC%E4%B8%89%E5%AD%A3%E5%BA%A6%E4%B8%AD%E6%96%87%E9%80%9A%E8%AE%AF%E7%AE%80%E6%8A%A5
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:441567329149913855
+        pitboard:2026-11-09:hot:441567329149913855
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:14am
+        Monday, November 9th, 2026 2:48:46am
       </pubDate>
     </item>
     <item>
@@ -90,13 +90,13 @@
         https://www.autosar.org/news-events/detail/release-event-r26-11
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:587878327188739473
+        pitboard:2026-11-09:hot:587878327188739473
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:14am
+        Monday, November 9th, 2026 2:48:46am
       </pubDate>
     </item>
     <item>
@@ -107,30 +107,13 @@
         https://www.autosar.org/news-events/detail/edgetech-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:869335335825954702
+        pitboard:2026-11-09:hot:869335335825954702
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:14am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        autowarefoundation/autoware
-      </title>
-      <link>
-        https://github.com/autowarefoundation/autoware
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:565200565018763934
-      </guid>
-      <description>
-        Autoware - the world's leading open-source software project for autonomous driving
-      </description>
-      <pubDate>
-        Sunday, November 8th, 2026 2:14:45am
+        Monday, November 9th, 2026 2:48:46am
       </pubDate>
     </item>
     <item>
@@ -141,30 +124,13 @@
         https://github.com/carla-simulator/carla
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:371904745613176677
+        pitboard:2026-11-09:hot:371904745613176677
       </guid>
       <description>
         Open-source simulator for autonomous driving research.
       </description>
       <pubDate>
-        Saturday, November 7th, 2026 11:05:54pm
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        commaai/opendbc
-      </title>
-      <link>
-        https://github.com/commaai/opendbc
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:737223512686484068
-      </guid>
-      <description>
-        a Python API for your car
-      </description>
-      <pubDate>
-        Sunday, November 8th, 2026 2:06:50am
+        Monday, November 9th, 2026 1:51:05am
       </pubDate>
     </item>
     <item>
@@ -175,183 +141,217 @@
         https://github.com/cauliflowermossgrape/idrive7-8-ssh-root
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:755768210576413905
+        pitboard:2026-11-09:hot:755768210576413905
       </guid>
       <description>
         Enable root SSH on BMW MGU head units (iDrive 7 / ID8 BDC3 / ID8 BCP) over ENET - flash the debug image, enroll, persistent SSH with no B7F8E5 DTC, and a unique per-car key.
       </description>
       <pubDate>
-        Saturday, November 7th, 2026 7:39:08pm
+        Sunday, November 8th, 2026 10:34:21pm
       </pubDate>
     </item>
     <item>
       <title>
-        法雷奥与QNX发布新一代智能前视摄像头平台，已获多家中国车企定点
+        autowarefoundation/autoware
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/6I70477206C103.shtml
+        https://github.com/autowarefoundation/autoware
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:709697391836106827
+        pitboard:2026-11-09:hot:565200565018763934
+      </guid>
+      <description>
+        Autoware - the world's leading open-source software project for autonomous driving
+      </description>
+      <pubDate>
+        Sunday, November 8th, 2026 3:22:02pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        兆易创新与安波福合作，推动国产车规芯片规模化应用
+      </title>
+      <link>
+        https://auto.gasgoo.com/news/202611/9I70477358C601.shtml
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-09:hot:776743489717035071
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:18am
+        Monday, November 9th, 2026 2:48:49am
       </pubDate>
     </item>
     <item>
       <title>
-        国轩高科：从产品出海到体系扎根-动力电池出海的国际化实践
+        cantools/cantools
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/6I70477212C106.shtml
+        https://github.com/cantools/cantools
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:941961095334069455
+        pitboard:2026-11-09:hot:192973104646746202
+      </guid>
+      <description>
+        CAN bus tools.
+      </description>
+      <pubDate>
+        Sunday, November 8th, 2026 10:31:30am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        日产中国也提醒车主防范虚假召回短信电信诈骗
+      </title>
+      <link>
+        https://auto.gasgoo.com/news/202611/9I70477364C109.shtml
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-09:hot:1043440706200477490
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:18am
+        Monday, November 9th, 2026 2:48:49am
       </pubDate>
     </item>
     <item>
       <title>
-        【日程发布】海外华人汽车工程师全球连线 - 2026
+        进博会观察：当保时捷遇见Cybercab，汽车馆折叠了两个时代
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/7I70477274C108.shtml
+        https://auto.gasgoo.com/news/202611/9I70477359C108.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:628709508079658792
+        pitboard:2026-11-09:hot:460785686301129861
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:18am
+        Monday, November 9th, 2026 2:48:49am
       </pubDate>
     </item>
     <item>
       <title>
-        BYD Yangwang U9 Xtreme electric car – 503 km/h Top speed World Record [video]
+        因时机器人展示三款灵巧手新品
       </title>
       <link>
-        https://twitter.com/XH_Lee23/status/2118652280966873269
+        https://auto.gasgoo.com/news/202611/9I70477305C601.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:979690648674841590
+        pitboard:2026-11-09:hot:776670520298631021
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Friday, November 6th, 2026 4:29:16pm
+        Monday, November 9th, 2026 2:48:49am
       </pubDate>
     </item>
     <item>
       <title>
-        进博会观察 | 日产，重构跨国车企价值链?
+        东风标致2027款408正式上市
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/6I70477160C109.shtml
+        https://auto.gasgoo.com/news/202611/9I70477303C107.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:572560688517226664
+        pitboard:2026-11-09:hot:1092127613257371190
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:18am
+        Monday, November 9th, 2026 2:48:49am
       </pubDate>
     </item>
     <item>
       <title>
-        Seeds | 蓝固新能源完成近两亿元B+轮融资
+        FFR与加州科技大学等达成战略合作
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/6I70477161C501.shtml
+        https://auto.gasgoo.com/news/202611/9I70477186C601.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:957632939443500974
+        pitboard:2026-11-09:hot:24727309636262474
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:18am
+        Monday, November 9th, 2026 2:48:49am
       </pubDate>
     </item>
     <item>
       <title>
-        安波福与它石智航、上海电气签约，数百台具身机器人将进入生产线
+        大众中国转让国轩高科5.30%股权，合肥国资接手
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/6I70477204C601.shtml
+        https://auto.gasgoo.com/news/202611/9I70477361C501.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:948658685967093925
+        pitboard:2026-11-09:hot:1001547461573515576
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:18am
+        Monday, November 9th, 2026 2:48:49am
       </pubDate>
     </item>
     <item>
       <title>
-        全球电动车竞速，美国为何成了“逆流者”
+        启元第10000台机器人正式下线
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/6I70477209C501.shtml
+        https://auto.gasgoo.com/news/202611/9I70477365C601.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:433128516214152086
+        pitboard:2026-11-09:hot:770404969967530048
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:18am
+        Monday, November 9th, 2026 2:48:49am
       </pubDate>
     </item>
     <item>
       <title>
-        出海新阶段，中国车企要换一种活法
+        文章 新出行原创 新出行图文详解 261期：静态体验仰望鼎曜 作为比亚迪旗下高端新能源品牌，仰望始终以颠覆性技术打造顶级产品矩阵，先后覆盖硬派越野、性能超跑与豪华轿车多个细分赛道。在完成越野与超跑赛道的布局后，仰望正式将产 阿迪同学 点赞 18 评论 18
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/6I70477157C108.shtml
+        https://www.xchuxing.com/article/179827
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:989095451895419310
+        pitboard:2026-11-09:hot:523727114886178633
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:18am
+        Monday, November 9th, 2026 2:48:51am
       </pubDate>
     </item>
     <item>
       <title>
-        23.98万元起，智己LS8 NEO纯电正式上市
+        文章 新出行原创 新出行图文详解 257期：静态体验东风日产 NX7 目前东风日产 N 系列 SUV 仅有主打大空间家用取向的 NX8 一款车型。虽然在上市后收获不错的销量以及市场口碑，但偏家用的定位的确无法满足大部分年轻用户的需 阿迪同学 点赞 11 评论 7
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/7I70477289C1202.shtml#nav
+        https://www.xchuxing.com/article/178768
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-08:hot:960934099832789377
+        pitboard:2026-11-09:hot:979915009393600284
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Sunday, November 8th, 2026 2:35:18am
+        Monday, November 9th, 2026 2:48:51am
       </pubDate>
     </item>
   </channel>
