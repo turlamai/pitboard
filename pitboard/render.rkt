@@ -49,18 +49,21 @@
     (string-append "<!DOCTYPE html>\n"
                    (with-output-to-string
                      (λ () (display-xml/content (xexpr->xml x))))))
-  ;; display-xml escapes & < > everywhere, including inside <script> — but
-  ;; HTML5 script content is raw text, so the JSON in the kit-i18n block
-  ;; must be unescaped or the browser shows double-escaped copy.
+  ;; display-xml escapes & < > everywhere — but HTML5 script content is raw
+  ;; text, so any escaped inline script is broken JS/JSON (&amp;&amp; has a
+  ;; different meaning than &&). Unescape every src-less script block.
   (define out
     (regexp-replace*
-     #rx"<script type=\"application/json\" id=\"kit-i18n\">((?:(?!</script>).)*)</script>"
+     #rx"<script((?:(?!>).)*)>((?:(?!</script>).)*)</script>"
      raw
-     (λ (whole body)
-       (format "<script type=\"application/json\" id=\"kit-i18n\">~a</script>"
-               (string-replace (string-replace (string-replace body "&lt;" "<")
-                                               "&gt;" ">")
-                               "&amp;" "&")))))
+     (λ (whole attrs body)
+       (if (regexp-match #rx"src=" attrs)
+           whole
+           (format "<script~a>~a</script>"
+                   attrs
+                   (string-replace (string-replace (string-replace body "&lt;" "<")
+                                                   "&gt;" ">")
+                                   "&amp;" "&"))))))
   (string->bytes/utf-8 out))
 
 (define (v s)
@@ -337,8 +340,7 @@
                           (cons c picked))])])))
   `(section ((class "quick"))
      (div ((class "quick-head"))
-          (span ((class "kicker")) "CURRENT HOT")
-          (span ((class "quick-label") (data-i18n "quick.label")) "当前热点")
+          (span ((class "kicker") (data-i18n "quick.label")) "当前热点")
           (span ((class "quick-count")) ,(format "TOP ~a" (length top))))
      (ol ((class "quick-list"))
          ,@(for/list ([c (in-list top)] [i (in-naturals)])
