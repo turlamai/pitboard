@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>pitboard — 关于与勘误 · 原型④ 可信度</title>
+<script>
+(function(){var t;try{t=localStorage.getItem('pitboard-theme')}catch(e){}
+if(t!=='dark'&&t!=='light'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=t})()
+</script>
+<link rel="stylesheet" href="shared.css" />
+<style>
+/* 屏内样式：勘误记录（ErrataLog）与报告路径 */
+.errata { list-style: none; margin: 18px 0 0; padding: 0; }
+.errata li {
+  padding: 14px 0 14px 18px; border-left: 2px solid var(--chip-line);
+  font-size: 14.5px; color: var(--muted);
+}
+.errata li + li { margin-top: 10px; }
+.errata-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
+.errata-date { font: 600 12px/1.4 var(--mono); color: var(--accent); white-space: nowrap; }
+.errata-ed { font: 500 11.5px/1.4 var(--mono); color: var(--faint); }
+.errata-body b { color: var(--ink); }
+.errata-reason { margin-top: 4px; font-size: 12.5px; color: var(--faint); }
+.report-box {
+  margin-top: 18px; padding: 16px 20px;
+  border: 1px solid var(--line); border-radius: 14px; background: var(--surface);
+}
+.report-box ol { margin: 8px 0 12px 1.4em; font-size: 14.5px; color: var(--muted); }
+.install-box {
+  margin-top: 28px; padding: 20px 22px;
+  border: 1px solid var(--line); border-radius: 14px; background: var(--accent-soft);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.install-box .kicker { margin: 0; }
+.install-line { font: 600 13.5px/1.6 var(--mono); word-break: break-all; user-select: all; }
+.btn-install {
+  align-self: flex-start; border: 1px solid var(--line-strong);
+  background: var(--surface); color: var(--ink); border-radius: 999px;
+  padding: 8px 18px; cursor: pointer; font: 600 13px/1 inherit; font-family: inherit;
+  transition: border-color .15s ease, color .15s ease;
+}
+.btn-install:hover { border-color: var(--accent); color: var(--accent); }
+.btn-install:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.25" y="6" width="21.5" height="12" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="4.4" y="9.2" width="2.7" height="5.6" rx="0.6" fill="var(--accent)"/><rect x="9.2" y="9.4" width="7" height="1.9" rx="0.9" fill="currentColor" opacity="0.5"/><rect x="9.2" y="13" width="10.4" height="1.9" rx="0.9" fill="currentColor" opacity="0.28"/></svg>
+      <span>pitboard</span>
+    </a>
+    <nav class="nav-links" aria-label="站内导航">
+      <a href="index.html">今日</a>
+      <a href="topic.html">话题</a>
+      <a href="archive.html">归档</a>
+      <a href="about.html" class="active">关于</a>
+      <a href="#" aria-disabled="true">RSS</a>
+      <button class="iconbtn" id="theme" type="button" aria-label="切换亮暗主题"><span class="icon-sun">☀</span><span class="icon-moon">☾</span></button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero hero-slim">
+    <p class="kicker">ABOUT &amp; ERRATA</p>
+    <h1 class="hero-date hero-date-s">关于 pitboard</h1>
+  </section>
+
+  <div class="prose">
+    <p>
+      pitboard 是一张举给汽车行业从业者的「pit 板」：每天把开源项目、行业资讯、前沿论文抓到一起，
+      聚簇去重，按独立来源数与时间衰减算出热度，把真正在发生的事顶到最上面。
+      阅读免费、无需账号，也不设任何订阅墙。
+    </p>
+
+    <h2 id="trust">读它之前：内容可信度</h2>
+    <ul>
+      <li><b>独立来源数才是事实的背书</b> — 热度分数只是排序信号，让更多独立信源说同一件事的条目更靠前，分数本身不构成结论。</li>
+      <li><b>聚簇可能误并</b> — 算法把同一事件的多方报道并成一条，也可能错把相关报道并在一起、或漏掉后续进展。</li>
+      <li><b>AI 内容必署名</b> — 带「LLM 增强」徽标的标题与摘要是机器改写，可能出错；没有该徽标的条目为纯算法排名产出。</li>
+      <li><b>出刊可能失败</b> — 定时出刊不保证准时；旧一期不等于今日新闻，过期版面会显示警示横幅。</li>
+    </ul>
+
+    <h2 id="errata">勘误记录</h2>
+    <p>更正永不静默：这里按时间倒序记录每一次生效的更正，并保留原况与原因。</p>
+    <ul class="errata">
+      <li>
+        <div class="errata-head"><span class="errata-date">2026-11-08</span><span class="errata-ed">第 25 期 · #03</span></div>
+        <div class="errata-body"><b>原况</b>：把「小米 YU9 渲染图曝光」与「YU7 交付数据」误并为一条聚簇。
+          <b>更正</b>：已拆分为两条独立条目并重算该期热度。</div>
+        <div class="errata-reason">原因：读者报告 + 聚簇阈值复核（标题二元语法重叠过高）。</div>
+      </li>
+      <li>
+        <div class="errata-head"><span class="errata-date">2026-11-05</span><span class="errata-ed">第 22 期 · 来源</span></div>
+        <div class="errata-body"><b>原况</b>：electrek.co 原文链接失效。
+          <b>更正</b>：替换为该报道的存档链接，域名标注不变。</div>
+        <div class="errata-reason">原因：日常信源巡检发现 404。</div>
+      </li>
+      <li>
+        <div class="errata-head"><span class="errata-date">2026-11-02</span><span class="errata-ed">第 16 期 · #01</span></div>
+        <div class="errata-body"><b>原况</b>：「LLM 增强」摘要把「召回」误译为「回召」。
+          <b>更正</b>：已人工改写，徽标保持不变。</div>
+        <div class="errata-reason">原因：读者报告；已加入译名校对词表。</div>
+      </li>
+    </ul>
+
+    <h2 id="report">报告错误</h2>
+    <p>发现错误聚簇、过期版面或失效信源，请按这三样报告，更正才能快速生效：</p>
+    <div class="report-box">
+      <ol>
+        <li>期号（如 <code>第 25 期</code> 或日期 <code>2026-11-09</code>）</li>
+        <li>条目标题或来源 URL</li>
+        <li>期望的更正结果</li>
+      </ol>
+      <a href="#">→ 到 GitHub Issues 提交更正</a>
+    </div>
+
+    <h2>给 Agent 的出口</h2>
+    <section class="install-box">
+      <p class="kicker">一句话安装</p>
+      <p class="install-line">请安装 pitboard 技能：https://pitboard.jrtx.site/skill/pitboard/SKILL.md</p>
+      <button class="btn-install" id="copy-install" type="button">复制安装语</button>
+      <p class="muted">把这句话发给你的 agent（Claude Code、ZCode……），它会自己装好。</p>
+    </section>
+    <ul>
+      <li><code>/rss.xml</code> — RSS 订阅</li>
+      <li><code>/api/v1/latest.json</code> — 最新一期 JSON（全部只读、无鉴权）</li>
+      <li><code>/daily/&lt;date&gt;.md</code> — Markdown 日报</li>
+    </ul>
+
+    <h2>许可</h2>
+    <p>MIT 许可，源码开源于 <a href="#">GitHub</a>；链接的文章与论文保留原权利，机器可读导出不是转载授权。</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-brand">pitboard</div>
+  <div>汽车行业每日热点 · Racket 全栈自托管 · 每日自动出刊</div>
+  <div>
+    <a href="about.html#trust">内容可信度</a> · <a href="about.html#errata">勘误记录</a> · <a href="about.html#report">报告错误</a> · <span class="muted">MIT 开源，来源文章保留原权利</span>
+  </div>
+  <div class="muted">热度只是排序信号；独立来源数才是事实的背书。旧刊不是今日新闻。</div>
+</footer>
+
+<script>
+document.getElementById('theme').onclick = function () {
+  var t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('pitboard-theme', t); } catch (e) {}
+};
+document.getElementById('copy-install').onclick = function () {
+  var line = document.querySelector('.install-line').textContent.trim();
+  var btn = this;
+  function done() { btn.textContent = '已复制'; setTimeout(function () { btn.textContent = '复制安装语'; }, 1600); }
+  if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(line).then(done, done); } else { done(); }
+};
+</script>
+</body>
+</html>

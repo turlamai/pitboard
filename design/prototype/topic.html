@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>pitboard — 话题雷达 · 原型② 话题追踪</title>
+<script>
+(function(){var t;try{t=localStorage.getItem('pitboard-theme')}catch(e){}
+if(t!=='dark'&&t!=='light'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=t})()
+</script>
+<link rel="stylesheet" href="shared.css" />
+<style>
+/* 屏内样式：话题时间线的追踪摘要与进展标记 */
+.track-band {
+  margin-top: 18px; padding: 12px 16px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  font: 500 13px/1.7 var(--mono); color: var(--muted);
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+}
+.track-band .dot { color: var(--faint); }
+.topic-group { margin-top: 34px; }
+.topic-month { font: 600 12px/1 var(--mono); letter-spacing: 0.14em; color: var(--faint); margin: 0 0 4px; }
+.topic-row .chip { padding: 2px 9px; font-size: 11px; }
+.trust-note { margin-top: 36px; padding: 14px 18px; background: var(--chip-bg); border-radius: 12px; color: var(--muted); font-size: 13.5px; }
+@media (max-width: 680px) { .topic-row { grid-template-columns: 1fr; gap: 3px; } }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.25" y="6" width="21.5" height="12" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="4.4" y="9.2" width="2.7" height="5.6" rx="0.6" fill="var(--accent)"/><rect x="9.2" y="9.4" width="7" height="1.9" rx="0.9" fill="currentColor" opacity="0.5"/><rect x="9.2" y="13" width="10.4" height="1.9" rx="0.9" fill="currentColor" opacity="0.28"/></svg>
+      <span>pitboard</span>
+    </a>
+    <nav class="nav-links" aria-label="站内导航">
+      <a href="index.html">今日</a>
+      <a href="topic.html" class="active">话题</a>
+      <a href="archive.html">归档</a>
+      <a href="about.html">关于</a>
+      <a href="#" aria-disabled="true">RSS</a>
+      <button class="iconbtn" id="theme" type="button" aria-label="切换亮暗主题"><span class="icon-sun">☀</span><span class="icon-moon">☾</span></button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero hero-slim">
+    <p class="kicker">TOPIC RADAR</p>
+    <h1 class="hero-date hero-date-s">域控</h1>
+    <p class="hero-meta">
+      <span>37 条相关内容 · 跨期归档追踪</span>
+      <span class="dot">·</span>
+      <span>12 个独立来源</span>
+    </p>
+    <div class="track-band">
+      <span>首见 2026-10-14</span><span class="dot">·</span>
+      <span>最近 7 天 5 条进展</span><span class="dot">·</span>
+      <span class="chip chip-progress">进展</span>
+      <span>标记的日期表示该话题当期有新发展</span>
+    </div>
+  </section>
+
+  <div class="topic-group">
+    <p class="topic-month">2026 年 11 月</p>
+    <ul class="topic-list">
+      <li class="topic-row">
+        <span class="topic-date">2026-11-10</span>
+        <a href="#">LIN vs CAN vs FlexRay: How Automotive Communication Buses Actually Work<span class="src-dom">medium.com</span></a>
+        <span class="chip chip-progress">进展</span>
+      </li>
+      <li class="topic-row">
+        <span class="topic-date">2026-11-09</span>
+        <a href="#">GM is betting compute and AI will help it compete with Chinese automakers<span class="src-dom">techcrunch.com</span></a>
+        <span class="chip chip-progress">进展</span>
+      </li>
+      <li class="topic-row">
+        <span class="topic-date">2026-11-08</span>
+        <a href="#">NIO's in-house chips enter mass production for ET9 flagship<span class="src-dom">cnevpost.com</span></a>
+      </li>
+      <li class="topic-row">
+        <span class="topic-date">2026-11-06</span>
+        <a href="#">NVIDIA DriveOS 7.0 opens regional domain-controller SDK<span class="src-dom">nvidia.com</span></a>
+      </li>
+      <li class="topic-row">
+        <span class="topic-date">2026-11-04</span>
+        <a href="#">华为乾崑 ADS 4.0 域控制器装机量破百万<span class="src-dom">36kr.com</span></a>
+        <span class="chip chip-progress">进展</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="topic-group">
+    <p class="topic-month">2026 年 10 月</p>
+    <ul class="topic-list">
+      <li class="topic-row">
+        <span class="topic-date">2026-10-28</span>
+        <a href="#">Tesla HW4.5 retrofit program expands to Model Y owners<span class="src-dom">electrek.co</span></a>
+      </li>
+      <li class="topic-row">
+        <span class="topic-date">2026-10-21</span>
+        <a href="#"> Qualcomm Snapdragon Ride Flex hits production vehicles<span class="src-dom">qualcomm.com</span></a>
+        <span class="chip chip-progress">进展</span>
+      </li>
+      <li class="topic-row">
+        <span class="topic-date">2026-10-14</span>
+        <a href="#">小鹏图灵芯片首发搭载：单 SoC 承载全域域控<span class="src-dom">ithome.com</span></a>
+        <span class="chip chip-new">首见</span>
+      </li>
+    </ul>
+  </div>
+
+  <p class="trust-note">
+    话题由聚簇算法从多期日报归并，可能把相关但不相同的报道并成一条进展。
+    发现误并请到 <a href="about.html#errata">勘误与更正</a> 提交期号与来源 URL。
+  </p>
+</main>
+
+<footer class="footer">
+  <div class="footer-brand">pitboard</div>
+  <div>汽车行业每日热点 · Racket 全栈自托管 · 每日自动出刊</div>
+  <div>
+    <a href="about.html">阅读与更正</a> · <a href="#">报告错误聚簇</a> · <a href="#">RSS 订阅</a> · <span class="muted">MIT 开源，来源文章保留原权利</span>
+  </div>
+  <div class="muted">热度只是排序信号；独立来源数才是事实的背书。旧刊不是今日新闻。</div>
+</footer>
+
+<script>
+document.getElementById('theme').onclick = function () {
+  var t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('pitboard-theme', t); } catch (e) {}
+};
+</script>
+</body>
+</html>

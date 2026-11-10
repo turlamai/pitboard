@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>pitboard — 空态与防错 · 原型⑤ 状态屏</title>
+<script>
+(function(){var t;try{t=localStorage.getItem('pitboard-theme')}catch(e){}
+if(t!=='dark'&&t!=='light'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=t})()
+</script>
+<link rel="stylesheet" href="shared.css" />
+<style>
+/* 屏内样式：状态面板（新刊横幅 / 旧刊警示 / 未出刊 / 404） */
+.panel { margin-top: 40px; }
+.panel-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+.panel-head .kicker { margin: 0; }
+.panel-title { font-weight: 700; font-size: 15px; }
+.panel-box {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 26px 24px;
+}
+/* 新刊横幅（SSE 推送）：accent 底 pill，常驻视口底部 —— 演示时静态摆放。
+   文字用 --on-accent（family kit 值）：暗态自动换深字，修复白字低对比。 */
+.edition-bar {
+  display: inline-flex; background: var(--accent); color: var(--on-accent); border-radius: 999px;
+  padding: 10px 18px; font-size: 14px; gap: 12px; align-items: center;
+  box-shadow: 0 10px 28px rgba(30, 20, 12, 0.3);
+}
+.edition-bar button { border: none; background: rgba(255,255,255,.24); color: inherit; border-radius: 999px; padding: 4px 12px; cursor: pointer; font-size: 13px; }
+html[data-theme="dark"] .edition-bar button { background: rgba(0,0,0,.16); }
+.edition-bar button:hover { background: rgba(255,255,255,.36); }
+/* 旧刊警示横幅：中性警示，禁用 accent —— 防错一致 */
+.stale-bar {
+  display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+  background: var(--chip-bg); border: 1px solid var(--line-strong); border-radius: 12px;
+  padding: 12px 18px; font-size: 13.5px; color: var(--muted);
+}
+.stale-bar .board-mini { font: 600 12px/1.4 var(--mono); color: var(--ink); }
+.stale-bar a { margin-left: auto; }
+/* 未出刊空态 */
+.empty-state { text-align: center; padding: 26px 0 10px; }
+.empty-state h2 { font-family: var(--serif); font-weight: 500; font-size: 26px; margin-bottom: 8px; }
+.empty-state p { color: var(--muted); font-size: 14.5px; }
+.empty-state .cmd { margin-top: 14px; }
+.last-ok { margin-top: 16px; font: 500 12px/1.6 var(--mono); color: var(--faint); }
+/* 404 */
+.notfound { text-align: center; padding: 26px 0 10px; }
+.notfound .board { display: inline-block; margin-bottom: 18px; }
+.notfound h2 { font-family: var(--serif); font-weight: 500; font-size: 26px; margin-bottom: 8px; }
+.notfound p { color: var(--muted); font-size: 14.5px; margin-bottom: 16px; }
+.back { font-weight: 600; }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.25" y="6" width="21.5" height="12" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="4.4" y="9.2" width="2.7" height="5.6" rx="0.6" fill="var(--accent)"/><rect x="9.2" y="9.4" width="7" height="1.9" rx="0.9" fill="currentColor" opacity="0.5"/><rect x="9.2" y="13" width="10.4" height="1.9" rx="0.9" fill="currentColor" opacity="0.28"/></svg>
+      <span>pitboard</span>
+    </a>
+    <nav class="nav-links" aria-label="站内导航">
+      <a href="index.html">今日</a>
+      <a href="topic.html">话题</a>
+      <a href="archive.html">归档</a>
+      <a href="about.html">关于</a>
+      <a href="#" aria-disabled="true">RSS</a>
+      <button class="iconbtn" id="theme" type="button" aria-label="切换亮暗主题"><span class="icon-sun">☀</span><span class="icon-moon">☾</span></button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero hero-slim">
+    <p class="kicker">STATE SPECIMENS</p>
+    <h1 class="hero-date hero-date-s">空态与防错</h1>
+    <p class="hero-meta"><span>时效不撒谎：每个失败与过期状态都有明确界面，绝不静默。</span></p>
+  </section>
+
+  <section class="panel" aria-label="新刊已出刊横幅">
+    <div class="panel-head"><span class="kicker">STATE 1</span><span class="panel-title">新刊已出刊（SSE 推送横幅）</span></div>
+    <div class="panel-box">
+      <div class="edition-bar"><span>新一期已出刊：2026-11-10</span><button type="button">刷新</button></div>
+      <p class="last-ok">accent 底 pill，常驻视口底部，点击「刷新」载入新版面；关闭站点即消失。</p>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="旧刊警示横幅">
+    <div class="panel-head"><span class="kicker">STATE 2</span><span class="panel-title">旧刊警示（访问历史版面时）</span></div>
+    <div class="panel-box">
+      <div class="stale-bar">
+        <span class="board-mini">第 22 期 · 2026-10-31</span>
+        <span>旧刊不是今日新闻 —— 最新一期可能已有后续进展。</span>
+        <a class="chip" href="index.html">回今日热点</a>
+      </div>
+      <p class="last-ok">中性警示（chip 底 + line-strong 描边），禁用 accent；警示与勘误标记不提供关闭。</p>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="未出刊空态">
+    <div class="panel-head"><span class="kicker">STATE 3</span><span class="panel-title">未出刊 / 出刊失败</span></div>
+    <div class="panel-box">
+      <div class="empty-state">
+        <h2>还没有出刊</h2>
+        <p>抓取管线尚未产出任何一期，或本日期次未按时出刊。</p>
+        <p class="cmd"><code>raco pitboard fetch --data data --config config/sources.json</code></p>
+        <p class="last-ok">上次成功出刊：2026-11-10 07:31 · 下一班 2026-11-11 07:30（北京时间）</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="404 空态">
+    <div class="panel-head"><span class="kicker">STATE 4</span><span class="panel-title">404 · 没有这块板</span></div>
+    <div class="panel-box">
+      <div class="notfound">
+        <div class="board" aria-hidden="true">
+          <div class="board-label">EDITION</div>
+          <div class="board-num">—</div>
+          <div class="board-sub">PITBOARD · 每日出刊</div>
+        </div>
+        <h2>这块板上没写东西</h2>
+        <p>日期不存在、期次未出刊，或链接已失效。</p>
+        <a class="back" href="index.html">← 回今日热点</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-brand">pitboard</div>
+  <div>汽车行业每日热点 · Racket 全栈自托管 · 每日自动出刊</div>
+  <div>
+    <a href="about.html">阅读与更正</a> · <a href="about.html#errata">勘误记录</a> · <a href="#">RSS 订阅</a> · <span class="muted">MIT 开源，来源文章保留原权利</span>
+  </div>
+  <div class="muted">热度只是排序信号；独立来源数才是事实的背书。旧刊不是今日新闻。</div>
+</footer>
+
+<script>
+document.getElementById('theme').onclick = function () {
+  var t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('pitboard-theme', t); } catch (e) {}
+};
+</script>
+</body>
+</html>

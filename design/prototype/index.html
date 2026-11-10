@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>pitboard — 汽车行业每日热点 · 原型① 今日版面</title>
+<script>
+(function(){var t;try{t=localStorage.getItem('pitboard-theme')}catch(e){}
+if(t!=='dark'&&t!=='light'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+document.documentElement.dataset.theme=t})()
+</script>
+<link rel="stylesheet" href="shared.css" />
+<style>
+/* 屏内样式：仅本屏布局；tokens 与组件全在 shared.css */
+.quick { padding-top: 26px; }
+.quick-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+.quick-head .kicker { margin: 0; }
+.quick-label { font-weight: 700; font-size: 15px; }
+.quick-count { font: 600 11px/1 var(--mono); color: var(--faint); letter-spacing: 0.12em; }
+.quick-list { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.quick-item { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; transition: transform .15s ease, border-color .15s ease; }
+.quick-item:hover { transform: translateY(-2px); border-color: var(--accent); }
+.quick-link { display: flex; flex-direction: column; gap: 6px; height: 100%; }
+.quick-rank { font: 700 18px/1 var(--mono); color: var(--faint); font-variant-numeric: tabular-nums; transition: color .15s ease; }
+.quick-item:hover .quick-rank { color: var(--accent); }
+.quick-name { font-size: 13px; font-weight: 600; line-height: 1.45; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.quick-heat { font: 600 11.5px/1 var(--mono); color: var(--accent); font-variant-numeric: tabular-nums; }
+.stars { color: var(--faint); font-family: var(--mono); font-size: 11.5px; }
+@media (max-width: 860px) { .quick-list { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 680px) { .hero-grid { flex-direction: column-reverse; align-items: flex-start; gap: 20px; } .board { align-self: flex-start; padding: 13px 20px 11px; min-width: 132px; } .board-num { font-size: 42px; } }
+@media (max-width: 480px) { .quick-list { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.25" y="6" width="21.5" height="12" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="4.4" y="9.2" width="2.7" height="5.6" rx="0.6" fill="var(--accent)"/><rect x="9.2" y="9.4" width="7" height="1.9" rx="0.9" fill="currentColor" opacity="0.5"/><rect x="9.2" y="13" width="10.4" height="1.9" rx="0.9" fill="currentColor" opacity="0.28"/></svg>
+      <span>pitboard</span>
+    </a>
+    <nav class="nav-links" aria-label="站内导航">
+      <a href="index.html" class="active">今日</a>
+      <a href="topic.html">话题</a>
+      <a href="archive.html">归档</a>
+      <a href="about.html">关于</a>
+      <a href="#" aria-disabled="true">RSS</a>
+      <button class="iconbtn" id="theme" type="button" aria-label="切换亮暗主题"><span class="icon-sun">☀</span><span class="icon-moon">☾</span></button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="kicker">AUTOMOTIVE DAILY · 第 26 期</p>
+        <h1 class="hero-date">2026年11月10日<span class="hero-wd"> 星期二</span></h1>
+        <p class="hero-meta">
+          <span>399 个热点</span><span class="dot">·</span>
+          <span>408 条原始条目</span><span class="dot">·</span>
+          <span>29 个信源</span>
+          <span class="chip chip-llm" title="本期头条标题与摘要由 LLM 改写，可能出错">LLM 增强</span>
+        </p>
+      </div>
+      <div class="board" aria-hidden="true">
+        <div class="board-label">EDITION</div>
+        <div class="board-num">26</div>
+        <div class="board-sub">PITBOARD · 每日出刊</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quick" aria-label="当前热点前五">
+    <div class="quick-head">
+      <span class="kicker">CURRENT HOT</span>
+      <span class="quick-label">当前热点</span>
+      <span class="quick-count">TOP 5</span>
+    </div>
+    <ol class="quick-list">
+      <li class="quick-item"><a class="quick-link" href="#"><span class="quick-rank">01</span><span class="quick-name">18th AOC: Call for Papers is Now Open!</span><span class="quick-heat">🔥 10.5</span></a></li>
+      <li class="quick-item"><a class="quick-link" href="#"><span class="quick-rank">02</span><span class="quick-name">carla-simulator/carla</span><span class="quick-heat">🔥 5.1</span></a></li>
+      <li class="quick-item"><a class="quick-link" href="#"><span class="quick-rank">03</span><span class="quick-name">2026年9月中国车企出口新动态：欧洲与独联体市场成重要出口目的地</span><span class="quick-heat">🔥 3.5</span></a></li>
+      <li class="quick-item"><a class="quick-link" href="#"><span class="quick-rank">04</span><span class="quick-name">中泰汽车：26Q3汽车行业总结：行业出口持续景气，内需承压静待拐点</span><span class="quick-heat">🔥 3.5</span></a></li>
+      <li class="quick-item"><a class="quick-link" href="#"><span class="quick-rank">05</span><span class="quick-name">Cruise ship pianist rescued from sea after nine hours</span><span class="quick-heat">🔥 3.3</span></a></li>
+    </ol>
+  </section>
+
+  <div class="toolbar">
+    <div class="tabs" role="tablist" aria-label="按类型筛选">
+      <button class="tab active" type="button" role="tab" aria-selected="true">全部<span class="tab-n">399</span></button>
+      <button class="tab" type="button" role="tab" aria-selected="false">开源<span class="tab-n">18</span></button>
+      <button class="tab" type="button" role="tab" aria-selected="false">资讯<span class="tab-n">350</span></button>
+      <button class="tab" type="button" role="tab" aria-selected="false">论文<span class="tab-n">40</span></button>
+      <span class="toolbar-hint">按独立来源数排序</span>
+    </div>
+    <input class="search" id="search" type="search" placeholder="搜索标题 / 摘要…（按 / 聚焦）" aria-label="搜索热点" autocomplete="off" />
+  </div>
+
+  <div class="cards">
+    <article class="card">
+      <div class="card-top">
+        <span class="rank">01</span>
+        <span class="card-kind">资讯</span>
+        <div class="labels">
+          <span class="heat" title="热度 = 独立来源数 × 时间衰减，不是事实背书">🔥 10.5</span>
+          <span class="chip chip-progress">进展</span>
+          <span class="chip chip-new">新</span>
+          <span class="chip chip-seen">首见 2026-11-09</span>
+          <span class="card-time">04:42</span>
+        </div>
+      </div>
+      <div class="heatbar"><span class="heatbar-fill" style="width:100%"></span></div>
+      <h2 class="card-title"><a href="#">18th AOC: Call for Papers is Now Open!</a></h2>
+      <p class="card-summary">AUTOSAR 第 18 届 AUTOSAR Open Conference 征稿开启，聚焦整车软件架构与协作开发实践。</p>
+      <div class="chips">
+        <a class="chip" href="#">资讯 · www.autosar.org</a>
+        <a class="chip" href="#">资讯 · automotive-news.com</a>
+        <a class="chip" href="#">资讯 · sae.org</a>
+      </div>
+      <details class="more-src">
+        <summary>展开全部 3 条来源</summary>
+        <ul class="src-list">
+          <li><a href="#">18th AOC: Call for Papers is Now Open!<span class="src-dom">autosar.org</span></a></li>
+          <li><a href="#">AUTOSAR opens paper submissions for 18th Open Conference<span class="src-dom">sae.org</span></a></li>
+          <li><a href="#">Call for papers: AUTOSAR Open Conference 2027<span class="src-dom">automotive-news.com</span></a></li>
+        </ul>
+      </details>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <span class="rank">02</span>
+        <span class="card-kind kind-github">开源</span>
+        <div class="labels">
+          <span class="heat">🔥 5.1</span>
+          <span class="chip chip-rising">↑ 上升</span>
+          <span class="card-time">02:17</span>
+        </div>
+      </div>
+      <div class="heatbar"><span class="heatbar-fill" style="width:49%"></span></div>
+      <h2 class="card-title"><a href="#">carla-simulator/carla</a></h2>
+      <p class="card-summary">开源自动驾驶仿真器：本周新增 ROS 2 桥接示例与 CARLA 0.10 路线图更新。</p>
+      <div class="chips">
+        <a class="chip" href="#">开源 · github.com</a>
+        <span class="stars">★ 12.4k · 30 天 +860</span>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <span class="rank">03</span>
+        <span class="card-kind">资讯</span>
+        <div class="labels">
+          <span class="heat">🔥 3.5</span>
+          <span class="chip chip-seen">首见 2026-11-08</span>
+          <span class="card-time">05:03</span>
+        </div>
+      </div>
+      <div class="heatbar"><span class="heatbar-fill" style="width:33%"></span></div>
+      <h2 class="card-title"><a href="#">2026年9月中国车企出口新动态：欧洲与独联体市场成重要出口目的地</a></h2>
+      <p class="card-summary">盖世汽车研究院月度出口盘点：欧洲与独联体接棒增长，插混车型占比继续抬升。</p>
+      <div class="chips">
+        <a class="chip" href="#">资讯 · auto.gasgoo.com</a>
+        <a class="chip" href="#">资讯 · www.fxbaogao.com</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <span class="rank">04</span>
+        <span class="card-kind">论文</span>
+        <div class="labels">
+          <span class="heat">🔥 2.8</span>
+          <span class="chip chip-new">新</span>
+          <span class="card-time">03:29</span>
+        </div>
+      </div>
+      <div class="heatbar"><span class="heatbar-fill" style="width:27%"></span></div>
+      <h2 class="card-title"><a href="#">End-to-End Driving with Long-Horizon World Models</a></h2>
+      <p class="card-summary">arXiv 新论文：用长时程世界模型统一端到端规划与闭环仿真评估。</p>
+      <div class="chips">
+        <a class="chip" href="#">论文 · arxiv.org</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-brand">pitboard</div>
+  <div>汽车行业每日热点 · Racket 全栈自托管 · 每日自动出刊</div>
+  <div>
+    <a href="about.html">阅读与更正</a> · <a href="#">报告错误聚簇</a> · <a href="#">RSS 订阅</a> · <span class="muted">MIT 开源，来源文章保留原权利</span>
+  </div>
+  <div class="muted">热度只是排序信号；独立来源数才是事实的背书。旧刊不是今日新闻。</div>
+</footer>
+
+<script>
+document.getElementById('theme').onclick = function () {
+  var t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('pitboard-theme', t); } catch (e) {}
+};
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+    e.preventDefault(); document.getElementById('search').focus();
+  }
+});
+</script>
+</body>
+</html>
