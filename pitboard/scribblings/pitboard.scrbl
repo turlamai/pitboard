@@ -1,7 +1,7 @@
 #lang scribble/manual
 
 @title[#:tag "pitboard"]{pitboard}
-@author{turinglambdaai}
+@author{turlamai}
 
 @defmodule[pitboard]
 
