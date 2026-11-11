@@ -1,7 +1,7 @@
 # pitboard DESIGN.md — 视觉与交互契约（单一真源）
 
 原型（`design/prototype/`）与实现（`assets/` + `pitboard/render.rkt`）都遵循本文件；改视觉先改这里，再同步实现。
-Tokens 逐值提取自 `assets/styles.css`（站点 tokens）与 `assets/family.css`（site-kit 家族 tokens，accent 同值），
+Tokens 逐值提取自 `assets/styles.css`（站点 tokens）与 `site/family.css`（site-kit 家族 tokens，accent 同值），
 原型 → 实现零翻译成本。这是免费内容站：不出现订阅墙、账号、付费任何形态。
 
 ## Brief（2026-11-11 试点）
