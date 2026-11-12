@@ -20,25 +20,18 @@ Tokens 逐值提取自 `assets/styles.css`（站点 tokens）与 `site/family.cs
 - **勘误可追溯**：更正带日期与原因，永不静默修改；报错路径（期号 + 条目/来源 URL + 期望更正）在关于页与页脚常驻。
 - **层级克制**：bg < surface < board 三层封顶；accent 只给链接、可交互件与状态。
 
-## Tokens（与实现 1:1，来源 `assets/styles.css`）
+## Tokens（语义；值不在此复制，来源 `assets/styles.css` + `site/family.css`）
 
-| Token | Light | Dark | 用途 |
-|---|---|---|---|
-| `--bg` | `#faf7f2` | `#161411` | 画布 |
-| `--surface` | `#fffdf9` | `#1f1c18` | 卡片/浮层/搜索框 |
-| `--ink` | `#211e1a` | `#ece7de` | 主文字 |
-| `--muted` | `#6f6960` | `#a49d92` | 次级文字（摘要/meta） |
-| `--faint` | `#a89f92` | `#6f6960` | 辅助文字（rank/时间/域名） |
-| `--line` | `#e9e2d8` | `#2e2a25` | 分隔线 |
-| `--line-strong` | `#d8cfbf` | `#413a31` | 悬浮描边 |
-| `--accent` | `#D97757` | `#E08A6B` | 链接/交互/状态/finish-line 条纹 |
-| `--accent-deep` | `#A94E31` | `#E89E82` | 标题 hover（暗态反转为浅） |
-| `--on-accent` | `#FFFFFF` | `#1D120C` | accent 底上的文字（SSE 新刊横幅；取自 family.css `--kit-on-accent`） |
-| `--accent-soft` | `#FBEDE7` | `#382920` | accent 弱底（active tab/LLM 徽标/安装盒） |
-| `--chip-bg` / `--chip-line` | `#f1ece2` / `#e2dacb` | `#28241f` / `#38322a` | chip 与 code 底/描边 |
-| `--new-bg` / `--new-ink` | `#e6f1e2` / `#2f6b36` | `#233020` / `#a5cf90` | 「新」状态徽标 |
-| `--rising-bg` / `--rising-ink` | `#fdeed2` / `#92610c` | `#382e18` / `#e0b45c` | 「↑ 上升」状态徽标 |
-| `--board-bg` / `--board-line` / `--board-ink` | `#17140f` / `#3a332a` / `#f5efe2` | `#0c0a08` / `#332c24` / `#f5efe2` | EDITION 号码盘（唯一深色品牌件，亮暗近乎不变） |
+值类 token 真源 = `assets/styles.css`（站点 tokens）与 `site/family.css`（site-kit 家族 tokens，accent 同值）；原型 `design/prototype/shared.css` 与其一一对应，本表只记语义与层级。
+
+| Token | 语义 |
+|---|---|
+| `--bg --surface --line --line-strong` | 画布 / 卡片浮层搜索框 / 分隔 / 悬浮描边 |
+| `--ink --muted --faint` | 主/次级/辅助文字三档（faint 仅用于 rank/时间/域名等非关键辅助） |
+| `--accent --accent-deep --on-accent --accent-soft` | 链接/交互/状态/finish-line 条纹 + 标题 hover（暗态反转）+ accent 底文字（family.css `--kit-on-accent`）+ 弱底 |
+| `--chip-bg --chip-line` | chip 与 code 底/描边 |
+| `--new-bg --new-ink --rising-bg --rising-ink` | 「新」/「↑ 上升」状态徽标（绿系/琥珀系双态对） |
+| `--board-bg --board-line --board-ink` | EDITION 号码盘——唯一深色品牌件，亮暗近乎不变 |
 
 - **字体栈**：正文 `ui-sans-serif, -apple-system, "PingFang SC", "Segoe UI", "Microsoft YaHei", sans-serif` + `font-size-adjust: cap-height 0.7`（中西混排字面高对齐，浏览器不支持则忽略）；报头/大日期/栏目标题用衬线栈 `"Newsreader", "Songti SC", "Noto Serif SC", Georgia, serif`（Newsreader 由站点自托管 woff2 提供，原型用系统衬线回退）；mono `ui-monospace, "SF Mono", Menlo, Consolas, monospace` 只用于 kicker、rank、热度、时间、域名、期号。
 - **字阶**：报头大日期 clamp(30–42px)/1.15 · 卡标题 20px/1.42 · 正文 16px/1.7 · 摘要 15px · nav/meta 14–13px · chip 12px · kicker 11px mono 600 大写宽字距 0.24em。
