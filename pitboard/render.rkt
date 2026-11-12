@@ -202,7 +202,7 @@
                           (li (a ((href "https://github.com/turlamai/pitboard/blob/main/docs/READING.md") (data-i18n "footer.help")) "阅读与更正"))
                           (li (span ((data-i18n "footer.license")) "MIT 开源")))))
                    (div ((class "kit-footer-bottom"))
-                        (span "© 2026 TuringLambda AI")
+                        (span "© 2026 TurLamAI")
                         (span ((class "kit-mono")) "site-kit v1.0.3")))))))
 
 ;; ---- cluster card -----------------------------------------------------------
