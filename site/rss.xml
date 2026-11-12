@@ -22,13 +22,13 @@
         https://www.autosar.org/news-events/detail/18th-aoc-call-for-papers-is-now-open
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:589093559816198046
+        pitboard:2026-11-12:hot:589093559816198046
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:53am
+        Thursday, November 12th, 2026 3:57:06am
       </pubDate>
     </item>
     <item>
@@ -39,13 +39,13 @@
         https://www.autosar.org/news-events/detail/english-q3-newsletter-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:276833536875461247
+        pitboard:2026-11-12:hot:276833536875461247
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:53am
+        Thursday, November 12th, 2026 3:57:06am
       </pubDate>
     </item>
     <item>
@@ -56,13 +56,13 @@
         https://www.autosar.org/news-events/detail/autosar-2026%E5%B9%B4%E7%AC%AC%E4%B8%89%E5%AD%A3%E5%BA%A6%E4%B8%AD%E6%96%87%E9%80%9A%E8%AE%AF%E7%AE%80%E6%8A%A5
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:441567329149913855
+        pitboard:2026-11-12:hot:441567329149913855
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:53am
+        Thursday, November 12th, 2026 3:57:06am
       </pubDate>
     </item>
     <item>
@@ -73,13 +73,13 @@
         https://www.autosar.org/news-events/detail/release-event-r26-11
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:587878327188739473
+        pitboard:2026-11-12:hot:587878327188739473
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:53am
+        Thursday, November 12th, 2026 3:57:06am
       </pubDate>
     </item>
     <item>
@@ -90,13 +90,13 @@
         https://www.autosar.org/news-events/detail/edgetech-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:869335335825954702
+        pitboard:2026-11-12:hot:869335335825954702
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:53am
+        Thursday, November 12th, 2026 3:57:06am
       </pubDate>
     </item>
     <item>
@@ -107,64 +107,13 @@
         https://www.autosar.org/news-events/detail/capi-release-event-10-recordings-are-now-available
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:201286723128002233
+        pitboard:2026-11-12:hot:201286723128002233
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:53am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        autowarefoundation/vision_pilot
-      </title>
-      <link>
-        https://github.com/autowarefoundation/vision_pilot
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:744292055535854117
-      </guid>
-      <description>
-        Free and fully open-source L2 ADAS stack powered by End-to-End AI technology
-      </description>
-      <pubDate>
-        Tuesday, November 10th, 2026 8:10:12pm
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        carla-simulator/carla
-      </title>
-      <link>
-        https://github.com/carla-simulator/carla
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:371904745613176677
-      </guid>
-      <description>
-        Open-source simulator for autonomous driving research.
-      </description>
-      <pubDate>
-        Tuesday, November 10th, 2026 5:41:16pm
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        cantools/cantools
-      </title>
-      <link>
-        https://github.com/cantools/cantools
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:192973104646746202
-      </guid>
-      <description>
-        CAN bus tools.
-      </description>
-      <pubDate>
-        Tuesday, November 10th, 2026 4:36:40pm
+        Thursday, November 12th, 2026 3:57:06am
       </pubDate>
     </item>
     <item>
@@ -175,183 +124,234 @@
         https://github.com/commaai/opendbc
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:737223512686484068
+        pitboard:2026-11-12:hot:737223512686484068
       </guid>
       <description>
         a Python API for your car
       </description>
       <pubDate>
-        Tuesday, November 10th, 2026 6:44:28pm
+        Thursday, November 12th, 2026 2:09:36am
       </pubDate>
     </item>
     <item>
       <title>
-        神龙科技与火山引擎签署合作，联合开发座舱系统
+        Omardigio/VoltaOS
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/11I70477621C109.shtml
+        https://github.com/Omardigio/VoltaOS
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:145788585315777853
+        pitboard:2026-11-12:hot:337482130908804794
+      </guid>
+      <description>
+        Volta OS: in-car infotainment interface for Linux (Qt 6 / QML, Wayland compositor). Beta.
+      </description>
+      <pubDate>
+        Wednesday, November 11th, 2026 11:52:52pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        carla-simulator/carla
+      </title>
+      <link>
+        https://github.com/carla-simulator/carla
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-12:hot:371904745613176677
+      </guid>
+      <description>
+        Open-source simulator for autonomous driving research.
+      </description>
+      <pubDate>
+        Wednesday, November 11th, 2026 4:18:28pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        优必选拉上沐曦造芯片，天使轮就拿了5亿，投后估值达40亿
+      </title>
+      <link>
+        https://auto.gasgoo.com/news/202611/12I70477744C601.shtml
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-12:hot:690311047665634527
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:56am
+        Thursday, November 12th, 2026 3:57:09am
       </pubDate>
     </item>
     <item>
       <title>
-        乌镇夜话汽车行业竞合关系：要打“道德战”，也要活下去
+        autowarefoundation/vision_pilot
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/11I70477613C108.shtml
+        https://github.com/autowarefoundation/vision_pilot
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:916080432720868093
+        pitboard:2026-11-12:hot:744292055535854117
+      </guid>
+      <description>
+        Free and fully open-source L2 ADAS stack powered by End-to-End AI technology
+      </description>
+      <pubDate>
+        Wednesday, November 11th, 2026 8:45:32am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        汽车行业2026年三季报业绩综述：量、利承压，出口依然体现韧性
+      </title>
+      <link>
+        https://www.fxbaogao.com/detail/5873370
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-12:hot:221375988690562267
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:56am
+        Wednesday, November 11th, 2026 12:00:00pm
       </pubDate>
     </item>
     <item>
       <title>
-        cauliflowermossgrape/idrive7-8-ssh-root
+        10月全球电动汽车销量达209万辆 欧洲市场同比增长36%
       </title>
       <link>
-        https://github.com/cauliflowermossgrape/idrive7-8-ssh-root
+        https://auto.gasgoo.com/news/202611/12I70477741C108.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:755768210576413905
-      </guid>
-      <description>
-        Enable root SSH on BMW MGU head units (iDrive 7 / ID8 BDC3 / ID8 BCP) over ENET - flash the debug image, enroll, persistent SSH with no B7F8E5 DTC, and a unique per-car key.
-      </description>
-      <pubDate>
-        Tuesday, November 10th, 2026 9:37:19am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        长风破浪会有时 中国商用车出海挑战与机遇
-      </title>
-      <link>
-        https://auto.gasgoo.com/news/202611/11I70477446C108.shtml
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:297042853150327741
+        pitboard:2026-11-12:hot:708152364143554473
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:56am
+        Thursday, November 12th, 2026 3:57:09am
       </pubDate>
     </item>
     <item>
       <title>
-        3年供货45万吨！电解液龙头拿下亿纬锂能大单！
+        晓莺说｜重新定义中国市场：从规模价值到全球创新前沿
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/11I70477268C501.shtml
+        https://auto.gasgoo.com/news/202611/12I70477642C108.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:553703996198032904
+        pitboard:2026-11-12:hot:373541995084719330
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:56am
+        Thursday, November 12th, 2026 3:57:09am
       </pubDate>
     </item>
     <item>
       <title>
-        磷酸铁锂上市公司回应监管函：明年有效产能将达71.25万吨
+        蔚来ES9第4万台交付 连续5个月居50万级纯电销冠
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/11I70477269C103.shtml
+        https://auto.gasgoo.com/news/202611/12I70477734C109.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:51225228638154624
+        pitboard:2026-11-12:hot:670358119715374061
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:56am
+        Thursday, November 12th, 2026 3:57:09am
       </pubDate>
     </item>
     <item>
       <title>
-        禾赛机器人动力模组出货已超3.5万套
+        首次覆盖商用车动力！“中国心”2026年度十佳商用车动力发布
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/11I70477614C601.shtml
+        https://auto.gasgoo.com/news/202611/12I70477737C103.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:138552328330033301
+        pitboard:2026-11-12:hot:156864465358433460
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:56am
+        Thursday, November 12th, 2026 3:57:09am
       </pubDate>
     </item>
     <item>
       <title>
-        余承东：享界V8定档11月20日上市，OSTA星芒将首秀
+        特斯拉Cybertruck停产计划再生变 战略重心正在从造车转移 11分钟前 39 0 [汽车之家 资讯] 曾被马斯克称作特斯拉“史上最好产品”的Cybertruck赛博越野旅行车，停产时间再度调整。马斯克在社交媒体上发文，将该车生产周...
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/11I70477620C107.shtml
+        https://www.autohome.com.cn/news/202611/1318316.html#pvareaid=102624
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:649510740359415537
+        pitboard:2026-11-12:hot:820838707600770370
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:56am
+        Thursday, November 12th, 2026 3:57:37am
       </pubDate>
     </item>
     <item>
       <title>
-        文章 新出行原创 新出行图文详解 263期：静态体验领克900L 800V 高电压平台、 70kWh 大电池、 2+2+3 大七座布局，领克 900L 带来的不仅仅是 40mm 的尺寸加长，而是一次内核的全面升级。这次升级也是 小白同学 点赞 8 评论 4
+        上半年热销轿车盘点：比亚迪无缘前十 燃油车依然是主力？
       </title>
       <link>
-        https://www.xchuxing.com/article/179920
+        https://www.autohome.com.cn/news/202607/1315940.html#pvareaid=102623
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:168846203989902261
+        pitboard:2026-11-12:hot:1049025938651351299
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:58am
+        Thursday, November 12th, 2026 3:57:37am
       </pubDate>
     </item>
     <item>
       <title>
-        宝马新增三星、LG 新能源为电池组件供应商
+        精品文章 新出行原创 XCX 续航体验 89期：岚图追光 S 纯电续航及充电测试 作为一款运动型 SUV，除了要好开之外，续航和充电体验也很重要，这样才能有更大的覆盖范围。所以这一次，就让我们来看看岚图追光 S，在续航和充电方面的表现如何。一 陈大个同学 点赞 10 评论 2
       </title>
       <link>
-        https://www.xchuxing.com/article/180041
+        https://www.xchuxing.com/article/179475
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-11:hot:319191439905118291
+        pitboard:2026-11-12:hot:919142258000227537
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Wednesday, November 11th, 2026 2:52:58am
+        Thursday, November 12th, 2026 3:57:12am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        Polestar 极星发布 Formula 2030 概念车官图
+      </title>
+      <link>
+        https://www.xchuxing.com/article/180089
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-12:hot:392481969330246585
+      </guid>
+      <description>
+        
+      </description>
+      <pubDate>
+        Thursday, November 12th, 2026 3:57:12am
       </pubDate>
     </item>
   </channel>
