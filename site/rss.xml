@@ -22,13 +22,13 @@
         https://www.autosar.org/news-events/detail/18th-aoc-call-for-papers-is-now-open
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:589093559816198046
+        pitboard:2026-11-17:hot:589093559816198046
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:26am
+        Tuesday, November 17th, 2026 5:09:58am
       </pubDate>
     </item>
     <item>
@@ -39,13 +39,13 @@
         https://www.autosar.org/news-events/detail/english-q3-newsletter-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:276833536875461247
+        pitboard:2026-11-17:hot:276833536875461247
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:26am
+        Tuesday, November 17th, 2026 5:09:58am
       </pubDate>
     </item>
     <item>
@@ -56,13 +56,13 @@
         https://www.autosar.org/news-events/detail/autosar-2026%E5%B9%B4%E7%AC%AC%E4%B8%89%E5%AD%A3%E5%BA%A6%E4%B8%AD%E6%96%87%E9%80%9A%E8%AE%AF%E7%AE%80%E6%8A%A5
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:441567329149913855
+        pitboard:2026-11-17:hot:441567329149913855
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:26am
+        Tuesday, November 17th, 2026 5:09:58am
       </pubDate>
     </item>
     <item>
@@ -73,13 +73,13 @@
         https://www.autosar.org/news-events/detail/release-event-r26-11
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:587878327188739473
+        pitboard:2026-11-17:hot:587878327188739473
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:26am
+        Tuesday, November 17th, 2026 5:09:58am
       </pubDate>
     </item>
     <item>
@@ -90,13 +90,13 @@
         https://www.autosar.org/news-events/detail/edgetech-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:869335335825954702
+        pitboard:2026-11-17:hot:869335335825954702
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:26am
+        Tuesday, November 17th, 2026 5:09:58am
       </pubDate>
     </item>
     <item>
@@ -107,30 +107,13 @@
         https://www.autosar.org/news-events/detail/capi-release-event-10-recordings-are-now-available
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:201286723128002233
+        pitboard:2026-11-17:hot:201286723128002233
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:26am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        carla-simulator/carla
-      </title>
-      <link>
-        https://github.com/carla-simulator/carla
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:371904745613176677
-      </guid>
-      <description>
-        Open-source simulator for autonomous driving research.
-      </description>
-      <pubDate>
-        Sunday, November 15th, 2026 10:38:31pm
+        Tuesday, November 17th, 2026 5:09:58am
       </pubDate>
     </item>
     <item>
@@ -141,98 +124,183 @@
         https://github.com/commaai/opendbc
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:737223512686484068
+        pitboard:2026-11-17:hot:737223512686484068
       </guid>
       <description>
         a Python API for your car
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:50:24am
+        Tuesday, November 17th, 2026 4:29:27am
       </pubDate>
     </item>
     <item>
       <title>
-        智己LS8 NEO纯电开启全国首批交付
+        iDoka/awesome-canbus
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/16I70478027C107.shtml
+        https://github.com/iDoka/awesome-canbus
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:894689506286675025
+        pitboard:2026-11-17:hot:487187939761745032
+      </guid>
+      <description>
+        :articulated_lorry: Awesome CAN bus tools, hardware and resources for Cyber Security Researchers, Reverse Engineers, and Automotive Electronics Enthusiasts.
+      </description>
+      <pubDate>
+        Monday, November 16th, 2026 9:47:33pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        carla-simulator/carla
+      </title>
+      <link>
+        https://github.com/carla-simulator/carla
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-17:hot:371904745613176677
+      </guid>
+      <description>
+        Open-source simulator for autonomous driving research.
+      </description>
+      <pubDate>
+        Monday, November 16th, 2026 9:19:06pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        cantools/cantools
+      </title>
+      <link>
+        https://github.com/cantools/cantools
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-17:hot:192973104646746202
+      </guid>
+      <description>
+        CAN bus tools.
+      </description>
+      <pubDate>
+        Monday, November 16th, 2026 2:02:20pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        “4000元赔偿为假”，理想汽车辟谣动力电池召回
+      </title>
+      <link>
+        https://auto.gasgoo.com/news/202611/17I70478239C109.shtml
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-17:hot:121542311497478604
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:29am
+        Tuesday, November 17th, 2026 5:10:01am
       </pubDate>
     </item>
     <item>
       <title>
-        小鹏加速英国市场布局：MONA L03、G9L双车上市，未来一年将再推5款右舵车型
+        【国际快讯】美国收紧对华先进芯片出口管制；比亚迪欧洲首座乘用车工厂即将量产；雷诺计划在法国裁减逾千个岗位
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/16I70478086C109.shtml
+        https://auto.gasgoo.com/news/202611/17I70478237C108.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:957962608485600770
+        pitboard:2026-11-17:hot:192777349374350061
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:29am
+        Tuesday, November 17th, 2026 5:10:01am
       </pubDate>
     </item>
     <item>
       <title>
-        赓续材料镀新，共驭绿色出行 —— 智见未见·镀领新篇 VAMA三期项目正式开工
+        商务部推动中国与东盟新能源汽车合作 双边机制有望降低
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/16I70478087C103.shtml
+        https://auto.gasgoo.com/news/202611/17I70478240C501.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:1079694553769386788
+        pitboard:2026-11-17:hot:502192207732163488
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:29am
+        Tuesday, November 17th, 2026 5:10:01am
       </pubDate>
     </item>
     <item>
       <title>
-        宁德时代对龙蟠科技正极采购放量，供货上限提至90亿元
+        2026年（1-10 月）汽车（乘用车）市场数据洞察报告
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/16I70478089C501.shtml
+        https://www.fxbaogao.com/detail/5887815
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:1021468398527773203
+        pitboard:2026-11-17:hot:109896493811098740
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:29am
+        Tuesday, November 17th, 2026 12:00:00pm
       </pubDate>
     </item>
     <item>
       <title>
-        东风本田购车至高享2万元置换补贴 1000元抵2000元 涉及CR-V/UR-V 8分钟前 3 0 [汽车之家 资讯] 日前，东风本田推出专属福利，活动时间为2026年11月16日-11月30日。购买CR-V燃油版（不含27款）、CR-V混动版、英...
+        Melexis推出新一代高性价比MeLiBu®（UART over CAN）多像素智能RGB LED驱动解决方案
       </title>
       <link>
-        https://www.autohome.com.cn/news/202611/1318380.html#pvareaid=102624
+        https://auto.gasgoo.com/news/202611/17I70478226C103.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:944685787316899710
+        pitboard:2026-11-17:hot:738685625987069750
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:54am
+        Tuesday, November 17th, 2026 5:10:01am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        中国汽车，算得上全球顶级吗？ 5小时前 1553 0 [汽车之家 行业] 三大维度登顶全球，中国汽车已经全面领先了？中汽协数据显示，2026年前10个月，中国汽车出口达927万台，继续稳居世界第一，比20...
+      </title>
+      <link>
+        https://www.autohome.com.cn/news/202611/1318395.html#pvareaid=102624
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-17:hot:265129954508546777
+      </guid>
+      <description>
+        
+      </description>
+      <pubDate>
+        Tuesday, November 17th, 2026 5:10:24am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        风格向家用靠拢？新款福特烈马内饰谍照曝光 换装悬浮式中控屏 1小时前 666 0 [汽车之家 国内谍照] 日前，我们从相关渠道获得了一组新款福特烈马的测试谍照，其将换装悬浮式中控屏和电子挡把等设计，整体风格向家用更靠拢了一些。作为...
+      </title>
+      <link>
+        https://www.autohome.com.cn/news/202611/1318409.html#pvareaid=102624
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-17:hot:1107007477110336510
+      </guid>
+      <description>
+        
+      </description>
+      <pubDate>
+        Tuesday, November 17th, 2026 5:10:24am
       </pubDate>
     </item>
     <item>
@@ -243,13 +311,13 @@
         https://www.autohome.com.cn/news/202607/1315940.html#pvareaid=102623
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:1049025938651351299
+        pitboard:2026-11-17:hot:1049025938651351299
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:54am
+        Tuesday, November 17th, 2026 5:10:24am
       </pubDate>
     </item>
     <item>
@@ -260,98 +328,30 @@
         https://www.diandongbang.com/news/167965.html
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:74433064488882766
+        pitboard:2026-11-17:hot:74433064488882766
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:51am
+        Tuesday, November 17th, 2026 5:10:22am
       </pubDate>
     </item>
     <item>
       <title>
-        新闻 售价 14.99-15.99 万 郑州日产 Z9 悦享版上市 日前，郑州日产 Z9 悦享版上市，新车共推出两款配置车型，售价区间为 14.99-15.99 万。郑州日产 Z9 悦享版采用 Z 字形专属车灯与悬浮顶设计，97 陈大个同学 点赞 6 评论 1
+        全系标配激光雷达、宁德时代电池，2027款极狐阿尔法S5售11.58万元起
       </title>
       <link>
-        https://www.xchuxing.com/article/180291
+        https://www.diandongbang.com/news/167972.html
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:1144144442283447338
+        pitboard:2026-11-17:hot:279443335875804701
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:54:31am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        新闻 新世代宝马 iX4 在匈牙利工厂正式投产 从官方获悉，新世代宝马 iX4 在匈牙利德布勒森宝马工厂投产。该车现已可在英国宝马门店预订，首批交付为 2027 年 3 月 6 日，40 xDrive 上路起 陈大个同学 点赞 6 评论 2
-      </title>
-      <link>
-        https://www.xchuxing.com/article/180292
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:433388279014930516
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Monday, November 16th, 2026 2:54:31am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        新闻 雷克萨斯 TZ 将于广州车展亮相 从官方获悉，全新纯电三排 SUV 雷克萨斯 TZ，将于 11 月 27 日在广州车展亮相。新车将进一步丰富雷克萨斯品牌电气化车型的阵容。外观方面，新车延续 LE 陈大个同学 点赞 7 评论 2
-      </title>
-      <link>
-        https://www.xchuxing.com/article/180297
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:180824816184197990
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Monday, November 16th, 2026 2:54:31am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        新出行图文详解 265期：面子里子双重进化 静态体验零跑新款 Lafa 5 升级点
-      </title>
-      <link>
-        https://www.xchuxing.com/article/180178
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:793199958188090348
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Monday, November 16th, 2026 2:54:31am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        大众在巴西推出换标上汽大通V90轻客Tempest 1小时前
-      </title>
-      <link>
-        https://www.d1ev.com/carnews/xinche/317068
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-16:hot:187340506820069430
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Monday, November 16th, 2026 2:54:35am
+        Tuesday, November 17th, 2026 5:10:22am
       </pubDate>
     </item>
   </channel>
