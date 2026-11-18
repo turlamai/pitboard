@@ -22,13 +22,13 @@
         https://www.autosar.org/news-events/detail/18th-aoc-call-for-papers-is-now-open
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:589093559816198046
+        pitboard:2026-11-18:hot:589093559816198046
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:09:58am
+        Wednesday, November 18th, 2026 4:36:49am
       </pubDate>
     </item>
     <item>
@@ -39,13 +39,13 @@
         https://www.autosar.org/news-events/detail/english-q3-newsletter-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:276833536875461247
+        pitboard:2026-11-18:hot:276833536875461247
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:09:58am
+        Wednesday, November 18th, 2026 4:36:49am
       </pubDate>
     </item>
     <item>
@@ -56,13 +56,13 @@
         https://www.autosar.org/news-events/detail/autosar-2026%E5%B9%B4%E7%AC%AC%E4%B8%89%E5%AD%A3%E5%BA%A6%E4%B8%AD%E6%96%87%E9%80%9A%E8%AE%AF%E7%AE%80%E6%8A%A5
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:441567329149913855
+        pitboard:2026-11-18:hot:441567329149913855
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:09:58am
+        Wednesday, November 18th, 2026 4:36:49am
       </pubDate>
     </item>
     <item>
@@ -73,13 +73,13 @@
         https://www.autosar.org/news-events/detail/release-event-r26-11
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:587878327188739473
+        pitboard:2026-11-18:hot:587878327188739473
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:09:58am
+        Wednesday, November 18th, 2026 4:36:49am
       </pubDate>
     </item>
     <item>
@@ -90,13 +90,13 @@
         https://www.autosar.org/news-events/detail/edgetech-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:869335335825954702
+        pitboard:2026-11-18:hot:869335335825954702
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:09:58am
+        Wednesday, November 18th, 2026 4:36:49am
       </pubDate>
     </item>
     <item>
@@ -107,47 +107,13 @@
         https://www.autosar.org/news-events/detail/capi-release-event-10-recordings-are-now-available
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:201286723128002233
+        pitboard:2026-11-18:hot:201286723128002233
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:09:58am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        commaai/opendbc
-      </title>
-      <link>
-        https://github.com/commaai/opendbc
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:737223512686484068
-      </guid>
-      <description>
-        a Python API for your car
-      </description>
-      <pubDate>
-        Tuesday, November 17th, 2026 4:29:27am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        iDoka/awesome-canbus
-      </title>
-      <link>
-        https://github.com/iDoka/awesome-canbus
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:487187939761745032
-      </guid>
-      <description>
-        :articulated_lorry: Awesome CAN bus tools, hardware and resources for Cyber Security Researchers, Reverse Engineers, and Automotive Electronics Enthusiasts.
-      </description>
-      <pubDate>
-        Monday, November 16th, 2026 9:47:33pm
+        Wednesday, November 18th, 2026 4:36:49am
       </pubDate>
     </item>
     <item>
@@ -158,13 +124,47 @@
         https://github.com/carla-simulator/carla
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:371904745613176677
+        pitboard:2026-11-18:hot:371904745613176677
       </guid>
       <description>
         Open-source simulator for autonomous driving research.
       </description>
       <pubDate>
-        Monday, November 16th, 2026 9:19:06pm
+        Wednesday, November 18th, 2026 1:57:21am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        autoas/as
+      </title>
+      <link>
+        https://github.com/autoas/as
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-18:hot:448351953270255928
+      </guid>
+      <description>
+        Simple AUTOSAR Basic Software
+      </description>
+      <pubDate>
+        Wednesday, November 18th, 2026 12:58:03am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        commaai/opendbc
+      </title>
+      <link>
+        https://github.com/commaai/opendbc
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-18:hot:737223512686484068
+      </guid>
+      <description>
+        a Python API for your car
+      </description>
+      <pubDate>
+        Wednesday, November 18th, 2026 12:58:55am
       </pubDate>
     </item>
     <item>
@@ -175,166 +175,149 @@
         https://github.com/cantools/cantools
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:192973104646746202
+        pitboard:2026-11-18:hot:192973104646746202
       </guid>
       <description>
         CAN bus tools.
       </description>
       <pubDate>
-        Monday, November 16th, 2026 2:02:20pm
+        Tuesday, November 17th, 2026 4:23:21pm
       </pubDate>
     </item>
     <item>
       <title>
-        “4000元赔偿为假”，理想汽车辟谣动力电池召回
+        autowarefoundation/vision_pilot
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/17I70478239C109.shtml
+        https://github.com/autowarefoundation/vision_pilot
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:121542311497478604
+        pitboard:2026-11-18:hot:744292055535854117
+      </guid>
+      <description>
+        Free and fully open-source L2 ADAS stack powered by End-to-End AI technology
+      </description>
+      <pubDate>
+        Tuesday, November 17th, 2026 3:12:53pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        cauliflowermossgrape/idrive7-8-ssh-root
+      </title>
+      <link>
+        https://github.com/cauliflowermossgrape/idrive7-8-ssh-root
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-18:hot:755768210576413905
+      </guid>
+      <description>
+        Enable root SSH on BMW MGU head units (iDrive 7 / ID8 BDC3 / ID8 BCP) over ENET - flash the debug image, enroll, persistent SSH with no B7F8E5 DTC, and a unique per-car key.
+      </description>
+      <pubDate>
+        Tuesday, November 17th, 2026 6:13:50pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        吉利汽车推进全地形2.0研发，部分路面识别准确率超95%
+      </title>
+      <link>
+        https://auto.gasgoo.com/news/202611/18I70478354C109.shtml
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-18:hot:930214933808560266
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:10:01am
+        Wednesday, November 18th, 2026 4:36:52am
       </pubDate>
     </item>
     <item>
       <title>
-        【国际快讯】美国收紧对华先进芯片出口管制；比亚迪欧洲首座乘用车工厂即将量产；雷诺计划在法国裁减逾千个岗位
+        【国际快讯】红旗评估与Stellantis等车企合作；曝通用汽车聘请猎头公司寻找CEO继任者
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/17I70478237C108.shtml
+        https://auto.gasgoo.com/news/202611/18I70478364C108.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:192777349374350061
+        pitboard:2026-11-18:hot:957691102087435777
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:10:01am
+        Wednesday, November 18th, 2026 4:36:52am
       </pubDate>
     </item>
     <item>
       <title>
-        商务部推动中国与东盟新能源汽车合作 双边机制有望降低
+        Seeds | 英伟达、AMD都投了，Genesis AI刚融了33亿，估值高达233亿
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/17I70478240C501.shtml
+        https://auto.gasgoo.com/news/202611/18I70478360C601.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:502192207732163488
+        pitboard:2026-11-18:hot:530110742150756931
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:10:01am
+        Wednesday, November 18th, 2026 4:36:52am
       </pubDate>
     </item>
     <item>
       <title>
-        2026年（1-10 月）汽车（乘用车）市场数据洞察报告
+        比博斯特推进48V纯干式EMB开发，三轴融合控制加速落地
       </title>
       <link>
-        https://www.fxbaogao.com/detail/5887815
+        https://auto.gasgoo.com/news/202611/18I70478361C103.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:109896493811098740
+        pitboard:2026-11-18:hot:194671109809049935
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 12:00:00pm
+        Wednesday, November 18th, 2026 4:36:52am
       </pubDate>
     </item>
     <item>
       <title>
-        Melexis推出新一代高性价比MeLiBu®（UART over CAN）多像素智能RGB LED驱动解决方案
+        Waymo pauses US freeway operations of its self-driving cars after California ban
       </title>
       <link>
-        https://auto.gasgoo.com/news/202611/17I70478226C103.shtml
+        https://www.cnn.com/2026/11/17/us/california-waymo-ban-freeways
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:738685625987069750
+        pitboard:2026-11-18:hot:831326690914842234
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:10:01am
+        Wednesday, November 18th, 2026 12:15:48am
       </pubDate>
     </item>
     <item>
       <title>
-        中国汽车，算得上全球顶级吗？ 5小时前 1553 0 [汽车之家 行业] 三大维度登顶全球，中国汽车已经全面领先了？中汽协数据显示，2026年前10个月，中国汽车出口达927万台，继续稳居世界第一，比20...
+        California just banned Waymo from all state freeways
       </title>
       <link>
-        https://www.autohome.com.cn/news/202611/1318395.html#pvareaid=102624
+        https://www.theverge.com/transportation/1035789/california-dmv-bans-waymo-freeways-construction-zone-safety
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:265129954508546777
+        pitboard:2026-11-18:hot:545420093007722041
       </guid>
       <description>
-        
+        California has pulled the plug on Waymo's driverless freeway rides across the entire state, citing potential safety hazards. In a statement, the California Department of Motor Vehicles said that the ban went into effect on November 11th after two recent high-profile Bay Area incidents, in which Waymo robotaxis drove into an active construction closure on […]
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:10:24am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        风格向家用靠拢？新款福特烈马内饰谍照曝光 换装悬浮式中控屏 1小时前 666 0 [汽车之家 国内谍照] 日前，我们从相关渠道获得了一组新款福特烈马的测试谍照，其将换装悬浮式中控屏和电子挡把等设计，整体风格向家用更靠拢了一些。作为...
-      </title>
-      <link>
-        https://www.autohome.com.cn/news/202611/1318409.html#pvareaid=102624
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:1107007477110336510
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Tuesday, November 17th, 2026 5:10:24am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        上半年热销轿车盘点：比亚迪无缘前十 燃油车依然是主力？
-      </title>
-      <link>
-        https://www.autohome.com.cn/news/202607/1315940.html#pvareaid=102623
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:1049025938651351299
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Tuesday, November 17th, 2026 5:10:24am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        17万级把“激光雷达版FSD”开回家，瑞虎9猎鹰700版重新划了一条线
-      </title>
-      <link>
-        https://www.diandongbang.com/news/167965.html
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:74433064488882766
-      </guid>
-      <description>
-        
-      </description>
-      <pubDate>
-        Tuesday, November 17th, 2026 5:10:22am
+        Tuesday, November 17th, 2026 7:38:05pm
       </pubDate>
     </item>
     <item>
@@ -345,13 +328,30 @@
         https://www.diandongbang.com/news/167972.html
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-17:hot:279443335875804701
+        pitboard:2026-11-18:hot:279443335875804701
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Tuesday, November 17th, 2026 5:10:22am
+        Wednesday, November 18th, 2026 4:37:13am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        主要生产 Cybercab 特斯拉投 30 亿欧元扩建德国工厂
+      </title>
+      <link>
+        https://www.xchuxing.com/article/180398
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-18:hot:1075119540735825917
+      </guid>
+      <description>
+        
+      </description>
+      <pubDate>
+        Wednesday, November 18th, 2026 4:36:54am
       </pubDate>
     </item>
   </channel>
