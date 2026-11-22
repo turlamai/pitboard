@@ -22,13 +22,13 @@
         https://www.autosar.org/news-events/detail/english-q3-newsletter-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:276833536875461247
+        pitboard:2026-11-22:hot:276833536875461247
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:27am
+        Sunday, November 22nd, 2026 3:18:43am
       </pubDate>
     </item>
     <item>
@@ -39,13 +39,13 @@
         https://www.autosar.org/news-events/detail/autosar-2026%E5%B9%B4%E7%AC%AC%E4%B8%89%E5%AD%A3%E5%BA%A6%E4%B8%AD%E6%96%87%E9%80%9A%E8%AE%AF%E7%AE%80%E6%8A%A5
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:441567329149913855
+        pitboard:2026-11-22:hot:441567329149913855
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:27am
+        Sunday, November 22nd, 2026 3:18:43am
       </pubDate>
     </item>
     <item>
@@ -56,13 +56,13 @@
         https://www.autosar.org/news-events/detail/release-event-r26-11
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:587878327188739473
+        pitboard:2026-11-22:hot:587878327188739473
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:27am
+        Sunday, November 22nd, 2026 3:18:43am
       </pubDate>
     </item>
     <item>
@@ -73,13 +73,13 @@
         https://www.autosar.org/news-events/detail/edgetech-2026
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:869335335825954702
+        pitboard:2026-11-22:hot:869335335825954702
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:27am
+        Sunday, November 22nd, 2026 3:18:43am
       </pubDate>
     </item>
     <item>
@@ -90,13 +90,13 @@
         https://www.autosar.org/news-events/detail/18th-aoc-call-for-sponsors
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:211053442309553325
+        pitboard:2026-11-22:hot:211053442309553325
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:27am
+        Sunday, November 22nd, 2026 3:18:43am
       </pubDate>
     </item>
     <item>
@@ -107,13 +107,13 @@
         https://www.autosar.org/news-events/detail/capi-release-event-10-recordings-are-now-available
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:201286723128002233
+        pitboard:2026-11-22:hot:201286723128002233
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:27am
+        Sunday, November 22nd, 2026 3:18:43am
       </pubDate>
     </item>
     <item>
@@ -124,13 +124,13 @@
         https://www.autosar.org/news-events/detail/new-capi-white-paper-by-isoft-reengineering-automotive-software-infrastructure
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:270524120471242209
+        pitboard:2026-11-22:hot:270524120471242209
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:27am
+        Sunday, November 22nd, 2026 3:18:43am
       </pubDate>
     </item>
     <item>
@@ -141,30 +141,13 @@
         https://github.com/carla-simulator/carla
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:371904745613176677
+        pitboard:2026-11-22:hot:371904745613176677
       </guid>
       <description>
         Open-source simulator for autonomous driving research.
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 1:41:23am
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        autowarefoundation/autoware
-      </title>
-      <link>
-        https://github.com/autowarefoundation/autoware
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:565200565018763934
-      </guid>
-      <description>
-        Autoware - the world's leading open-source software project for autonomous driving
-      </description>
-      <pubDate>
-        Friday, November 20th, 2026 10:19:02pm
+        Saturday, November 21st, 2026 10:40:55pm
       </pubDate>
     </item>
     <item>
@@ -175,47 +158,13 @@
         https://github.com/commaai/opendbc
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:737223512686484068
+        pitboard:2026-11-22:hot:737223512686484068
       </guid>
       <description>
         a Python API for your car
       </description>
       <pubDate>
-        Friday, November 20th, 2026 11:47:10pm
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        autowarefoundation/vision_pilot
-      </title>
-      <link>
-        https://github.com/autowarefoundation/vision_pilot
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:744292055535854117
-      </guid>
-      <description>
-        Free and fully open-source L2 ADAS stack powered by End-to-End AI technology
-      </description>
-      <pubDate>
-        Friday, November 20th, 2026 4:34:36pm
-      </pubDate>
-    </item>
-    <item>
-      <title>
-        cantools/cantools
-      </title>
-      <link>
-        https://github.com/cantools/cantools
-      </link>
-      <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:192973104646746202
-      </guid>
-      <description>
-        CAN bus tools.
-      </description>
-      <pubDate>
-        Friday, November 20th, 2026 11:27:22am
+        Sunday, November 22nd, 2026 1:07:19am
       </pubDate>
     </item>
     <item>
@@ -226,13 +175,13 @@
         https://auto.gasgoo.com/news/202611/21I70478583C601.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:150893503527429065
+        pitboard:2026-11-22:hot:150893503527429065
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:30am
+        Sunday, November 22nd, 2026 3:18:48am
       </pubDate>
     </item>
     <item>
@@ -243,13 +192,13 @@
         https://auto.gasgoo.com/news/202611/20I70478671C106.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:607564578867609152
+        pitboard:2026-11-22:hot:607564578867609152
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:30am
+        Sunday, November 22nd, 2026 3:18:48am
       </pubDate>
     </item>
     <item>
@@ -260,13 +209,13 @@
         https://auto.gasgoo.com/news/202611/20I70478677C108.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:386269469141063004
+        pitboard:2026-11-22:hot:386269469141063004
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:30am
+        Sunday, November 22nd, 2026 3:18:48am
       </pubDate>
     </item>
     <item>
@@ -277,13 +226,13 @@
         https://auto.gasgoo.com/news/202611/20I70478667C103.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:273357921305129384
+        pitboard:2026-11-22:hot:273357921305129384
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:30am
+        Sunday, November 22nd, 2026 3:18:48am
       </pubDate>
     </item>
     <item>
@@ -294,13 +243,13 @@
         https://auto.gasgoo.com/news/202611/20I70478683C107.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:749004272942329874
+        pitboard:2026-11-22:hot:749004272942329874
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:30am
+        Sunday, November 22nd, 2026 3:18:48am
       </pubDate>
     </item>
     <item>
@@ -311,13 +260,13 @@
         https://auto.gasgoo.com/news/202611/21I70478679C109.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:126397824178657664
+        pitboard:2026-11-22:hot:126397824178657664
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:30am
+        Sunday, November 22nd, 2026 3:18:48am
       </pubDate>
     </item>
     <item>
@@ -328,30 +277,81 @@
         https://auto.gasgoo.com/news/202611/21I70478622C601.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:953216677855999148
+        pitboard:2026-11-22:hot:953216677855999148
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:30am
+        Sunday, November 22nd, 2026 3:18:48am
       </pubDate>
     </item>
     <item>
       <title>
-        全系标配激光雷达、宁德时代电池，2027款极狐阿尔法S5售11.58万元起
+        过度竞争的”火“，烧到补能市场
       </title>
       <link>
-        https://www.diandongbang.com/news/167972.html
+        https://auto.gasgoo.com/news/202611/21I70478716C501.shtml
       </link>
       <guid isPermaLink="false">
-        pitboard:2026-11-21:hot:279443335875804701
+        pitboard:2026-11-22:hot:112313933897657633
       </guid>
       <description>
         
       </description>
       <pubDate>
-        Saturday, November 21st, 2026 4:06:53am
+        Sunday, November 22nd, 2026 3:18:48am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        Tesla launches FSD v15, targets its biggest weaknesses, from signs to potholes
+      </title>
+      <link>
+        https://electrek.co/2026/11/21/tesla-fsd-v15-rollout-25x-safety-reality-view/
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-22:hot:148415443153368724
+      </guid>
+      <description>
+        
+      </description>
+      <pubDate>
+        Sunday, November 22nd, 2026 12:14:05am
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        autowarefoundation/autoware
+      </title>
+      <link>
+        https://github.com/autowarefoundation/autoware
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-22:hot:565200565018763934
+      </guid>
+      <description>
+        Autoware - the world's leading open-source software project for autonomous driving
+      </description>
+      <pubDate>
+        Friday, November 20th, 2026 10:19:02pm
+      </pubDate>
+    </item>
+    <item>
+      <title>
+        West Coast Customs Turns a Tesla Model 3 into a 1955 Chevy Bel Air
+      </title>
+      <link>
+        https://electrek.co/2026/11/18/west-coast-customs-tesla-model-3-1955-chevy-bel-air-ev/
+      </link>
+      <guid isPermaLink="false">
+        pitboard:2026-11-22:hot:339385922669487854
+      </guid>
+      <description>
+        
+      </description>
+      <pubDate>
+        Sunday, November 22nd, 2026 12:40:23am
       </pubDate>
     </item>
   </channel>
