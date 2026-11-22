@@ -65,7 +65,12 @@
   (unless (llm-available?)
     (error 'journal
            "no LLM configured (PITBOARD_LLM_API_KEY) — journal is fail-closed, refusing rules-only issues"))
-  (chat-completions prompt))
+  ;; chat-completions returns the whole response jsexpr; the journal
+  ;; pipeline speaks in content strings.
+  (define resp (chat-completions prompt))
+  (define choices (hash-ref resp 'choices '()))
+  (define msg (and (pair? choices) (hash-ref (car choices) 'message #f)))
+  (and msg (hash-ref msg 'content #f)))
 
 ;; Deterministic demo provider: exercises the pipeline end to end with
 ;; no network.  Every string it produces is prefixed 【演示】 so demo
