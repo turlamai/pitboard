@@ -39,6 +39,12 @@
          selection-prompt
          write-prompt
          foreword-prompt
+         page-shell
+         journal-css
+         esc
+         render-full-html
+         render-locked-html
+         locked-view
          default-provider
          mock-provider
          journal-budget)

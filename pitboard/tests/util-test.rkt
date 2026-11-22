@@ -26,9 +26,9 @@
   (check-equal? (parse-rfc822 "13 Oct 2026 06:00:00 GMT")
                 (find-seconds 0 0 6 13 10 2026 #t)))
 
-(test-case "dates out"
-  (check-equal? (iso-date (find-seconds 0 30 6 13 10 2026 #t)) "2026-10-13")
-  (check-true (str-ends? (iso-datetime (find-seconds 0 30 6 13 10 2026 #t)) "Z")))
+(test-case "dates out (find-seconds #t = locale; iso-* is true UTC)"
+  (check-equal? (iso-date (find-seconds 0 30 6 13 10 2026 #f)) "2026-10-13")
+  (check-true (str-ends? (iso-datetime (find-seconds 0 30 6 13 10 2026 #f)) "Z")))
 
 (test-case "urls"
   (check-equal? (normalize-url "https://example.com/a?utm_source=x&id=1#frag")

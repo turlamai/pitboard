@@ -35,6 +35,7 @@ jobs:
           distribution: full
       - name: Install dependencies
         run: raco pkg install --auto --no-docs http-easy server-sent-events feed
+        raco pkg install --auto --no-docs https://github.com/turlamai/commerce.git
       - name: Install package
         run: raco pkg install --auto --no-docs --link "$(pwd)"
       - name: Run tests

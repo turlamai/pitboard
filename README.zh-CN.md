@@ -79,6 +79,25 @@ Transportation、IEEE Spectrum Transportation、Electrek 四个媒体源 +
 
 `GITHUB_TOKEN` 存在时 GitHub 搜索走认证配额（Actions 中自动注入）。
 
+### 商业化（付费周刊，可选）
+
+付费面由 `raco pitboard serve` 同一进程承载；不配置以下变量时商业功能诚实降级
+（订阅页提示渠道未上线、邮件走 dry-run 写入 `data/mail-out/`），纯日报站零影响。
+
+| 变量 | 说明 |
+| --- | --- |
+| `PITBOARD_BASE_URL` | 站点绝对地址（邮件链接用，默认 `https://pitboard.jrtx.site`） |
+| `PITBOARD_ADMIN_PASSWORD` | 主编工作台密码（`/console`；不设则工作台拒绝登录） |
+| `PITBOARD_PAY_URL` | Pancake 商品结账链接（不设 = 支付渠道未配置） |
+| `PITBOARD_PAY_ENV` | `test` / `production`（webhook 公钥钥匙环选择） |
+| `PITBOARD_SMTP_HOST/PORT/USER/PASS` | 阿里云邮件推送 smtpdm（不设 = 邮件 dry-run） |
+| `PITBOARD_MAIL_FROM` | 发件地址（需与 DirectMail 发信域名一致） |
+
+webhook 签名验证委托给 commerce 包的 Pancake 正典实现（RSA，官方钥匙环）；
+需要 `raco pkg install https://github.com/turlamai/commerce.git`（CI 已装）。
+出刊流程：GitHub Actions 生成完整期刊（artifact）→ 主编在 `/console` 上传 issue.json
+→ 预览 → 发布（锁定态公开、全文仅订阅者）→ 发刊通知邮件（每订阅者免登录直达链接）。
+
 ## 自托管与部署
 
 - **进程**：`raco pitboard serve` 一个进程全包（页面 + API + 静态资源 + SSE），

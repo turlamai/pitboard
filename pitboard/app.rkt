@@ -18,6 +18,8 @@
          "store.rkt"
          "item.rkt"
          "render.rkt"
+         "journal.rkt"
+         "site.rkt"
          server-sent-events
          (only-in "render.rkt" render-admin-page)
          "util.rkt")
@@ -86,6 +88,10 @@
             (for/list ([t (in-list (cdr g))])
               (cons t (length (collect-topic-items data-dir t)))))))
   (define hub (make-hub))
+
+  ;; commercial face: journal pages, subscribe/pay/confirm flow,
+  ;; magic-link login, subscription self-service and the editorial console
+  (define site (make-site data-dir))
 
   ;; Directory contents (names + per-file mtimes) as a change
   ;; fingerprint; directory mtime alone proved unreliable on APFS.
@@ -213,7 +219,7 @@
     (dispatch-rules
      [("") index-h]
      [("admin") admin-h]
-     [("ingest") ingest-h]
+     [("ingest") #:method _ ingest-h]
      [("d" (string-arg)) date-h]
      [("archive") archive-h]
      [("about") about-h]
@@ -225,7 +231,18 @@
      [("topic" (string-arg)) topic-h]
      [("api" "v1" "latest.json") api-latest-h]
      [("api" "v1" "digest" (string-arg)) api-date-h]
-     [("daily" (string-arg)) daily-h]))
+     [("daily" (string-arg)) daily-h]
+     [("journal") (hash-ref site 'journal-archive)]
+     [("journal" (string-arg)) (hash-ref site 'journal-issue)]
+     [("subscribe") #:method _ (hash-ref site 'subscribe)]
+     [("pay" "callback") #:method _ (hash-ref site 'pay-callback)]
+     [("pay" "return") (hash-ref site 'pay-claim)]
+     [("confirm" (string-arg)) (hash-ref site 'confirm)]
+     [("login") #:method _ (hash-ref site 'login)]
+     [("magic" (string-arg)) (hash-ref site 'magic)]
+     [("me") (hash-ref site 'me)]
+     [("unsubscribe" (string-arg)) (hash-ref site 'unsubscribe)]
+     [("console") #:method _ (hash-ref site 'admin)]))
 
   (printf "pitboard serving on http://0.0.0.0:~a (data: ~a)\n" port data-dir)
   (flush-output)
@@ -234,7 +251,7 @@
                  #:listen-ip #f
                  #:servlet-path "/"
                  #:servlet-regexp
-                 #rx"^/($|d/.+|topics|topic/.+|admin|ingest|archive|about|rss\\.xml|llms\\.txt|healthz|api/.+|daily/.+)"
+                 #rx"^/($|d/.+|topics|topic/.+|admin|console|ingest|archive|about|rss\\.xml|llms\\.txt|healthz|api/.+|daily/.+|journal(/.+)?|subscribe|pay/.+|confirm/.+|login|magic/.+|me|unsubscribe/.+)"
                  #:extra-files-paths
                  (list (path->complete-path assets-dir))
                  #:banner? #f))

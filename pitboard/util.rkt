@@ -15,6 +15,7 @@
          truncate-s
          iso-date
          iso-datetime
+         parse-iso-utc
          parse-8601
          parse-rfc822
          parse-date-any
@@ -82,15 +83,60 @@
 
 (define (pad2 n) (~r n #:min-width 2 #:pad-string "0"))
 
+;; UTC civil date from epoch.  seconds->date's UTC flag proved
+;; unreliable here (Racket 9.3 on darwin returns local time even with
+;; #t), so civil time is computed from epoch arithmetic —
+;; civil_from_days (proleptic Gregorian, Howard Hinnant).
+(define (utc-civil secs)
+  (define days0 (quotient secs 86400))
+  (define rem (modulo secs 86400))
+  (define hh (quotient rem 3600))
+  (define mi (quotient (modulo rem 3600) 60))
+  (define ss (modulo rem 60))
+  (define z (+ days0 719468))
+  (define era (quotient (- z (if (>= z 0) 0 146096)) 146097))
+  (define doe (- z (* era 146097)))
+  (define yoe (quotient (- doe (quotient doe 1460) (quotient doe 36524) (quotient doe 146096)) 365))
+  (define y (+ yoe (* era 400)))
+  (define doy (- doe (+ (* 365 yoe) (quotient yoe 4) (- (quotient yoe 100)))))
+  (define mp (quotient (+ (* 5 doy) 2) 153))
+  (define d (+ 1 (- doy (quotient (+ (* 153 mp) 2) 5))))
+  (define mo (+ mp (if (< mp 10) 3 -9)))
+  (define y2 (if (<= mo 2) (add1 y) y))
+  (list y2 mo d hh mi ss))
+
 (define (iso-date [secs (current-seconds)])
-  (define d (seconds->date secs #t))
-  (format "~a-~a-~a" (date-year d) (pad2 (date-month d)) (pad2 (date-day d))))
+  (match-define (list y mo d _ _ _) (utc-civil secs))
+  (format "~a-~a-~a" y (pad2 mo) (pad2 d)))
 
 (define (iso-datetime [secs (current-seconds)])
-  (define d (seconds->date secs #t))
+  (match-define (list y mo d hh mi ss) (utc-civil secs))
   (format "~a-~a-~aT~a:~a:~aZ"
-          (date-year d) (pad2 (date-month d)) (pad2 (date-day d))
-          (pad2 (date-hour d)) (pad2 (date-minute d)) (pad2 (date-second d))))
+          y (pad2 mo) (pad2 d) (pad2 hh) (pad2 mi) (pad2 ss)))
+
+;; Parse our own iso-datetime output ("YYYY-MM-DDTHH:MM:SSZ") as true
+;; UTC — feed's 8601 parser shifts by the machine timezone, which broke
+;; expiry math on any machine not in UTC.  days_from_civil (proleptic
+;; Gregorian), then seconds.
+(define (parse-iso-utc s)
+  (define m
+    (regexp-match #px"^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})Z$"
+                  (or s "")))
+  (and m
+       (let* ([y (string->number (list-ref m 1))]
+              [mo (string->number (list-ref m 2))]
+              [d (string->number (list-ref m 3))]
+              [hh (string->number (list-ref m 4))]
+              [mi (string->number (list-ref m 5))]
+              [ss (string->number (list-ref m 6))]
+              [yy (if (<= mo 2) (sub1 y) y)]
+              [era (quotient yy 400)]
+              [yoe (- yy (* 400 era))]
+              [mp (+ mo (if (> mo 2) -3 9))]
+              [doy (+ (quotient (+ (* 153 mp) 2) 5) (sub1 d))]
+              [doe (+ (* yoe 365) (quotient yoe 4) (- (quotient yoe 100)) doy)]
+              [days (- (+ (* era 146097) doe) 719468)])
+         (+ (* days 86400) (* hh 3600) (* mi 60) ss))))
 
 ;; ---- urls -----------------------------------------------------------------
 
