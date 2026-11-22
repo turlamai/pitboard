@@ -1,193 +1,136 @@
 # pitboard
 
-**English** · [中文](README.zh-CN.md)
+English | [中文](README.zh-CN.md)
 
 ![platform](https://img.shields.io/badge/platform-Web%20%7C%20Docker%20%7C%20Self--hosted-lightgrey) ![built with](https://img.shields.io/badge/built%20with-Racket-9f1d20) [![CI](https://github.com/turlamai/pitboard/actions/workflows/ci.yml/badge.svg)](https://github.com/turlamai/pitboard/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-The daily hot-topics digest for the automotive industry: it pulls open-source
-projects, industry news and cutting-edge papers together, clusters and
-deduplicates them, scores hotness by independent source count with time decay,
-and publishes one "pit board" every day. Full-stack Racket (web-server),
-single-process self-hosting, no external database service.
+**PITBOARD Weekly**: a paid subscription journal for the automotive
+industry. Every Saturday at 08:00, the week's events — curated,
+written, and bound — land in subscribers' inboxes.
 
-Language: Racket
-
-## Read first
-
-[Read the automotive daily board](https://pitboard.jrtx.site/) · [Reading, privacy and corrections](docs/READING.md)
-
-Reading is free and needs no account. Ranking/deduplication can merge unrelated stories or miss developments. Optional AI-generated headlines/summaries may be wrong; independent sources, not a score, establish a claim. Scheduled publication can fail; an old edition is not today’s news.
+An AI pipeline does the heavy lifting; the editor-in-chief gates every
+issue before it ships. What you pay for is not information (information
+is free everywhere) but three things: **curation** (every item carries
+a one-line "why this made the cut"), **craft** (newspaper-grade
+typography, one issue reads in ~15 minutes), and **certainty** (every
+Saturday 08:00 — the punctuality itself is part of the product).
 
 ## How it works
 
 ```
-RSS feeds    ─┐
-GitHub topics ┼→ fetch → normalize → cluster (Jaccard / CJK+EN tokenization) → hotness (independent sources × time decay) → publish
-arXiv papers ─┘                                                              ↓
-                                            site / RSS / JSON API / daily digest .md / llms.txt / SSE
+Daily (zero tokens, internal — never visible to readers):
+  RSS/page-list/GitHub/arXiv sources → fetch → normalize → cluster
+  (Jaccard) → heat (independent sources × time decay) → data/YYYY-MM-DD.json
+
+Saturdays (the only LLM stage):
+  one week of events → selection (headline + beats) → per-event writing
+  (answer-first summary + why-this-cut + number extraction) → foreword
+  → data table & timeline (rule-compiled) → full-issue artifact →
+  editorial review (upload at /console → publish)
+
+The commercial loop:
+  landing page → Pancake checkout → email double opt-in → notify email
+  (login-free direct link) → full text on the web → expiry reminder →
+  renewal (extends from the existing expiry)
 ```
 
-- **Runs without an LLM**: the hotness engine is pure rules (clustering +
-  scoring), and every source is key-free.
-- **Optional LLM enhancement**: point it at any OpenAI-compatible endpoint and
-  top stories are automatically rewritten into Chinese headlines and summaries;
-  on failure or without configuration it falls back to pure ranking and the
-  site is unaffected.
-- **Agent-friendly**: `/rss.xml`, `/api/v1/latest.json`, `/daily/<date>.md`,
-  `/llms.txt`, `/api/events` (SSE push on publish) all work out of the box.
+- **Cost structure**: the rules engine compresses raw material daily at
+  zero token cost; the LLM runs only in the weekly assembly — a few RMB
+  per issue. One annual subscription covers the year's LLM cost.
+- **Fail-closed**: without an LLM key no issue ships — a paid product
+  never publishes rules-only content. A per-issue call budget caps
+  runaway passes.
+- **The paywall boundary is enforced in code**: the public surface is
+  foreword + headline + table of contents only; paid body text never
+  enters the public repo (the full issue lives in an Actions artifact;
+  publishing goes through the editor's upload).
 
-## Quick start
+## Reading
 
-Requires Racket 8.14+ (minimal-racket counts; local development uses 9.3).
+[Subscribe and read](https://pitboard.jrtx.site/) — the current issue's
+foreword and headline are free on the web; everything else is for
+subscribers.
+
+## Quick start (self-hosting)
+
+Requires Racket 8.14+ (development uses 9.3) and the
+[commerce](https://github.com/turlamai/commerce) package (webhook
+signature verification).
 
 ```sh
-# Install as a Racket package (pulls in web-server and http-easy automatically)
-raco pkg install --auto https://github.com/turlamai/pitboard.git
+git clone https://github.com/turlamai/pitboard.git && cd pitboard
+raco pkg install --auto --no-docs http-easy feed server-sent-events
+raco pkg install --auto --no-docs https://github.com/turlamai/commerce.git
+raco pkg install --auto --no-docs --link "$PWD"
 
-# Publish an edition (fetch + cluster + write data/YYYY-MM-DD.json)
-raco pitboard fetch --config config/sources.json
+# internal raw-material intake (daily, zero tokens)
+raco pitboard fetch --data data --config config/sources.json
 
-# Assemble the weekly paid journal (--mock runs a pipeline self-check
-# with a demo provider; without it an LLM key is required, fail-closed)
-raco pitboard journal --issue 42 --mock
+# weekly assembly (--mock self-checks the pipeline; real issues need an LLM key)
+raco pitboard journal --issue 1 --mock
 
-# Serve the site (default port 8090)
-raco pitboard serve --port 8090
+# serve the site (landing / journal / subscribe-pay flow / editorial console)
+raco pitboard serve --port 8090 --data data
 
-# Export a GitHub Pages static mirror into site/
-raco pitboard export --out site
+# curation quality eval (annotated samples)
+raco pitboard eval --data data --samples eval/samples.json
 ```
 
-For development, clone and link locally with `raco pkg install --auto --link .`,
-then run the tests with `raco test -p pitboard`.
+Tests: `raco test -p pitboard`.
 
 ## Configuration
 
-### Sources (`config/sources.json`)
-
-| Field | Meaning |
-| --- | --- |
-| `feeds` | RSS feed list — `name` / `url` / `weight` (the weight feeds into hotness) |
-| `github.topics` | GitHub topic search terms (repos pushed in the last 30 days ranked by stars + fast-rising repos of the last 90 days) |
-| `arxiv` | arXiv API query strings and per-query caps |
-
-The default configuration is the repo's own `config/sources.json`: four media
-feeds (Ars Technica Cars, TechCrunch Transportation, IEEE Spectrum
-Transportation, Electrek) + 8 automotive topics + arXiv robotics /
-systems-engineering papers. Swap in your own sources and it becomes your
-industry's digest.
-
-### LLM (optional, environment variables)
-
 | Variable | Meaning |
 | --- | --- |
-| `PITBOARD_LLM_API_KEY` | key for an OpenAI-compatible endpoint (unset = pure ranking mode) |
-| `PITBOARD_LLM_BASE_URL` | defaults to `https://api.deepseek.com` |
-| `PITBOARD_LLM_MODEL` | defaults to `deepseek-chat` |
-
-When `GITHUB_TOKEN` is present, GitHub search uses authenticated quota
-(injected automatically in Actions).
-
-### Commercial (paid journal, optional)
-
-The paid face lives in the same `raco pitboard serve` process. Without the
-variables below, commercial features degrade honestly (the subscribe page
-says the channel is not live; mail runs in dry-run mode writing
-`data/mail-out/`), and the free digest site is unaffected.
-
-| Variable | Meaning |
-| --- | --- |
-| `PITBOARD_BASE_URL` | absolute site address (links in mail; default `https://pitboard.jrtx.site`) |
+| `PITBOARD_BASE_URL` | absolute site address (used in mail links) |
 | `PITBOARD_ADMIN_PASSWORD` | editorial console password (`/console`; unset = login refused) |
-| `PITBOARD_PAY_URL` | Pancake product checkout URL (unset = channel not configured) |
-| `PITBOARD_PAY_ENV` | `test` / `production` (webhook keyring selection) |
-| `PITBOARD_SMTP_HOST/PORT/USER/PASS` | Aliyun DirectMail smtpdm (unset = mail dry-run) |
+| `PITBOARD_PAY_URL` | Pancake product checkout URL (unset = subscribe page says the channel is not live) |
+| `PITBOARD_PAY_ENV` | `test` / `production` (webhook keyring) |
+| `PITBOARD_LLM_API_KEY` | DeepSeek or any OpenAI-compatible key (unset = no issue, fail-closed) |
+| `PITBOARD_LLM_BASE_URL` / `PITBOARD_LLM_MODEL` | default `https://api.deepseek.com` / `deepseek-chat` |
+| `PITBOARD_JOURNAL_BUDGET` | hard cap on LLM calls per issue (default 24) |
+| `PITBOARD_SMTP_HOST/PORT/USER/PASS` | Aliyun DirectMail smtpdm (unset = mail dry-run writing `data/mail-out/`) |
 | `PITBOARD_MAIL_FROM` | sender address (must match the DirectMail sending domain) |
 
-Webhook signature verification delegates to the commerce package's canonical
-Pancake implementation (RSA, official keyrings); install
-`raco pkg install https://github.com/turlamai/commerce.git` (CI installs it).
-Publishing flow: GitHub Actions assembles the full issue (artifact) → the
-editor uploads issue.json at `/console` → previews → publishes (locked view
-public, full text for subscribers only) → notify email with a login-free
-per-subscriber link.
+Webhook signature verification delegates to [commerce](https://github.com/turlamai/commerce)'s
+canonical Pancake implementation (RSA, official keyrings).
+
+## GitHub Actions
+
+| Workflow | What it does |
+| --- | --- |
+| `ingest.yml` | daily 07:30 Beijing: internal raw-material intake, archives committed — no public surface |
+| `journal.yml` | Saturdays 08:00 Beijing: full issue assembled — full version goes to an artifact for editorial review, the locked public view is committed under `data/journal/` |
+| `ci.yml` | test gate |
 
 ## Self-hosting and deployment
 
-- **Process**: a single `raco pitboard serve` process does everything (pages +
-  API + static assets + SSE); the data is just `data/*.json` files, so backup
-  is a copy.
-- **Static mirror**: the repo ships four GitHub Actions — `ci.yml`
-  (three-platform tests), `digest.yml` (daily publish at 07:30 Beijing time
-  with archive commits), `journal.yml` (weekly paid journal, Saturdays 08:00
-  Beijing time; the full issue stays in a workflow artifact for editorial
-  review and only the locked public view is committed) and `pages.yml`
-  (rebuilds the mirror from committed editions/current templates and deploys it to GitHub Pages, without fetching new sources).
-  Fork it, enable Pages (build source: "GitHub Actions"), and you get the same
-  daily-updating site.
+One Racket process is the whole site: `raco pitboard serve` (pages +
+subscribe-pay flow + editorial console); data is just the `data/`
+directory, backup is a copy. Docker image in `Dockerfile`; the payment
+callback needs public HTTPS (`PITBOARD_BASE_URL`).
 
 ## Layout
 
 ```
 pitboard/            Racket package body (collection "pitboard")
-  cli.rkt            raco pitboard entry point (fetch / journal / serve / export)
-  sources.rkt        source adapters (RSS / GitHub / arXiv) + hard timeouts
-  feed.rkt           RSS 2.0 + Atom parsing (pure functions)
-  score.rkt          tokenization, clustering, hotness, tags (new / rising)
-  llm.rkt            OpenAI-compatible LLM enhancement (optional)
-  journal.rkt        paid weekly journal assembly (weekly LLM passes:
-                     select / write / foreword; fail-closed + call budget)
-  store.rkt          data/YYYY-MM-DD.json storage
-  render.rkt         page / RSS / Markdown / llms.txt rendering
-  sse.rkt            SSE hub (publish push + heartbeat)
+  cli.rkt            raco pitboard entry point (fetch / journal / serve / eval)
+  sources.rkt        source adapters (RSS / page lists / GitHub / arXiv) + hard timeouts
+  score.rkt          tokenization, clustering, heat (internal intake, zero tokens)
+  llm.rkt            OpenAI-compatible calls (chat-completions; optional daily polish)
+  journal.rkt        weekly journal assembly (cross-day merge → LLM select/write/foreword → render)
+  subs.rkt           subscriber/payment stores + token lifecycle
+  pay.rkt            payment face (commerce Pancake verification + subscription projection)
+  mail.rkt           SMTP-over-TLS delivery + dry-run + email templates
+  site.rkt           journal site routes (landing / journal / subscribe flow / self-service / console)
   app.rkt            web-server application
-  export.rkt         GitHub Pages static export
-assets/              site static assets (zero-dependency CSS/JS)
-config/              source configuration
-skill/pitboard/      agent skill (authoritative source, served at /skill/)
-data/                daily edition archive (committed daily by Actions)
-site/                static mirror (export artifact, Pages deploy source)
+  store.rkt          data/YYYY-MM-DD.json storage
+  util.rkt           date/string/URL helpers (explicit UTC)
+.github/workflows/   ingest (daily intake) / journal (weekly issue) / ci
+config/              source configuration (your taste list goes here)
+data/                daily event archive (Actions-committed) + locked issue views
+design/              design contract and prototype (yinwang typography kernel × family HIG)
 ```
-
-## Roadmap
-
-See [docs/ROADMAP.md](docs/ROADMAP.md) for the full gap analysis and
-milestones. Highlights:
-
-- **M1 Content & tracking** — cross-day event tracking (progress markers),
-  weekly/monthly reports, web-page list source upgrade, Chinese-language
-  channel buildout (self-hosted RSSHub + WeChat Official Account bridge),
-  JSON feed sources, OG share images.
-- **M2 Operations & engineering** — /admin source console, MCP export,
-  OpenAPI, Docker (fnOS NAS), LLM budget circuit breaker, curation review
-  scripts, uptime alerts, on-site full-text search.
-- **M3+ Expansion** — X / Official Account source production, entity topic
-  pages, read-later favorites, feed/sse extracted into catalog packages,
-  mobile (waiting on the rivet mobile host).
-- **M4 Agent layering** — editor-side LLM channel (free models = three
-  environment variables), reader-side BYOK (decision pending), consumer-side
-  agent skill + MCP + llms.txt.
-
-## Agent integration
-
-pitboard treats agents as first-class citizens: every publish ships a complete
-machine-readable dataset, and your agent can use it directly as an
-automotive-industry information source.
-
-- **Install the skill**: send the line below to your agent and it will take
-  care of the rest:
-
-  > Please install the pitboard skill: <https://pitboard.jrtx.site/skill/pitboard/SKILL.md>
-
-  The SKILL.md carries its own self-install guidance; manual installation is a
-  single curl (see the install section in that file).
-- **Use the data with zero install**: `/api/v1/latest.json`,
-  `/api/v1/digest/<date>.json`, `/openapi.json`, `/llms.txt` — all read-only,
-  no auth.
-- **Self-hosted, further**: `raco pitboard mcp` serves MCP tools
-  (latest_digest / get_edition / get_topic); the `PITBOARD_LLM_*` environment
-  variables hook up any OpenAI-compatible model for publish enhancement
-  (optional, auto-degrades to the pure algorithmic mode on failure).
 
 ## License
 

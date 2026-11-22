@@ -135,6 +135,34 @@
 
 ;; ---- pages -----------------------------------------------------------------
 
+;; Trust surface: sourcing and corrections policy — linked from every
+;; page footer (更正声明).
+(define (about-page)
+  (page-shell
+   "来源与更正 — PITBOARD 周刊"
+   (string-append
+    "<header class=\"masthead\"><div class=\"masthead-rule\"></div>"
+    "<h1 class=\"masthead-title\"><a href=\"/\" style=\"color:inherit\"><span class=\"en\">PITBOARD</span> 周刊</a></h1>"
+    "<div class=\"masthead-issue\"><span>来源与更正</span>"
+    "<span class=\"tag\">汽车行业的一周</span></div></header>"
+    "<section class=\"section\" style=\"margin-top:40px\">"
+    "<div class=\"section-head\"><span class=\"section-title\">内容从哪里来</span><span class=\"section-count\">三类信源</span></div>"
+    "<div class=\"item\"><h3 class=\"item-title\">官方一手</h3>"
+    "<p class=\"item-summary\">部委与监管机构发布、车企官方渠道、标准组织公告——政策与定点类事件的最高优先级信源。</p></div>"
+    "<div class=\"item\"><h3 class=\"item-title\">行业媒体</h3>"
+    "<p class=\"item-summary\">覆盖国内主流汽车媒体与海外行业媒体，按条线配置权重；同一事件多家报道只计一次。</p></div>"
+    "<div class=\"item\"><h3 class=\"item-title\">研究与数据</h3>"
+    "<p class=\"item-summary\">论文预印本、销量与价格数据发布——数据版与大事记的原料。</p></div></section>"
+    "<section class=\"section\">"
+    "<div class=\"section-head\"><span class=\"section-title\">怎么做出来</span><span class=\"section-count\">AI 流水线 + 主编复核</span></div>"
+    "<p class=\"item-summary\">每天，规则引擎把上百条原始报道聚簇去重、按独立来源数与时间衰减算出热度——这是零 token 的内部工序，读者永远看不到中间形态。"
+    "每周，AI 从一周的事件里精选、写作、汇编成期刊初稿，主编逐期复核后才发布。所有条目附原文链接，原文没有提到的结论不会出现在标题里。</p></section>"
+    "<section class=\"section\">"
+    "<div class=\"section-head\"><span class=\"section-title\">更正政策</span><span class=\"section-count\">可追溯</span></div>"
+    "<p class=\"item-summary\">发现错误当期更正，并在下一期刊登更正声明，注明更正内容与原因；永不静默修改已发布内容。"
+    "发现错误请通过邮件联系主编，注明期号与条目。</p></section>"
+    (nav-footer))))
+
 (define (nav-footer)
   (string-append
    "<footer class=\"site-footer\">"
@@ -606,6 +634,16 @@
                (esc (hash-ref ev 'email "")) (esc (hash-ref ev 'status ""))
                (esc (hash-ref ev 'order_id ""))))
      "\n"))
+  (define subscriber-rows
+    (string-join
+     (for/list ([rec (in-list (hash-ref (load-subs (site-data-dir site)) 'subscribers '()))])
+       (format "<div class=\"toc-line\"><span class=\"name\">~a</span><span class=\"count\">~a · 至 ~a · <a href=\"/console?action=deactivate&email=~a\">停用</a> · <a href=\"/console?action=delete&email=~a\">删除</a></span></div>"
+               (esc (hash-ref rec 'email ""))
+               (esc (hash-ref rec 'status ""))
+               (esc (hash-ref rec 'expires "—"))
+               (esc (hash-ref rec 'email ""))
+               (esc (hash-ref rec 'email ""))))
+     "\n"))
   (page-shell
    "主编工作台 — PITBOARD 周刊"
    (format
@@ -613,7 +651,12 @@
      "<section class=\"section\"><div class=\"section-head\">"
      "<span class=\"section-title\">订阅名单</span>"
      "<span class=\"section-count num\">active ~a · pending ~a · unsub ~a</span></div>"
-     "<p class=\"item-meta\">名单明细含订阅者邮箱，只在此工作台查看，不进公开面。</p></section>"
+     "<div class=\"toc-locked\">~a</div>"
+     "<p class=\"item-meta\">名单明细含订阅者邮箱，只在此工作台查看，不进公开面。到期 30 天内用下方按钮触达续订。</p>"
+     "<form method=\"post\" action=\"/console\" enctype=\"multipart/form-data\">"
+     "<input type=\"hidden\" name=\"action\" value=\"remind\">"
+     "<button type=\"submit\" class=\"btn-primary\" style=\"border:none;cursor:pointer;background:var(--accent-bg);color:var(--accent)\">发到期提醒（剩 ≤30 天）</button>"
+     "</form></section>"
      "<section class=\"section\"><div class=\"section-head\">"
      "<span class=\"section-title\">草稿</span>"
      "<span class=\"section-count\">待复核</span></div>"
@@ -640,6 +683,7 @@
     (hash-ref counts 'active 0)
     (hash-ref counts 'pending 0)
     (hash-ref counts 'unsubscribed 0)
+    subscriber-rows
     drafts-rows
     (length published)
     published-rows
@@ -693,6 +737,39 @@
                  (format "notify sent to ~a subscribers (~a)\n" (length sent) (length actives))
                  '()))
               (resp-status 404 "no such issue"))]
+         [(equal? action "remind")
+          ;; renewal loop: email actives whose subscription expires
+          ;; within 30 days
+          (define subs (load-subs (site-data-dir site)))
+          (define now (current-seconds))
+          (define due
+            (for/list ([rec (in-list (hash-ref subs 'subscribers '()))]
+                       #:when (subscription-active? rec now))
+              (define e (and (not (eq? (hash-ref rec 'expires 'null) 'null))
+                             (parse-iso-utc (hash-ref rec 'expires ""))))
+              (and e (<= (- e now) (* 30 86400)) rec)))
+          (define sent
+            (for/list ([rec (in-list (filter values due))])
+              (define k (hash-ref rec 'email ""))
+              (define days (quotient (- (parse-iso-utc (hash-ref rec 'expires "")) now) 86400))
+              (send-mail! k
+                          (format "PITBOARD 周刊 · 订阅即将到期（剩 ~a 天）" days)
+                          (renewal-html (string-append (base-url-param) "/subscribe")
+                                        (string-append (base-url-param) "/unsubscribe/"
+                                                       (hash-ref rec 'unsub_token ""))
+                                        days))
+              k))
+          (resp-text-headers (format "renewal reminders sent to ~a subscribers\n" (length sent)) '())]
+         [(equal? action "deactivate")
+          (define email (form-binding req "email"))
+          (if (and email (unsubscribe-email! (site-data-dir site) email))
+              (resp-redirect "/console")
+              (resp-status 404 "no such subscriber"))]
+         [(equal? action "delete")
+          (define email (form-binding req "email"))
+          (if (and email (delete-subscriber! (site-data-dir site) email))
+              (resp-redirect "/console")
+              (resp-status 404 "no such subscriber"))]
          [(equal? action "test-mail")
           (define to (form-binding req "test_to"))
           (if (and to (non-empty-string? to))
@@ -716,6 +793,9 @@
                                  (equal? (binding-id b) #"draft")))
            b))
        (cond
+         [(form-binding req "action")
+          ;; plain POST actions (renewal reminders etc.)
+          ((admin-action-h site) req)]
          [draft
           (define body (binding:file-content draft))
           (define j
@@ -733,7 +813,40 @@
          [else
           (define action (form-binding req "action"))
           (cond
-            [(equal? action "test-mail")
+            [(equal? action "remind")
+          ;; renewal loop: email actives whose subscription expires
+          ;; within 30 days
+          (define subs (load-subs (site-data-dir site)))
+          (define now (current-seconds))
+          (define due
+            (for/list ([rec (in-list (hash-ref subs 'subscribers '()))]
+                       #:when (subscription-active? rec now))
+              (define e (and (not (eq? (hash-ref rec 'expires 'null) 'null))
+                             (parse-iso-utc (hash-ref rec 'expires ""))))
+              (and e (<= (- e now) (* 30 86400)) rec)))
+          (define sent
+            (for/list ([rec (in-list (filter values due))])
+              (define k (hash-ref rec 'email ""))
+              (define days (quotient (- (parse-iso-utc (hash-ref rec 'expires "")) now) 86400))
+              (send-mail! k
+                          (format "PITBOARD 周刊 · 订阅即将到期（剩 ~a 天）" days)
+                          (renewal-html (string-append (base-url-param) "/subscribe")
+                                        (string-append (base-url-param) "/unsubscribe/"
+                                                       (hash-ref rec 'unsub_token ""))
+                                        days))
+              k))
+          (resp-text-headers (format "renewal reminders sent to ~a subscribers\n" (length sent)) '())]
+         [(equal? action "deactivate")
+          (define email (form-binding req "email"))
+          (if (and email (unsubscribe-email! (site-data-dir site) email))
+              (resp-redirect "/console")
+              (resp-status 404 "no such subscriber"))]
+         [(equal? action "delete")
+          (define email (form-binding req "email"))
+          (if (and email (delete-subscriber! (site-data-dir site) email))
+              (resp-redirect "/console")
+              (resp-status 404 "no such subscriber"))]
+         [(equal? action "test-mail")
              (define to (form-binding req "test_to"))
              (if (and to (non-empty-string? to))
                  (let ([r (send-mail! to "PITBOARD 周刊 测试邮件"
@@ -762,6 +875,9 @@
   (define admin-tokens (box (hash)))
   (define s (site data-dir admin-tokens))
   (hasheq
+   'landing (λ (req) (resp-html (subscribe-landing-page data-dir)))
+   'about (λ (req) (resp-html (about-page)))
+   'health (λ (req) (resp-text-headers "ok\n" '()))
    'journal-archive (journal-archive-h s)
    'journal-issue (journal-issue-h s)
    'subscribe (subscribe-h s)

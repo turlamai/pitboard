@@ -425,9 +425,12 @@
 ;; ---- rendering (aligns with design/prototype/journal*.html) ---------------
 
 (define (esc s)
+  ;; defensive: renderer inputs come from JSON records where a missing
+  ;; value reads back as 'null — render anything non-string via ~a
+  (define str (if (string? s) s (format "~a" s)))
   (regexp-replace* #px"<"
     (regexp-replace* #px">"
-      (regexp-replace* #px"&" s "&amp;")
+      (regexp-replace* #px"&" str "&amp;")
       "&gt;")
     "&lt;"))
 

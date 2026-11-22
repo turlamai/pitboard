@@ -4,163 +4,107 @@
 
 ![platform](https://img.shields.io/badge/platform-Web%20%7C%20Docker%20%7C%20Self--hosted-lightgrey) ![built with](https://img.shields.io/badge/built%20with-Racket-9f1d20) [![CI](https://github.com/turlamai/pitboard/actions/workflows/ci.yml/badge.svg)](https://github.com/turlamai/pitboard/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-汽车行业的每日热点日报站：把开源项目、行业资讯、前沿论文抓到一起，聚簇去重，
-按独立来源数与时间衰减算出热度，每天出刊一张「pit 板」。Racket 全栈
-（web-server），单进程自托管，不需要外部数据库服务。
+**PITBOARD 周刊**：付费订阅的汽车行业期刊。每周六早 8 点，一周的事——筛好、写好、装订好，送进订阅者的邮箱。
 
-语言：Racket
-
-## 阅读入口
-
-[阅读汽车行业日报](https://pitboard.jrtx.site/) · [阅读、隐私与更正](docs/READING.zh-CN.md)
-
-阅读免费，无需账号。聚类去重可能误合并或漏掉事件，可选 AI 标题和摘要可能出错；热度不是事实证明，需依靠独立来源。定时出刊可能失败，旧刊不能当作今日新闻。
+AI 流水线做粗活，主编做把关：筛选、写作、汇编由 AI 完成，发布前主编逐期复核。卖的不是信息（信息到处免费），是三样东西：**筛选**（每条都有「为什么入选」）、**装订**（报纸级排版，读完一期约 15 分钟）、**准时**（每周六 08:00，确定性本身是产品的一部分）。
 
 ## 它怎么工作
 
 ```
-RSS 媒体源 ─┐
-GitHub 话题 ─┼→ 抓取 → 归一化 → 聚簇(Jaccard/中英分词) → 热度(独立来源数×时间衰减) → 出刊
-arXiv 论文 ─┘                                                        ↓
-                                              站点 / RSS / JSON API / 日报.md / llms.txt / SSE
+每日（零 token，内部工序，读者不可见）：
+  RSS/网页列表/GitHub/arXiv → 抓取 → 归一化 → 聚簇(Jaccard) → 热度(独立来源×时间衰减) → data/YYYY-MM-DD.json
+
+每周六（LLM 仅此一段介入）：
+  一周事件压缩 → 精选(头条+条线) → 逐条写作(答案先行摘要+为什么入选+数字抽取) → 卷首按语
+  → 大事记/数据版(规则编排) → 完整期刊 artifact → 主编复核(/console 上传→发布)
+
+商业闭环：
+  落地页 → Pancake 支付 → 邮箱 double opt-in → 通知邮件(免登录直达链接) → 网页全文
+  → 到期提醒 → 续订（从现有到期日顺延）
 ```
 
-- **无 LLM 也可运行**：热度引擎是纯规则（聚簇 + 打分），所有信源免 key。
-- **可选 LLM 增强**：配置任何 OpenAI 兼容接口后，头条热点自动改写为中文标题与摘要；
-  失败或未配置时自动退回纯排序模式，站点功能不受影响。
-- **Agent 友好**：`/rss.xml`、`/api/v1/latest.json`、`/daily/<date>.md`、
-  `/llms.txt`、`/api/events`（SSE 出刊推送）全部开箱即用。
+- **成本结构**：纯规则引擎每日零 token 压缩原料；LLM 只在周度汇编介入，单期成本几元人民币——一个年订户覆盖全年成本。
+- **fail-closed**：无 LLM key 不出刊，付费产品不出纯规则期刊；每期调用有预算熔断。
+- **付费墙边界是代码强制的**：公开面只有卷首 + 头条全文 + 目录；付费正文不进公开仓库（完整期刊只存 Actions artifact，发布走主编上传）。
 
-## 快速开始
+## 阅读入口
 
-需要 Racket 8.14+（含 minimal-racket；本机开发用的是 9.3）。
+[订阅与阅读](https://pitboard.jrtx.site/) · 当期网页版可见卷首按语与本周头条全文，其余订阅可见。
+
+## 快速开始（自托管）
+
+需要 Racket 8.14+（本机开发用 9.3）与 [commerce 包](https://github.com/turlamai/commerce)（webhook 验签）。
 
 ```sh
-# 安装为 Racket 包（自动带上 web-server 与 http-easy 依赖）
-raco pkg install --auto https://github.com/turlamai/pitboard.git
+git clone https://github.com/turlamai/pitboard.git && cd pitboard
+raco pkg install --auto --no-docs http-easy feed server-sent-events
+raco pkg install --auto --no-docs https://github.com/turlamai/commerce.git
+raco pkg install --auto --no-docs --link "$PWD"
 
-# 出刊（抓取 + 聚簇 + 落盘 data/YYYY-MM-DD.json）
-raco pitboard fetch --config config/sources.json
+# 内部原料积累（每日定时跑，零 token）
+raco pitboard fetch --data data --config config/sources.json
 
-# 汇编本周付费周刊（--mock 为流水线自检，不调真实 LLM；
-# 不带 --mock 时必须有 LLM key，fail-closed）
-raco pitboard journal --issue 42 --mock
+# 周刊汇编（--mock 流水线自检；真实出刊必须有 LLM key）
+raco pitboard journal --issue 1 --mock
 
-# 起站点（默认 8090 端口）
-raco pitboard serve --port 8090
+# 起站点（落地页 / 期刊 / 订阅支付 / 主编工作台）
+raco pitboard serve --port 8090 --data data
 
-# 生成 GitHub Pages 静态镜像到 site/
-raco pitboard export --out site
+# 精选质量评测（标注样本）
+raco pitboard eval --data data --samples eval/samples.json
 ```
 
-克隆开发用 `raco pkg install --auto --link .` 本地链接即可，测试跑 `raco test -p pitboard`。
+测试：`raco test -p pitboard`。
 
 ## 配置
 
-### 信源（`config/sources.json`）
-
-| 字段 | 说明 |
-| --- | --- |
-| `feeds` | RSS 源列表，`name` / `url` / `weight`（权重参与热度） |
-| `github.topics` | GitHub 话题搜索词（近 30 天有推送的仓库按 star 排序 + 近 90 天新星仓库） |
-| `arxiv` | arXiv API 查询串与条数上限 |
-
-默认配置即仓库内 `config/sources.json`：Ars Technica Cars、TechCrunch
-Transportation、IEEE Spectrum Transportation、Electrek 四个媒体源 +
-8 个汽车话题 + arXiv 机器人/系统工程论文。换成你自己的信源就是你的行业站。
-
-### LLM（可选，环境变量）
-
 | 变量 | 说明 |
 | --- | --- |
-| `PITBOARD_LLM_API_KEY` | OpenAI 兼容接口的 key（不设即纯排序模式） |
-| `PITBOARD_LLM_BASE_URL` | 默认 `https://api.deepseek.com` |
-| `PITBOARD_LLM_MODEL` | 默认 `deepseek-chat` |
+| `PITBOARD_BASE_URL` | 站点绝对地址（邮件链接用） |
+| `PITBOARD_ADMIN_PASSWORD` | 主编工作台密码（`/console`；不设则拒绝登录） |
+| `PITBOARD_PAY_URL` | Pancake 商品结账链接（不设 = 订阅页诚实提示渠道未上线） |
+| `PITBOARD_PAY_ENV` | `test` / `production`（webhook 公钥钥匙环） |
+| `PITBOARD_LLM_API_KEY` | DeepSeek 等 OpenAI 兼容 key（不设 = 不出刊，fail-closed） |
+| `PITBOARD_LLM_BASE_URL` / `PITBOARD_LLM_MODEL` | 默认 `https://api.deepseek.com` / `deepseek-chat` |
+| `PITBOARD_JOURNAL_BUDGET` | 每期 LLM 调用硬顶（默认 24） |
+| `PITBOARD_SMTP_HOST/PORT/USER/PASS` | 阿里云邮件推送 smtpdm（不设 = 邮件 dry-run 写 `data/mail-out/`） |
+| `PITBOARD_MAIL_FROM` | 发件地址（与 DirectMail 发信域名一致） |
 
-`GITHUB_TOKEN` 存在时 GitHub 搜索走认证配额（Actions 中自动注入）。
+webhook 签名验证委托 [commerce](https://github.com/turlamai/commerce) 的 Pancake 正典实现（RSA，官方钥匙环）。
 
-### 商业化（付费周刊，可选）
+## GitHub Actions
 
-付费面由 `raco pitboard serve` 同一进程承载；不配置以下变量时商业功能诚实降级
-（订阅页提示渠道未上线、邮件走 dry-run 写入 `data/mail-out/`），纯日报站零影响。
-
-| 变量 | 说明 |
+| Workflow | 做什么 |
 | --- | --- |
-| `PITBOARD_BASE_URL` | 站点绝对地址（邮件链接用，默认 `https://pitboard.jrtx.site`） |
-| `PITBOARD_ADMIN_PASSWORD` | 主编工作台密码（`/console`；不设则工作台拒绝登录） |
-| `PITBOARD_PAY_URL` | Pancake 商品结账链接（不设 = 支付渠道未配置） |
-| `PITBOARD_PAY_ENV` | `test` / `production`（webhook 公钥钥匙环选择） |
-| `PITBOARD_SMTP_HOST/PORT/USER/PASS` | 阿里云邮件推送 smtpdm（不设 = 邮件 dry-run） |
-| `PITBOARD_MAIL_FROM` | 发件地址（需与 DirectMail 发信域名一致） |
-
-webhook 签名验证委托给 commerce 包的 Pancake 正典实现（RSA，官方钥匙环）；
-需要 `raco pkg install https://github.com/turlamai/commerce.git`（CI 已装）。
-出刊流程：GitHub Actions 生成完整期刊（artifact）→ 主编在 `/console` 上传 issue.json
-→ 预览 → 发布（锁定态公开、全文仅订阅者）→ 发刊通知邮件（每订阅者免登录直达链接）。
+| `ingest.yml` | 每日 07:30（北京）内部原料积累并提交归档——无公开面 |
+| `journal.yml` | 每周六 08:00（北京）汇编完整期刊：完整版进 artifact 供主编复核，锁定态公开视图提交 `data/journal/` |
+| `ci.yml` | 测试门禁 |
 
 ## 自托管与部署
 
-- **进程**：`raco pitboard serve` 一个进程全包（页面 + API + 静态资源 + SSE），
-  数据就是 `data/*.json` 文件，备份即拷贝。
-- **静态镜像**：仓库自带四个 GitHub Actions —— `ci.yml`（三平台测试）、
-  `digest.yml`（每日 07:30 北京时间出刊并提交归档）、`journal.yml`
-  （每周六 08:00 北京时间汇编付费周刊；完整期刊只进 workflow artifact 供主编复核，
-  仅锁定态公开视图提交入仓）、`pages.yml`（从已提交刊物和当前模板重建后部署，不重新抓取）（部署 site/ 到
-  GitHub Pages）。Fork 后开启 Pages（构建方式选 "GitHub Actions"）即可得到
-  同款日更站点。
+单一 Racket 进程即整站：`raco pitboard serve`（页面 + 订阅支付流 + 主编工作台），数据就是 `data/` 目录文件，备份即拷贝。Docker 镜像见 `Dockerfile`；支付回调需要公网 HTTPS（`PITBOARD_BASE_URL`）。
 
 ## 目录结构
 
 ```
 pitboard/            Racket 包主体（collection "pitboard"）
-  cli.rkt            raco pitboard 入口（fetch / journal / serve / export）
-  sources.rkt        信源适配器（RSS / GitHub / arXiv）+ 硬超时
-  feed.rkt           RSS 2.0 + Atom 解析（纯函数）
-  score.rkt          分词、聚簇、热度、标签（新/上升）
-  llm.rkt            OpenAI 兼容 LLM 增强（可选）
-  journal.rkt        付费周刊汇编（周度 LLM 三段：精选 / 写作 / 卷首；
-                     fail-closed + 预算熔断）
-  store.rkt          data/YYYY-MM-DD.json 存储
-  render.rkt         页面 / RSS / Markdown / llms.txt 渲染
-  sse.rkt            SSE hub（出刊推送 + 心跳）
+  cli.rkt            raco pitboard 入口（fetch / journal / serve / eval）
+  sources.rkt        信源适配器（RSS / 网页列表 / GitHub / arXiv）+ 硬超时
+  score.rkt          分词、聚簇、热度（内部原料工序，零 token）
+  llm.rkt            OpenAI 兼容调用（chat-completions + 每日增强，可选）
+  journal.rkt        周刊汇编（跨日候选合并 → LLM 精选/写作/卷首 → 渲染）
+  subs.rkt           订阅者/支付流水存储 + 令牌生命周期
+  pay.rkt            支付面（commerce 包 Pancake 验签 + 订阅投影）
+  mail.rkt           SMTP-over-TLS 投递 + dry-run + 邮件模板
+  site.rkt           期刊站点路由（落地页/期刊/订阅流/自助/主编工作台）
   app.rkt            web-server 应用
-  export.rkt         GitHub Pages 静态导出
-assets/              站点静态资源（零依赖 CSS/JS）
-config/              信源配置
-skill/pitboard/      agent 技能（权威源，站点 /skill/ 直出）
-data/                每日刊物质档（Actions 每日提交）
-site/                静态镜像（导出产物，Pages 部署源）
+  store.rkt          data/YYYY-MM-DD.json 存储
+  util.rkt           日期/字符串/URL 工具（UTC 显式计算）
+.github/workflows/   ingest（每日原料）/ journal（每周出刊）/ ci
+config/              信源配置（你的品味清单进这里）
+data/                每日事件归档（Actions 提交）+ 期刊锁定视图
+design/              设计契约与原型（王垠排版内核 × 家族 HIG）
 ```
-
-## 路线图
-
-完整差距分析与里程碑见 [docs/ROADMAP.md](docs/ROADMAP.md)，要点：
-
-- **M1 内容与追踪** — 跨日事件跟踪（进展标记）、周报/月报、网页列表源升级、
-  中文通道建设（RSSHub 自托管 + 公众号桥）、JSON 接口源、OG 分享图。
-- **M2 运营与工程** — /admin 信源后台、MCP 出口、OpenAPI、Docker（fnOS NAS）、
-  LLM 预算熔断、精选评测脚本、运行告警、站内全文搜索。
-- **M3+ 扩张** — X/公众号源量产、主题页实体化、收藏稍后读、feed/sse 抽包
-  上 catalog、移动端（等 rivet 移动宿主）。
-- **M4 Agent 分层** — 编辑侧 LLM 通道（免费模型 = 三个环境变量）、读者侧
-  BYOK（留决策）、消费侧 agent skill + MCP + llms.txt。
-
-## Agent 接入
-
-pitboard 对 agent 是一等公民：站点出刊即发布机器可读的全套数据，
-你的 agent 可以把它当汽车行业信息源直接用。
-
-- **装技能**：把下面这句话发给你的 agent，剩下的它自己装：
-
-  > 请安装 pitboard 技能：<https://pitboard.jrtx.site/skill/pitboard/SKILL.md>
-
-  SKILL.md 自带 agent 自装指引；手动安装就是一条 curl（见该文件内的安装节）。
-- **零安装用数据**：`/api/v1/latest.json`、`/api/v1/digest/<date>.json`、
-  `/openapi.json`、`/llms.txt`，全部只读免鉴权。
-- **自托管进阶**：`raco pitboard mcp` 提供 MCP 工具
-  （latest_digest / get_edition / get_topic）；
-  `PITBOARD_LLM_*` 环境变量接任何 OpenAI 兼容模型做出刊增强（可选，
-  失败自动降级纯算法模式）。
 
 ## License
 

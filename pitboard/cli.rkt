@@ -1,6 +1,8 @@
 #lang racket/base
 
-;; `raco pitboard` entry point: fetch / serve / export.
+;; `raco pitboard` entry point: fetch (internal ingestion),
+;; journal (weekly assembly), serve (the paid site), eval (curation
+;; quality).
 
 (require net/http-easy
          racket/cmdline
@@ -21,8 +23,7 @@
          "store.rkt"
          "llm.rkt"
          "journal.rkt"
-         "app.rkt"
-         "export.rkt")
+         "app.rkt")
 
 (provide cli-main)
 
@@ -127,29 +128,6 @@
   (start-server #:port (port-p) #:data-dir (dir) #:assets-dir (assets-p)
                 #:topics (watch-topics (cfg))))
 
-(define (export-cmd)
-  (define out-p (make-parameter "site"))
-  (define dir (make-parameter "data"))
-  (define assets-p (make-parameter "assets"))
-  (define domain-p (make-parameter "pitboard.jrtx.site"))
-  (define base-p (make-parameter "https://pitboard.jrtx.site"))
-  (define cfg (make-parameter "config/sources.json"))
-  (command-line
-   #:program "raco pitboard export"
-   #:once-each
-   [("--out") p "输出目录（默认 site/）" (out-p p)]
-   [("--data") p "数据目录（默认 data/）" (dir p)]
-   [("--assets") p "静态资源目录（默认 assets/）" (assets-p p)]
-   [("--domain") d "CNAME 域名" (domain-p d)]
-   [("--base-url") u "绝对地址前缀" (base-p u)]
-   [("--config") p "话题词配置（默认 config/sources.json）" (cfg p)]
-   #:args _ (void))
-  (define n
-    (export-site #:data-dir (dir) #:out (out-p) #:assets-dir (assets-p)
-                 #:domain (domain-p) #:base-url (base-p)
-                 #:topics (watch-topics (cfg))))
-  (printf "export: ~a 个文件 → ~a\n" n (out-p)))
-
 ;; ---- weekly journal (paid product; fail-closed without LLM) -----------------
 
 (define (journal-cmd)
@@ -202,8 +180,8 @@
   (printf "pitboard — 汽车行业热点日报站与付费周刊\n\n用法：\n~a\n~a\n~a\n~a\n"
           "  raco pitboard fetch [--date D] [--data DIR] [--config FILE] [--no-llm]"
           "  raco pitboard journal [--from D] [--to D] [--issue N] [--out DIR] [--mock]"
-          "  raco pitboard serve [--port N] [--data DIR] [--assets DIR]"
-          "  raco pitboard export [--out DIR] [--data DIR] [--domain D] [--base-url U]"))
+          "  raco pitboard serve [--port N] [--data DIR]"
+          "  raco pitboard eval [--data DIR] [--samples FILE]"))
 
 (define (cli-main [argv (current-command-line-arguments)])
   (define cmd (if (zero? (vector-length argv)) "help" (vector-ref argv 0)))
@@ -214,26 +192,10 @@
     ["fetch" (fetch-cmd)]
     ["journal" (journal-cmd)]
     ["serve" (serve-cmd)]
-    ["export" (export-cmd)]
-    ["mcp" (mcp-cmd)]
     ["eval" (eval-cmd)]
     [_ (print-usage)
        (unless (equal? cmd "help") (exit 1))]))
 
-
-;; ---- MCP server (agent tools over stdio) ------------------------------------
-
-(define (mcp-cmd)
-  (define dir (make-parameter "data"))
-  (command-line
-   #:program "raco pitboard mcp"
-   #:once-each
-   [("--data") p "数据目录（默认 data/）" (dir p)]
-   #:args _ (void))
-  (printf "pitboard MCP server on stdio\n")
-  (flush-output)
-  (dynamic-require 'pitboard/mcp #f)
-  ((dynamic-require 'pitboard/mcp 'run-mcp-server) #:data-dir (dir)))
 
 ;; ---- selection quality eval --------------------------------------------------
 

@@ -27,7 +27,8 @@
          send-mail!
          notify-html
          confirm-html
-         login-html)
+         login-html
+         renewal-html)
 
 ;; ---- config (parameters so tests can override without touching env) -------
 
@@ -135,9 +136,12 @@
 ;; ---- templates (email-client-safe: inline styles, no web fonts) ----------
 
 (define (esc s)
+  ;; defensive: renderer inputs come from JSON records where a missing
+  ;; value reads back as 'null — render anything non-string via ~a
+  (define str (if (string? s) s (format "~a" s)))
   (regexp-replace* #px"<"
     (regexp-replace* #px">"
-      (regexp-replace* #px"&" s "&amp;")
+      (regexp-replace* #px"&" str "&amp;")
       "&gt;")
     "&lt;"))
 
@@ -212,3 +216,20 @@
    "<div style=\"margin-top:28px;padding-top:16px;border-top:1px solid #E7E5E4;font-size:13px;"
    "line-height:1.8;color:#57534E\">确认后：每周六 08:00 收到出刊通知，网页全文与往期归档随时可读。"
    "不是你操作的？忽略这封邮件即可，不会产生任何订阅。</div></div>"))
+
+(define (renewal-html subscribe-url unsub-url days-left)
+  (string-append
+   "<div style=\"max-width:600px;margin:0 auto;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;color:#1C1917\">"
+   "<div style=\"border-top:2px solid #1C1917;height:0\"></div>"
+   "<div style=\"font-family:Georgia,'Songti SC',serif;font-size:24px;font-weight:600;text-align:center;padding:20px 0 4px\">"
+   "<span style=\"letter-spacing:.14em\">PITBOARD</span> 周刊</div>"
+   "<div style=\"text-align:center;font-size:12px;color:#A8A29E;padding-bottom:14px;"
+   "border-bottom:1px solid #D6D3D1\">订阅到期提醒</div>"
+   "<div style=\"font-family:Georgia,'Songti SC',serif;font-size:15px;line-height:1.9;margin-top:24px\">"
+   "你的订阅还有 " (esc (~a days-left)) " 天到期。续订后，每周六早 8 点的行业周刊继续准时送达——"
+   "到期前续订，有效期从现有到期日顺延，一天都不浪费。</div>"
+   "<div style=\"text-align:center;margin-top:24px\">"
+   "<a href=\"" (esc subscribe-url) "\" style=\"display:inline-block;padding:10px 32px;background:#D97757;"
+   "color:#ffffff;text-decoration:none;font-weight:600;font-size:15px;border-radius:8px\">续订一年 · ¥199</a></div>"
+   "<div style=\"margin-top:28px;padding-top:16px;border-top:1px solid #E7E5E4;text-align:center;font-size:12px;color:#A8A29E\">"
+   "<a href=\"" (esc unsub-url) "\" style=\"color:#57534E\">一键退订</a></div></div>"))

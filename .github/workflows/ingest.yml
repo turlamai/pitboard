@@ -1,0 +1,46 @@
+name: Ingest
+
+# Daily internal ingestion: fetch sources, score, cluster, commit the
+# archive.  Zero-token rules engine — the raw material the weekly
+# journal compresses.  No public surface: the site is the paid journal.
+
+on:
+  schedule:
+    - cron: '30 23 * * *'   # 07:30 Beijing time
+  workflow_dispatch:
+
+concurrency:
+  group: digest
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Racket
+        uses: Bogdanp/setup-racket@v1.15
+        with:
+          version: stable
+          distribution: full
+      - name: Install dependencies
+        run: raco pkg install --auto --no-docs http-easy server-sent-events feed
+      - name: Install pitboard
+        run: raco pkg install --auto --no-docs --link "$(pwd)"
+      - name: Fetch and publish today's edition
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PITBOARD_LLM_API_KEY: ${{ secrets.PITBOARD_LLM_API_KEY }}
+          PITBOARD_LLM_BASE_URL: ${{ secrets.PITBOARD_LLM_BASE_URL }}
+          PITBOARD_LLM_MODEL: ${{ secrets.PITBOARD_LLM_MODEL }}
+        run: raco pitboard fetch --data data --config config/sources.json
+      - name: Commit the archive
+        run: |
+          git config user.name "pitboard-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data
+          git commit -m "ingest: $(date -u +%F) [skip ci]" || echo "no changes"
+          git push

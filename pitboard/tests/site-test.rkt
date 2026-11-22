@@ -21,7 +21,6 @@
          "../mail.rkt"
          "../app.rkt")
 
-(define-runtime-path assets-dir "../assets")
 
 (define port 18477)
 (define base (format "http://127.0.0.1:~a" port))
@@ -59,8 +58,7 @@
                     [mail-pass-param #f]
                     [mail-from-param #f])
        (start-server #:port port
-                     #:data-dir dir
-                     #:assets-dir (path->string assets-dir))))))
+                     #:data-dir dir)))))
 
 (define (wait-up)
   (let loop ([n 50])
@@ -106,6 +104,14 @@
 (wait-up)
 
 ;; ---- visitor face ----------------------------------------------------------
+
+(test-case "root path is the landing page"
+  (define r (get base))
+  (check-equal? (response-status-code r) 200)
+  (check-true (string-contains? (bytes->string/utf-8 (response-body r))
+                                "筛选，而不是罗列"))
+  (check-true (string-contains? (bytes->string/utf-8 (response-body r))
+                                "每周一早，把汽车行业一周的事")))
 
 (test-case "journal archive: empty state"
   (define r (get (string-append base "/journal")))
