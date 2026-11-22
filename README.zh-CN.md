@@ -42,6 +42,10 @@ raco pkg install --auto https://github.com/turlamai/pitboard.git
 # 出刊（抓取 + 聚簇 + 落盘 data/YYYY-MM-DD.json）
 raco pitboard fetch --config config/sources.json
 
+# 汇编本周付费周刊（--mock 为流水线自检，不调真实 LLM；
+# 不带 --mock 时必须有 LLM key，fail-closed）
+raco pitboard journal --issue 42 --mock
+
 # 起站点（默认 8090 端口）
 raco pitboard serve --port 8090
 
@@ -79,8 +83,10 @@ Transportation、IEEE Spectrum Transportation、Electrek 四个媒体源 +
 
 - **进程**：`raco pitboard serve` 一个进程全包（页面 + API + 静态资源 + SSE），
   数据就是 `data/*.json` 文件，备份即拷贝。
-- **静态镜像**：仓库自带三个 GitHub Actions —— `ci.yml`（三平台测试）、
-  `digest.yml`（每日 07:30 北京时间出刊并提交归档）、`pages.yml`（从已提交刊物和当前模板重建后部署，不重新抓取）（部署 site/ 到
+- **静态镜像**：仓库自带四个 GitHub Actions —— `ci.yml`（三平台测试）、
+  `digest.yml`（每日 07:30 北京时间出刊并提交归档）、`journal.yml`
+  （每周六 08:00 北京时间汇编付费周刊；完整期刊只进 workflow artifact 供主编复核，
+  仅锁定态公开视图提交入仓）、`pages.yml`（从已提交刊物和当前模板重建后部署，不重新抓取）（部署 site/ 到
   GitHub Pages）。Fork 后开启 Pages（构建方式选 "GitHub Actions"）即可得到
   同款日更站点。
 
@@ -88,11 +94,13 @@ Transportation、IEEE Spectrum Transportation、Electrek 四个媒体源 +
 
 ```
 pitboard/            Racket 包主体（collection "pitboard"）
-  cli.rkt            raco pitboard 入口（fetch / serve / export）
+  cli.rkt            raco pitboard 入口（fetch / journal / serve / export）
   sources.rkt        信源适配器（RSS / GitHub / arXiv）+ 硬超时
   feed.rkt           RSS 2.0 + Atom 解析（纯函数）
   score.rkt          分词、聚簇、热度、标签（新/上升）
   llm.rkt            OpenAI 兼容 LLM 增强（可选）
+  journal.rkt        付费周刊汇编（周度 LLM 三段：精选 / 写作 / 卷首；
+                     fail-closed + 预算熔断）
   store.rkt          data/YYYY-MM-DD.json 存储
   render.rkt         页面 / RSS / Markdown / llms.txt 渲染
   sse.rkt            SSE hub（出刊推送 + 心跳）

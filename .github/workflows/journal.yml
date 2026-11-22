@@ -1,0 +1,86 @@
+name: Journal
+
+# Weekly paid journal: assemble the past 7 days of daily cluster
+# archives into one issue.  Fail-closed — no LLM key, no issue.
+# Content boundary: the full issue goes to a workflow artifact for
+# editorial review and never enters the public repo; only the locked
+# public view (foreword + headline + toc) is committed under
+# data/journal/.
+
+on:
+  schedule:
+    - cron: '0 0 * * 6'   # Saturday 08:00 Beijing time
+  workflow_dispatch:
+
+concurrency:
+  group: journal
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Racket
+        uses: Bogdanp/setup-racket@v1.15
+        with:
+          version: stable
+          distribution: full
+      - name: Install dependencies
+        run: raco pkg install --auto --no-docs http-easy server-sent-events feed
+      - name: Install pitboard
+        run: raco pkg install --auto --no-docs --link "$(pwd)"
+      - name: Assemble this week's issue
+        env:
+          PITBOARD_LLM_API_KEY: ${{ secrets.PITBOARD_LLM_API_KEY }}
+          PITBOARD_LLM_BASE_URL: ${{ secrets.PITBOARD_LLM_BASE_URL }}
+          PITBOARD_LLM_MODEL: ${{ secrets.PITBOARD_LLM_MODEL }}
+        run: |
+          if [ -z "$PITBOARD_LLM_API_KEY" ]; then
+            echo "::notice::no LLM key configured — journal is fail-closed, skipping"
+            exit 0
+          fi
+          raco pitboard journal --data data --out journal-build \
+            --from "$(date -u -d '6 days ago' +%F)" --to "$(date -u +%F)" \
+            --issue "$(( $(date -u +%-V) ))"
+      - name: Leak sweep on the locked public view
+        if: hashFiles('journal-build/locked.json') != ''
+        run: |
+          python3 - <<'EOF'
+          import json, pathlib, sys
+          issue = json.loads(pathlib.Path("journal-build/issue.json").read_text(encoding="utf-8"))
+          locked = pathlib.Path("journal-build/journal-locked.html").read_text(encoding="utf-8")
+          # paid body must not leak into the locked page (output-side scan)
+          paid = []
+          for beat in issue.get("beats", []):
+              for item in beat.get("items", []):
+                  paid.append(item["title"])
+          leaks = [t for t in paid if t in locked]
+          if leaks:
+              print("\n".join(f"LEAK: {t}" for t in leaks))
+              sys.exit(1)
+          print("leak sweep clean")
+          EOF
+      - name: Commit locked public view
+        if: hashFiles('journal-build/locked.json') != ''
+        run: |
+          mkdir -p data/journal
+          cp journal-build/locked.json "data/journal/$(date -u +%F).json"
+          git config user.name "pitboard-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/journal
+          git commit -m "journal: $(date -u +%F) [skip ci]" || echo "no changes"
+          git push
+      - name: Upload full issue for editorial review
+        if: hashFiles('journal-build/issue.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: journal-issue-${{ github.run_id }}
+          path: |
+            journal-build/issue.json
+            journal-build/journal.html
+            journal-build/journal-locked.html
+          retention-days: 90

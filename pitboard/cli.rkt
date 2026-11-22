@@ -20,6 +20,7 @@
          "score.rkt"
          "store.rkt"
          "llm.rkt"
+         "journal.rkt"
          "app.rkt"
          "export.rkt")
 
@@ -149,11 +150,58 @@
                  #:topics (watch-topics (cfg))))
   (printf "export: ~a 个文件 → ~a\n" n (out-p)))
 
+;; ---- weekly journal (paid product; fail-closed without LLM) -----------------
+
+(define (journal-cmd)
+  (define from-p (make-parameter #f))
+  (define to-p (make-parameter #f))
+  (define dir (make-parameter "data"))
+  (define out-p (make-parameter "journal-build"))
+  (define issue-p (make-parameter #f))
+  (define budget-p (make-parameter #f))
+  (define mock (make-parameter #f))
+  (command-line
+   #:program "raco pitboard journal"
+   #:once-each
+   [("--from") d "起始日期 YYYY-MM-DD（默认结束日前 6 天）" (from-p d)]
+   [("--to") d "结束日期 YYYY-MM-DD（默认今天 UTC）" (to-p d)]
+   [("--data") p "数据目录（默认 data/）" (dir p)]
+   [("--out") p "输出目录（默认 journal-build/）" (out-p p)]
+   [("--issue") n "期号（默认 1）" (issue-p (string->number n))]
+   [("--budget") n "LLM 调用硬顶（默认 24，环境变量 PITBOARD_JOURNAL_BUDGET 同义）"
+    (budget-p (string->number n))]
+   [("--mock") "演示 provider：流水线自检，不调用真实 LLM，产出不得发布" (mock #t)]
+   #:args _ (void))
+  (define to (or (to-p) (iso-date)))
+  (define from
+    (or (from-p)
+        (iso-date (- (parse-date-any to) (* 6 86400)))))
+  (define issue-no (or (issue-p) 1))
+  (define provider (if (mock) mock-provider default-provider))
+  (printf "pitboard journal · 第 ~a 期 · ~a ~ ~a\n" issue-no from to)
+  (define cands (week-candidates (dir) from to))
+  (printf "  候选事件 ~a 条\n" (length cands))
+  (define j (build-issue cands
+                         #:issue-number issue-no
+                         #:date to
+                         #:provider provider
+                         #:budget (or (budget-p) (journal-budget))))
+  (define paths (write-issue! (out-p) j))
+  (printf "  入选 ~a 条 · 数据版 ~a 项 · 大事记 ~a 条\n"
+          (hash-ref (hash-ref j 'counts) 'events)
+          (length (hash-ref j 'data '()))
+          (length (hash-ref j 'timeline '())))
+  (for ([p (in-list paths)])
+    (printf "  出刊 → ~a\n" (path->string p)))
+  (when (mock)
+    (printf "  ⚠ 演示产出（--mock），不得发布\n")))
+
 ;; ---- dispatch ---------------------------------------------------------------
 
 (define (print-usage)
-  (printf "pitboard — 汽车行业每日热点日报站\n\n用法：\n~a\n~a\n~a\n"
+  (printf "pitboard — 汽车行业热点日报站与付费周刊\n\n用法：\n~a\n~a\n~a\n~a\n"
           "  raco pitboard fetch [--date D] [--data DIR] [--config FILE] [--no-llm]"
+          "  raco pitboard journal [--from D] [--to D] [--issue N] [--out DIR] [--mock]"
           "  raco pitboard serve [--port N] [--data DIR] [--assets DIR]"
           "  raco pitboard export [--out DIR] [--data DIR] [--domain D] [--base-url U]"))
 
@@ -164,6 +212,7 @@
   (current-command-line-arguments rest-args)
   (match cmd
     ["fetch" (fetch-cmd)]
+    ["journal" (journal-cmd)]
     ["serve" (serve-cmd)]
     ["export" (export-cmd)]
     ["mcp" (mcp-cmd)]

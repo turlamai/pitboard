@@ -47,6 +47,10 @@ raco pkg install --auto https://github.com/turlamai/pitboard.git
 # Publish an edition (fetch + cluster + write data/YYYY-MM-DD.json)
 raco pitboard fetch --config config/sources.json
 
+# Assemble the weekly paid journal (--mock runs a pipeline self-check
+# with a demo provider; without it an LLM key is required, fail-closed)
+raco pitboard journal --issue 42 --mock
+
 # Serve the site (default port 8090)
 raco pitboard serve --port 8090
 
@@ -89,9 +93,12 @@ When `GITHUB_TOKEN` is present, GitHub search uses authenticated quota
 - **Process**: a single `raco pitboard serve` process does everything (pages +
   API + static assets + SSE); the data is just `data/*.json` files, so backup
   is a copy.
-- **Static mirror**: the repo ships three GitHub Actions — `ci.yml`
+- **Static mirror**: the repo ships four GitHub Actions — `ci.yml`
   (three-platform tests), `digest.yml` (daily publish at 07:30 Beijing time
-  with archive commits) and `pages.yml` (rebuilds the mirror from committed editions/current templates and deploys it to GitHub Pages, without fetching new sources).
+  with archive commits), `journal.yml` (weekly paid journal, Saturdays 08:00
+  Beijing time; the full issue stays in a workflow artifact for editorial
+  review and only the locked public view is committed) and `pages.yml`
+  (rebuilds the mirror from committed editions/current templates and deploys it to GitHub Pages, without fetching new sources).
   Fork it, enable Pages (build source: "GitHub Actions"), and you get the same
   daily-updating site.
 
@@ -99,11 +106,13 @@ When `GITHUB_TOKEN` is present, GitHub search uses authenticated quota
 
 ```
 pitboard/            Racket package body (collection "pitboard")
-  cli.rkt            raco pitboard entry point (fetch / serve / export)
+  cli.rkt            raco pitboard entry point (fetch / journal / serve / export)
   sources.rkt        source adapters (RSS / GitHub / arXiv) + hard timeouts
   feed.rkt           RSS 2.0 + Atom parsing (pure functions)
   score.rkt          tokenization, clustering, hotness, tags (new / rising)
   llm.rkt            OpenAI-compatible LLM enhancement (optional)
+  journal.rkt        paid weekly journal assembly (weekly LLM passes:
+                     select / write / foreword; fail-closed + call budget)
   store.rkt          data/YYYY-MM-DD.json storage
   render.rkt         page / RSS / Markdown / llms.txt rendering
   sse.rkt            SSE hub (publish push + heartbeat)

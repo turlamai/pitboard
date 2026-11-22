@@ -18,7 +18,8 @@
          llm-model
          llm-budget
          llm-prompt-template
-         llm-polish!)
+         llm-polish!
+         chat-completions)
 
 ;; ---- config ---------------------------------------------------------------
 
