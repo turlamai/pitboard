@@ -51,8 +51,26 @@
       "tier": 2,
       "weight": 0.95,
       "max": 6,
-      "only_keywords": ["车", "电动", "智驾", "智能驾驶", "自动驾驶", "座舱", "底盘", "robotaxi", "vehicle", "零部件", "芯片"],
-      "except_keywords": ["晨会", "盘前", "复盘", "晨报", "日评"]
+      "only_keywords": [
+        "车",
+        "电动",
+        "智驾",
+        "智能驾驶",
+        "自动驾驶",
+        "座舱",
+        "底盘",
+        "robotaxi",
+        "vehicle",
+        "零部件",
+        "芯片"
+      ],
+      "except_keywords": [
+        "晨会",
+        "盘前",
+        "复盘",
+        "晨报",
+        "日评"
+      ]
     },
     {
       "name": "发现报告 · 电气设备",
@@ -65,8 +83,30 @@
       "tier": 2,
       "weight": 0.8,
       "max": 6,
-      "only_keywords": ["电池", "固态", "锂电", "新能源", "充电", "电动", "整车", "汽车", "车规", "智驾", "智能驾驶", "自动驾驶", "robotaxi", "battery", "solid-state"],
-      "except_keywords": ["晨会", "盘前", "复盘", "晨报", "日评"]
+      "only_keywords": [
+        "电池",
+        "固态",
+        "锂电",
+        "新能源",
+        "充电",
+        "电动",
+        "整车",
+        "汽车",
+        "车规",
+        "智驾",
+        "智能驾驶",
+        "自动驾驶",
+        "robotaxi",
+        "battery",
+        "solid-state"
+      ],
+      "except_keywords": [
+        "晨会",
+        "盘前",
+        "复盘",
+        "晨报",
+        "日评"
+      ]
     },
     {
       "url": "https://www.theverge.com/rss/transportation/index.xml",
@@ -331,7 +371,13 @@
       "automotive-software",
       "someip",
       "tsn",
-      "doip"
+      "doip",
+      "iso-21434",
+      "sotif",
+      "canfd",
+      "automotive-ethernet",
+      "secure-boot",
+      "fota"
     ],
     "per_page": 3,
     "min_stars": 20,
@@ -341,7 +387,7 @@
     ]
   },
   "arxiv": {
-    "query": "(cat:cs.RO OR cat:eess.SY OR cat:cs.AR) AND (abs:automotive OR abs:\"autonomous driving\" OR abs:vehicle OR abs:ADAS OR abs:\"connected vehicles\" OR abs:AUTOSAR OR abs:\"functional safety\" OR abs:\"in-vehicle\" OR abs:ECU)",
+    "query": "(cat:cs.RO OR cat:eess.SY OR cat:cs.AR) AND (abs:automotive OR abs:\"autonomous driving\" OR abs:vehicle OR abs:ADAS OR abs:\"connected vehicles\" OR abs:AUTOSAR OR abs:\"functional safety\" OR abs:\"in-vehicle\" OR abs:ECU) OR abs:TSN OR abs:cybersecurity OR abs:OTA OR abs:\"AUTOSAR Adaptive\"",
     "max_results": 40
   },
   "hn": {
