@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>订阅 — PITBOARD 周刊</title>
+<link rel="stylesheet" href="shared.css">
+<script>
+function toggleTheme() {
+  document.documentElement.classList.toggle('dark');
+  document.documentElement.dataset.forced = '1';
+}
+</script>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- 报头 -->
+  <header class="masthead">
+    <div class="masthead-rule"></div>
+    <h1 class="masthead-title"><span class="en">PITBOARD</span> 周刊</h1>
+    <div class="masthead-issue">
+      <span>订阅</span>
+      <span class="tag">汽车行业的一周</span>
+    </div>
+  </header>
+
+  <!-- 一句话定位 -->
+  <section class="foreword prose" style="margin-top:48px">
+    <p>每周一早，把汽车行业一周的事——筛好、写好、装订好，送进你的邮箱。</p>
+  </section>
+
+  <!-- 价值三点：纯文字，不堆卡片 -->
+  <section class="section">
+    <div class="section-head"><span class="section-title">为什么值得订阅</span><span class="section-count">3 件事</span></div>
+    <div class="item">
+      <h3 class="item-title">筛选，而不是罗列</h3>
+      <p class="item-summary">每个条线只保留真正重要的 2–3 件事：政策与法规、智能化、三电与供应链、整车与市场。每条都有一句「为什么入选」——那是主编的判断，不是算法的输出。</p>
+    </div>
+    <div class="item">
+      <h3 class="item-title">装订，而不是推送</h3>
+      <p class="item-summary">本周头条给足深度综述，数据版汇总关键数字，大事记留档时间线。读完一期约 15 分钟，覆盖的是一个行业的一周。</p>
+    </div>
+    <div class="item">
+      <h3 class="item-title">准时，而不是「大概有」</h3>
+      <p class="item-summary">每周六早 8 点，一封出刊通知准时送进邮箱，点开直达本期全文。节假日顺延，出刊失败下一期补齐并公告——确定性本身就是产品的一部分。</p>
+    </div>
+  </section>
+
+  <!-- 样刊预览 -->
+  <section class="section">
+    <div class="section-head"><span class="section-title">最新一期</span><span class="section-count">第 42 期 · 2026-11-21</span></div>
+    <div class="prose" style="margin-bottom:20px">
+      <p>本周的行业叙事被一份文件接管：L3 准入试点名单公布，智能驾驶从「宣传话术」变成「责任条款」。比起销量榜的喧嚣，这才是值得从业者记在案头的一周。</p>
+    </div>
+    <div class="toc-locked">
+      <div class="toc-line"><span class="name">本周头条 · L3 准入试点扩容</span><span class="count">免费阅读</span></div>
+      <div class="toc-line"><span class="name">政策与法规</span><span class="count">订阅可见</span></div>
+      <div class="toc-line"><span class="name">智能化</span><span class="count">订阅可见</span></div>
+      <div class="toc-line"><span class="name">三电与供应链</span><span class="count">订阅可见</span></div>
+      <div class="toc-line"><span class="name">整车与市场 · 数据版 · 大事记</span><span class="count">订阅可见</span></div>
+    </div>
+    <p style="margin-top:20px;font-size:14px"><a href="journal.html">阅读本期卷首与头条全文 →</a></p>
+  </section>
+
+  <!-- 定价 -->
+  <section class="section">
+    <div class="section-head"><span class="section-title">订阅价格</span><span class="section-count">单一方案</span></div>
+    <div class="subscribe-card" style="margin-top:8px">
+      <h3>年订</h3>
+      <div class="price num">¥199<span class="unit"> / 年 · 52 期 ≈ ¥3.8 一期</span></div>
+      <p class="note">含全部往期归档 · 未满 30 天可全额退款 · 每期末尾一键退订</p>
+      <a class="btn-primary" href="#">订阅本周刊</a>
+      <div class="subscribe-flow">
+        <span class="step">① 微信 / 支付宝支付</span>
+        <span class="step">② 填写邮箱</span>
+        <span class="step">③ 点击确认邮件，下期开始送达</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="section-head"><span class="section-title">常见问题</span><span class="section-count">4 条</span></div>
+    <dl class="faq">
+      <dt>什么时候出刊？</dt>
+      <dd>每周六早 8 点。节假日顺延至下一个周六；连续两期未出刊会邮件公告并顺延订阅期。</dd>
+      <dt>内容在哪看？</dt>
+      <dd>订阅后在网页阅读全文——不做 App，也不做 PDF，好的排版在网页上就够了；每周六的出刊通知邮件带你直达本期。未订阅的访客只能看到当期的卷首按语与本周头条全文。</dd>
+      <dt>怎么退订？中途退订退钱吗？</dt>
+      <dd>每期邮件末尾有一键退订链接，点击即生效，不再发送；订阅未满 30 天可申请全额退款。</dd>
+      <dt>内容怎么来的，可信吗？</dt>
+      <dd>信源覆盖官方发布、行业媒体与论文预印本，全部条目附原文链接；由 AI 流水线筛选汇编，主编逐期复核。发现错误当期更正，并在下一期「更正声明」刊登。</dd>
+    </dl>
+  </section>
+
+  <footer class="site-footer">
+    <p>PITBOARD 周刊 · 汽车行业的一周 · <a href="journal.html">最新一期</a> · <a href="#">往期归档</a> · <a href="#">退订</a> · <a href="#">更正声明</a></p>
+    <p>本页条目为示例数据。</p>
+  </footer>
+
+</div>
+
+<!-- 评审工具条（非产品 UI） -->
+<div class="proto-bar">
+  <button onclick="toggleTheme()">亮 / 暗</button>
+  <a href="../index.html">目录</a> · <a href="journal.html">锁定态</a> · <a href="journal-full.html">解锁态</a> · <a href="landing.html">落地页</a> · <a href="notify.html">通知邮件</a> · <a href="archive.html">归档</a> · <a href="confirm.html">确认邮件</a>
+</div>
+
+</body>
+</html>

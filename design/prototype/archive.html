@@ -1,139 +1,86 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>pitboard — 往期归档 · 原型③ 归档列表</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>往期归档 — PITBOARD 周刊</title>
+<link rel="stylesheet" href="shared.css">
 <script>
-(function(){var t;try{t=localStorage.getItem('pitboard-theme')}catch(e){}
-if(t!=='dark'&&t!=='light'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
-document.documentElement.dataset.theme=t})()
+function toggleTheme() {
+  document.documentElement.classList.toggle('dark');
+  document.documentElement.dataset.forced = '1';
+}
 </script>
-<link rel="stylesheet" href="shared.css" />
-<style>
-/* 屏内样式：归档分组与「已更正」标记 */
-.arch-group { margin-top: 34px; }
-.arch-month { font: 600 12px/1 var(--mono); letter-spacing: 0.14em; color: var(--faint); margin: 0 0 4px; }
-.chip-fixed {
-  display: inline-block; font: 650 11px/1 ui-sans-serif, -apple-system, "PingFang SC", sans-serif;
-  color: var(--new-ink); background: var(--new-bg); border: 1px solid transparent;
-  border-radius: 999px; padding: 3px 10px; white-space: nowrap;
-}
-.arch-link .chip-fixed { justify-self: end; }
-@media (max-width: 680px) {
-  .arch-link { grid-template-columns: 1fr auto; grid-template-areas: "ed fixed" "date fixed" "title title" "count count"; gap: 4px 12px; }
-  .arch-ed { grid-area: ed; } .arch-date { grid-area: date; }
-  .arch-title { grid-area: title; white-space: normal; }
-  .arch-count { grid-area: count; } .arch-link .chip-fixed { grid-area: fixed; }
-}
-</style>
 </head>
 <body>
-<header class="nav">
-  <div class="nav-inner">
-    <a class="brand" href="index.html">
-      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.25" y="6" width="21.5" height="12" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="4.4" y="9.2" width="2.7" height="5.6" rx="0.6" fill="var(--accent)"/><rect x="9.2" y="9.4" width="7" height="1.9" rx="0.9" fill="currentColor" opacity="0.5"/><rect x="9.2" y="13" width="10.4" height="1.9" rx="0.9" fill="currentColor" opacity="0.28"/></svg>
-      <span>pitboard</span>
-    </a>
-    <nav class="nav-links" aria-label="站内导航">
-      <a href="index.html">今日</a>
-      <a href="topic.html">话题</a>
-      <a href="archive.html" class="active">归档</a>
-      <a href="about.html">关于</a>
-      <a href="#" aria-disabled="true">RSS</a>
-      <button class="iconbtn" id="theme" type="button" aria-label="切换亮暗主题"><span class="icon-sun">☀</span><span class="icon-moon">☾</span></button>
-    </nav>
-  </div>
-</header>
 
-<main>
-  <section class="hero hero-slim">
-    <p class="kicker">ARCHIVE</p>
-    <h1 class="hero-date hero-date-s">往期归档</h1>
-    <p class="hero-meta">
-      <span>26 期 · 自 2026-10-13</span>
-      <span class="dot">·</span>
-      <span>带「已更正」标记的期次附勘误记录</span>
-    </p>
+<div class="container">
+
+  <!-- 报头 -->
+  <header class="masthead">
+    <div class="masthead-rule"></div>
+    <h1 class="masthead-title"><span class="en">PITBOARD</span> 周刊</h1>
+    <div class="masthead-issue">
+      <span>往期归档</span>
+      <span class="tag">汽车行业的一周</span>
+    </div>
+  </header>
+
+  <!-- 2026 年 -->
+  <section class="section" style="margin-top:40px">
+    <div class="section-head"><span class="section-title">2026 年</span><span class="section-count">42 期 · 每周六出刊</span></div>
+    <div class="arc-row">
+      <span class="arc-no num">No.42</span>
+      <a class="arc-title" href="journal.html">L3 准入试点扩容：智能驾驶责任从车企话术变成法规条款</a>
+      <span class="arc-meta num">11-21 · 22 条 · 免费阅读</span>
+    </div>
+    <div class="arc-row locked">
+      <span class="arc-no num">No.41</span>
+      <a class="arc-title" href="journal.html">广州车展前瞻：没有发布会的一届车展，才是真正的分水岭</a>
+      <span class="arc-meta num">11-14 · 24 条 · 订阅可见</span>
+    </div>
+    <div class="arc-row locked">
+      <span class="arc-no num">No.40</span>
+      <a class="arc-title" href="journal.html">固态电池的「良率罗生门」：宣传时间表与中试数据的裂缝</a>
+      <span class="arc-meta num">11-07 · 21 条 · 订阅可见</span>
+    </div>
+    <div class="arc-row locked">
+      <span class="arc-no num">No.39</span>
+      <a class="arc-title" href="journal.html">Q3 财报季复盘：供应链的钱比整车厂的好赚</a>
+      <span class="arc-meta num">10-31 · 23 条 · 订阅可见</span>
+    </div>
+    <div class="arc-row locked">
+      <span class="arc-no num">No.38</span>
+      <a class="arc-title" href="journal.html">增程技术标准之争：谁来定义「增程」谁就定义下一个价格带</a>
+      <span class="arc-meta num">10-24 · 20 条 · 订阅可见</span>
+    </div>
   </section>
 
-  <div class="arch-group">
-    <p class="arch-month">2026 年 11 月</p>
-    <ul class="archive-list">
-      <li><a class="arch-link" href="#">
-        <span class="arch-ed">第 26 期</span>
-        <span class="arch-date">2026-11-10</span>
-        <span class="arch-title">AUTOSAR 第 18 届 Open Conference 征稿开启</span>
-        <span class="arch-count">399 个热点</span>
-      </a></li>
-      <li><a class="arch-link" href="#">
-        <span class="arch-ed">第 25 期</span>
-        <span class="arch-date">2026-11-09</span>
-        <span class="arch-title">中泰汽车 26Q3 总结：出口持续景气，内需承压</span>
-        <span class="arch-count">356 个热点</span>
-        <span class="chip-fixed" title="本期有已生效的更正，详见勘误记录">已更正</span>
-      </a></li>
-      <li><a class="arch-link" href="#">
-        <span class="arch-ed">第 24 期</span>
-        <span class="arch-date">2026-11-08</span>
-        <span class="arch-title">NIO 自研芯片进入量产装车</span>
-        <span class="arch-count">341 个热点</span>
-      </a></li>
-      <li><a class="arch-link" href="#">
-        <span class="arch-ed">第 23 期</span>
-        <span class="arch-date">2026-11-07</span>
-        <span class="arch-title">欧盟对华电车反补贴税复审进入听证阶段</span>
-        <span class="arch-count">318 个热点</span>
-      </a></li>
-    <li><a class="arch-link" href="#">
-        <span class="arch-ed">第 16 期</span>
-        <span class="arch-date">2026-11-02</span>
-        <span class="arch-title">小鹏图灵芯片首发搭载：单 SoC 承载全域域控</span>
-        <span class="arch-count">287 个热点</span>
-        <span class="chip-fixed" title="本期有已生效的更正，详见勘误记录">已更正</span>
-      </a></li>
-</ul>
+  <!-- 更早 -->
+  <section class="section">
+    <div class="section-head"><span class="section-title">更早</span><span class="section-count">No.1 – 37 · 订阅可见</span></div>
+    <div class="toc-line"><span class="name">No.1 – 37（2026 年 2 月创刊）</span><span class="count">37 期 · 订阅可见</span></div>
+  </section>
+
+  <div class="subscribe-card">
+    <h3>订阅解锁全部往期</h3>
+    <div class="price num">¥199<span class="unit"> / 年 · 52 期</span></div>
+    <p class="note">每周出刊通知直达 · 网页全文与往期归档 · 未满 30 天可全额退款</p>
+    <a class="btn-primary" href="landing.html">订阅本周刊</a>
   </div>
 
-  <div class="arch-group">
-    <p class="arch-month">2026 年 10 月</p>
-    <ul class="archive-list">
-      <li><a class="arch-link" href="#">
-        <span class="arch-ed">第 22 期</span>
-        <span class="arch-date">2026-10-31</span>
-        <span class="arch-title">周报汇编：10 月域控与智驾芯片五条主线</span>
-        <span class="arch-count">42 条要闻</span>
-      </a></li>
+  <footer class="site-footer">
+    <p>PITBOARD 周刊 · 汽车行业的一周 · <a href="journal.html">最新一期</a> · <a href="landing.html">订阅</a> · <a href="#">退订</a> · <a href="#">更正声明</a></p>
+    <p>本页条目为示例数据。</p>
+  </footer>
 
-      <li><a class="arch-link" href="#">
-        <span class="arch-ed">第 1 期</span>
-        <span class="arch-date">2026-10-13</span>
-        <span class="arch-title">创刊号：特斯拉 FSD 入华节奏跟踪</span>
-        <span class="arch-count">204 个热点</span>
-      </a></li>
-    </ul>
-  </div>
+</div>
 
-  <p class="empty">更早的期次见 <a href="#">周报</a> 与 <a href="#">月报</a> 归档；订阅节奏请用 <a href="#">RSS</a>，不要整站轮询。</p>
-</main>
+<!-- 评审工具条（非产品 UI） -->
+<div class="proto-bar">
+  <button onclick="toggleTheme()">亮 / 暗</button>
+  <a href="../index.html">目录</a> · <a href="journal.html">锁定态</a> · <a href="journal-full.html">解锁态</a> · <a href="landing.html">落地页</a> · <a href="notify.html">通知邮件</a> · <a href="archive.html">归档</a> · <a href="confirm.html">确认邮件</a>
+</div>
 
-<footer class="footer">
-  <div class="footer-brand">pitboard</div>
-  <div>汽车行业每日热点 · Racket 全栈自托管 · 每日自动出刊</div>
-  <div>
-    <a href="about.html">阅读与更正</a> · <a href="about.html#errata">勘误记录</a> · <a href="#">RSS 订阅</a> · <span class="muted">MIT 开源，来源文章保留原权利</span>
-  </div>
-  <div class="muted">热度只是排序信号；独立来源数才是事实的背书。旧刊不是今日新闻。</div>
-</footer>
-
-<script>
-document.getElementById('theme').onclick = function () {
-  var t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-  document.documentElement.dataset.theme = t;
-  try { localStorage.setItem('pitboard-theme', t); } catch (e) {}
-};
-</script>
-<script src="prototype-runtime.js"></script>
-<script src="prototype-flow.js"></script>
 </body>
 </html>
