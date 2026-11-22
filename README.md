@@ -88,6 +88,30 @@ industry's digest.
 When `GITHUB_TOKEN` is present, GitHub search uses authenticated quota
 (injected automatically in Actions).
 
+### Commercial (paid journal, optional)
+
+The paid face lives in the same `raco pitboard serve` process. Without the
+variables below, commercial features degrade honestly (the subscribe page
+says the channel is not live; mail runs in dry-run mode writing
+`data/mail-out/`), and the free digest site is unaffected.
+
+| Variable | Meaning |
+| --- | --- |
+| `PITBOARD_BASE_URL` | absolute site address (links in mail; default `https://pitboard.jrtx.site`) |
+| `PITBOARD_ADMIN_PASSWORD` | editorial console password (`/console`; unset = login refused) |
+| `PITBOARD_PAY_URL` | Pancake product checkout URL (unset = channel not configured) |
+| `PITBOARD_PAY_ENV` | `test` / `production` (webhook keyring selection) |
+| `PITBOARD_SMTP_HOST/PORT/USER/PASS` | Aliyun DirectMail smtpdm (unset = mail dry-run) |
+| `PITBOARD_MAIL_FROM` | sender address (must match the DirectMail sending domain) |
+
+Webhook signature verification delegates to the commerce package's canonical
+Pancake implementation (RSA, official keyrings); install
+`raco pkg install https://github.com/turlamai/commerce.git` (CI installs it).
+Publishing flow: GitHub Actions assembles the full issue (artifact) → the
+editor uploads issue.json at `/console` → previews → publishes (locked view
+public, full text for subscribers only) → notify email with a login-free
+per-subscriber link.
+
 ## Self-hosting and deployment
 
 - **Process**: a single `raco pitboard serve` process does everything (pages +
