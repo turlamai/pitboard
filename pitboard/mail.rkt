@@ -17,6 +17,7 @@
          "util.rkt")
 
 (provide mail-configured?
+         mail-base-param
          mail-host-param
          mail-port-param
          mail-user-param
@@ -39,6 +40,7 @@
 (define mail-pass-param (make-parameter (getenv "PITBOARD_SMTP_PASS")))
 (define mail-from-param (make-parameter (getenv "PITBOARD_MAIL_FROM")))
 (define mail-out-param (make-parameter "data/mail-out"))
+(define mail-base-param (make-parameter "https://pitboard.jrtx.site"))
 
 (define (mail-configured?)
   (and (mail-host-param) (mail-user-param) (mail-pass-param) (mail-from-param)
@@ -139,7 +141,7 @@
       "&gt;")
     "&lt;"))
 
-(define (notify-html issue read-url)
+(define (notify-html issue read-url [unsub-url #f])
   (define number (hash-ref issue 'number "?"))
   (define date (hash-ref issue 'date ""))
   (define foreword (hash-ref issue 'foreword ""))
@@ -169,7 +171,11 @@
    "<div style=\"margin-top:28px;padding-top:16px;border-top:1px solid #E7E5E4;"
    "text-align:center;font-size:12px;color:#A8A29E\">"
    "<a href=\"" (esc read-url) "\" style=\"color:#57534E\">往期归档</a> · "
-   "<a href=\"#\" style=\"color:#57534E\">更正声明</a> · 一键退订见邮件末尾链接</div>"
+   "<a href=\"" (esc (mail-base-param)) "/about\" style=\"color:#57534E\">更正声明</a> · "
+   (if unsub-url
+       (string-append "<a href=\"" (esc unsub-url) "\" style=\"color:#57534E\">一键退订</a>")
+       "退订见邮件末尾链接")
+   "</div>"
    "</div>"))
 
 (define (login-html url)

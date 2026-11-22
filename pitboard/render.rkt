@@ -149,6 +149,7 @@
                       (span "pitboard"))
                    (nav ((class "kit-nav-links"))
                         ,@(for/list ([p (in-list '(("index" "/" "今日" "nav.today")
+                                                   ("journal" "/journal" "周刊" #f)
                                                    ("topics" "/topics/" "话题" "nav.topics")
                                                    ("bookmarks" "/bookmarks.html" "书签" "nav.bookmarks")
                                                    ("archive" "/archive" "归档" "nav.archive")

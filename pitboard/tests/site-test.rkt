@@ -15,6 +15,7 @@
          net/http-easy
          json
          "../subs.rkt"
+         "../util.rkt"
          "../journal.rkt"
          "../site.rkt"
          "../mail.rkt"
@@ -87,6 +88,21 @@
 (define (with-cookie name value)
   (hasheq 'Cookie (string-append name "=" value)))
 
+;; newest .eml in mail-dir whose content contains marker
+;; (mail files are written once and never rewritten, so content is the
+;; only reliable selector when mtimes tie)
+(define (newest-mail-with mail-dir marker)
+  (define hits
+    (for/list ([f (in-list (directory-list mail-dir))]
+               #:when (and (str-ends? (path->string f) ".eml")
+                           (string-contains?
+                            (file->string (build-path mail-dir f)) marker)))
+      f))
+  (and (pair? hits)
+       (car (sort hits >
+                   #:key (λ (f) (file-or-directory-modify-seconds (build-path mail-dir f)))
+                   #:cache-keys? #t))))
+
 (wait-up)
 
 ;; ---- visitor face ----------------------------------------------------------
@@ -97,9 +113,10 @@
   (check-true (string-contains? (bytes->string/utf-8 (response-body r))
                                 "尚无已发布期刊")))
 
-(test-case "unknown issue 404s"
-  (check-equal? (response-status-code (get (string-append base "/journal/99")))
-                404))
+(test-case "unknown issue: branded 404, not a bare error"
+  (define r (get (string-append base "/journal/99")))
+  (check-equal? (response-status-code r) 404)
+  (check-true (string-contains? (bytes->string/utf-8 (response-body r)) "去往期归档")))
 
 ;; ---- admin gate + publish --------------------------------------------------
 
@@ -145,6 +162,13 @@
 
 ;; ---- subscribe → confirm → login → full access -----------------------------
 
+(test-case "subscribe landing: value story, latest issue preview, FAQ"
+  (define r (get (string-append base "/subscribe")))
+  (check-true (string-contains? (bytes->string/utf-8 (response-body r)) "筛选，而不是罗列"))
+  (check-true (string-contains? (bytes->string/utf-8 (response-body r)) "常见问题"))
+  ;; the published issue 42 shows up as the latest-issue preview
+  (check-true (string-contains? (bytes->string/utf-8 (response-body r)) "第 42 期")))
+
 (test-case "subscribe without pay channel: honest unconfigured page"
   (define r (post (string-append base "/subscribe")
                   #:form '((email . "reader@example.com"))))
@@ -160,7 +184,21 @@
   (check-true (subscription-active? (subscription-for dir "second@example.com")))
   ;; the confirm token is single-use
   (define r2 (get (string-append base "/confirm/" tok)))
-  (check-true (string-contains? (bytes->string/utf-8 (response-body r2)) "无效或已过期")))
+  (check-true (string-contains? (bytes->string/utf-8 (response-body r2)) "无效或已过期"))
+  ;; notify email to the active subscriber carries the compliance
+  ;; one-click unsubscribe link
+  (define admin-login2 (post (string-append base "/console")
+                              #:form '((password . "test-pass"))))
+  (define admin-tok2 (header-cookie admin-login2 "set-cookie"))
+  (define notify-r (get (string-append base "/console?action=notify&n=42")
+                        #:headers (hasheq 'Cookie (string-append "pb_admin=" admin-tok2))))
+  (check-equal? (response-status-code notify-r) 200)
+  (define mail-dir (build-path dir "mail-out"))
+  (define notify-f (newest-mail-with mail-dir "/unsubscribe/"))
+  (check-true (and notify-f #t) "a notify email exists")
+  (define notify-eml (file->string (build-path mail-dir notify-f)))
+  (check-true (string-contains? notify-eml "/unsubscribe/")
+              "notify email must carry the one-click unsubscribe link"))
 
 (test-case "magic-link login grants full access; unsubscribe closes it"
   (define login-page (post (string-append base "/login")
@@ -169,14 +207,8 @@
                                 "查收邮件"))
   ;; pull the magic token from the dry-run mail artifact
   (define mail-dir (build-path dir "mail-out"))
-  (define emls (directory-list mail-dir))
-  (check-true (pair? emls))
-  ;; newest mail by mtime wins; ties broken by name for determinism
-  (define newest
-    (car (sort (sort emls string<? #:key path->string)
-               >
-               #:key (λ (f) (file-or-directory-modify-seconds (build-path mail-dir f)))
-               #:cache-keys? #t)))
+  (define newest (newest-mail-with mail-dir "/magic/"))
+  (check-true (and newest #t) "a login mail exists")
   (define eml (file->string (build-path mail-dir newest)))
   (define m (regexp-match #px"/magic/([A-Za-z0-9_-]+)" eml))
   (check-true (and m #t))

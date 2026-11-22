@@ -139,7 +139,8 @@
   (string-append
    "<footer class=\"site-footer\">"
    "<p>PITBOARD 周刊 · 汽车行业的一周 · <a href=\"/subscribe\">订阅</a> · "
-   "<a href=\"/journal\">往期归档</a> · <a href=\"/me\">我的订阅</a></p>"
+   "<a href=\"/journal\">往期归档</a> · <a href=\"/me\">我的订阅</a> · "
+   "<a href=\"/about\">更正声明</a></p>"
    "<p>所有条目附原文链接；AI 汇编 + 主编复核，发现错误当期更正、下期刊登。</p></footer>"))
 
 (define (issue-auth-email req data-dir)
@@ -150,6 +151,22 @@
                      (regexp-match #px"[?&]k=([^&]+)" (url->string (request-uri req))))]
              [email (and m (access-email! data-dir (cadr m)))])
         (and email (subscription-active? (subscription-for data-dir email)) email))))
+
+(define (journal-404-response)
+  (response/full 404 #"Not Found" (current-seconds)
+                 (bytes->immutable-bytes #"text/html; charset=utf-8")
+                 '()
+                 (list
+                  (string->bytes/utf-8
+                   (page-shell
+                    "页面不存在 — PITBOARD 周刊"
+                    (string-append
+                     "<div class=\"subscribe-card\"><h3>这一页不存在</h3>"
+                     "<p class=\"note\">期刊可能已下架或链接有误。往期归档里有全部已出刊的期号。</p>"
+                     "<a class=\"btn-primary\" href=\"/journal\">去往期归档</a> "
+                     "<a class=\"btn-primary\" style=\"background:var(--accent-bg);color:var(--accent)\" href=\"/subscribe\">订阅本周刊</a>"
+                     "</div>"
+                     (nav-footer)))))))
 
 (define (journal-archive-h site)
   (λ (req)
@@ -179,7 +196,9 @@
             "<span class=\"section-title\">尚无已发布期刊</span>"
             "<span class=\"section-count\">0 期</span></div>"
             "<p class=\"item-meta\">创刊号正在路上——订阅后你会在每周六 08:00 收到出刊通知。</p></section>")
-           (format "<section class=\"section\" style=\"margin-top:40px\"><div class=\"section-head\"><span class=\"section-title\">2026 年</span><span class=\"section-count\">~a 期 · 每周六出刊</span></div>~a</section>"
+           (format "<section class=\"section\" style=\"margin-top:40px\"><div class=\"section-head\"><span class=\"section-title\">~a 年</span><span class=\"section-count\">~a 期 · 每周六出刊</span></div>~a</section>"
+                   (let ([ds (hash-ref (car issues) 'date "")])
+                     (if (>= (string-length ds) 4) (substring ds 0 4) ""))
                    (length issues) rows))
        (nav-footer))))))
 
@@ -188,12 +207,86 @@
     (define n (string->number (string-trim n-str "/")))
     (define j (and n (issue-by-number (site-data-dir site) n)))
     (cond
-      [(not j) (resp-status 404 "no such issue")]
+      [(not j) (journal-404-response)]
       [else
        (define email (issue-auth-email req (site-data-dir site)))
        (if email
            (resp-html (render-full-html j))
            (resp-html (render-locked-html (locked-view j))))])))
+
+(define (subscribe-landing-page data-dir)
+  (define issues (filter values (published-issues data-dir)))
+  (define latest (and (pair? issues)
+                      (car (sort issues > #:key (λ (j) (hash-ref j 'number 0))))))
+  (define latest-preview
+    (if latest
+        (string-append
+         "<div class=\"prose\" style=\"margin-bottom:20px\">"
+         "<p>" (esc (hash-ref latest 'foreword "")) "</p></div>"
+         "<div class=\"toc-locked\">"
+         "<div class=\"toc-line\"><span class=\"name\">本周头条 · "
+         (esc (hash-ref (hash-ref latest 'headline (hasheq)) 'title ""))
+         "</span><span class=\"count\">免费阅读</span></div>"
+         (string-join
+          (for/list ([b (in-list (hash-ref latest 'beats '()))])
+            (format "<div class=\"toc-line\"><span class=\"name\">~a</span><span class=\"count\">订阅可见</span></div>"
+                    (esc (hash-ref b 'name))))
+          "\n")
+         "</div>"
+         "<p style=\"margin-top:20px;font-size:14px\">"
+         "<a href=\"/journal/" (~a (hash-ref latest 'number 0)) "\">阅读本期卷首与头条全文 →</a></p>")
+        "<p class=\"item-meta\">创刊号正在路上——现在订阅，创刊当天你的邮箱会准时响起。</p>"))
+  (page-shell
+   "订阅 — PITBOARD 周刊"
+   (string-append
+    "<header class=\"masthead\"><div class=\"masthead-rule\"></div>"
+    "<h1 class=\"masthead-title\"><a href=\"/\" style=\"color:inherit\"><span class=\"en\">PITBOARD</span> 周刊</a></h1>"
+    "<div class=\"masthead-issue\"><span>订阅</span>"
+    "<span class=\"tag\">汽车行业的一周</span></div></header>"
+    "<section class=\"foreword prose\" style=\"margin-top:48px\">"
+    "<p>每周一早，把汽车行业一周的事——筛好、写好、装订好，送进你的邮箱。</p></section>"
+    "<section class=\"section\">"
+    "<div class=\"section-head\"><span class=\"section-title\">为什么值得订阅</span><span class=\"section-count\">3 件事</span></div>"
+    "<div class=\"value-item\"><h3 class=\"item-title\">筛选，而不是罗列</h3>"
+    "<p class=\"item-summary\">每个条线只保留真正重要的 2–3 件事：政策与法规、智能化、三电与供应链、整车与市场。"
+    "每条都有一句「为什么入选」——那是主编的判断，不是算法的输出。</p></div>"
+    "<div class=\"value-item\"><h3 class=\"item-title\">装订，而不是推送</h3>"
+    "<p class=\"item-summary\">本周头条给足深度综述，数据版汇总关键数字，大事记留档时间线。"
+    "读完一期约 15 分钟，覆盖的是一个行业的一周。</p></div>"
+    "<div class=\"value-item\"><h3 class=\"item-title\">准时，而不是「大概有」</h3>"
+    "<p class=\"item-summary\">每周六早 8 点，一封出刊通知准时送进邮箱，点开直达本期全文。"
+    "节假日顺延，出刊失败下一期补齐并公告——确定性本身就是产品的一部分。</p></div></section>"
+    "<section class=\"section\">"
+    "<div class=\"section-head\"><span class=\"section-title\">最新一期</span>"
+    "<span class=\"section-count\">"
+    (if latest (format "第 ~a 期 · ~a" (hash-ref latest 'number 0) (esc (hash-ref latest 'date ""))) "创刊准备中")
+    "</span></div>"
+    latest-preview
+    "</section>"
+    "<section class=\"section\">"
+    "<div class=\"section-head\"><span class=\"section-title\">订阅价格</span><span class=\"section-count\">单一方案</span></div>"
+    "<div class=\"subscribe-card\" style=\"margin-top:8px\"><h3>年订</h3>"
+    "<div class=\"price num\">¥199<span class=\"unit\"> / 年 · 52 期 ≈ ¥3.8 一期</span></div>"
+    "<p class=\"note\">每周六 08:00 出刊通知直达 · 网页全文与往期归档 · 未满 30 天可全额退款</p>"
+    "<form method=\"post\" action=\"/subscribe\" style=\"margin-top:12px\">"
+    "<input type=\"email\" name=\"email\" required placeholder=\"你的邮箱\" "
+    "style=\"width:260px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;"
+    "font-size:15px;background:var(--surface);color:var(--text)\"> "
+    "<button type=\"submit\" class=\"btn-primary\" style=\"border:none;cursor:pointer\">去支付</button>"
+    "</form>"
+    "<div class=\"subscribe-flow\"><span class=\"step\">① 填邮箱</span>"
+    "<span class=\"step\">② 支付</span><span class=\"step\">③ 邮件确认</span></div></div></section>"
+    "<section class=\"section\">"
+    "<div class=\"section-head\"><span class=\"section-title\">常见问题</span><span class=\"section-count\">4 条</span></div>"
+    "<dl class=\"faq\">"
+    "<dt>什么时候出刊？</dt><dd>每周六早 8 点。节假日顺延至下一个周六；连续两期未出刊会邮件公告并顺延订阅期。</dd>"
+    "<dt>内容在哪看？</dt><dd>订阅后在网页阅读全文——不做 App，也不做 PDF，好的排版在网页上就够了；"
+    "每周六的出刊通知邮件带你直达本期。未订阅的访客只能看到当期的卷首按语与本周头条全文。</dd>"
+    "<dt>怎么退订？中途退订退钱吗？</dt><dd>每期邮件末尾有一键退订链接，点击即生效，不再发送；订阅未满 30 天可申请全额退款。</dd>"
+    "<dt>内容怎么来的，可信吗？</dt><dd>信源覆盖官方发布、行业媒体与论文预印本，全部条目附原文链接；"
+    "由 AI 流水线筛选汇编，主编逐期复核。发现错误当期更正，并在下一期「更正声明」刊登。</dd>"
+    "</dl></section>"
+    (nav-footer))))
 
 (define (subscribe-h site)
   (λ (req)
@@ -228,26 +321,7 @@
           (define url (checkout-url-for (site-data-dir site) email))
           (resp-redirect (or url "/subscribe"))])]
       [else
-       (resp-html
-        (page-shell
-         "订阅 — PITBOARD 周刊"
-         (string-append
-          "<header class=\"masthead\"><div class=\"masthead-rule\"></div>"
-          "<h1 class=\"masthead-title\"><span class=\"en\">PITBOARD</span> 周刊</h1>"
-          "<div class=\"masthead-issue\"><span>订阅</span>"
-          "<span class=\"tag\">汽车行业的一周</span></div></header>"
-          "<div class=\"subscribe-card\"><h3>年订</h3>"
-          "<div class=\"price num\">¥199<span class=\"unit\"> / 年 · 52 期 ≈ ¥3.8 一期</span></div>"
-          "<p class=\"note\">每周六 08:00 出刊通知直达 · 网页全文与往期归档 · 未满 30 天可全额退款</p>"
-          "<form method=\"post\" action=\"/subscribe\" style=\"margin-top:12px\">"
-          "<input type=\"email\" name=\"email\" required placeholder=\"你的邮箱\" "
-          "style=\"width:260px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;"
-          "font-size:15px;background:var(--surface);color:var(--text)\"> "
-          "<button type=\"submit\" class=\"btn-primary\" style=\"border:none;cursor:pointer\">去支付</button>"
-          "</form>"
-          "<div class=\"subscribe-flow\"><span class=\"step\">① 填邮箱</span>"
-          "<span class=\"step\">② 支付</span><span class=\"step\">③ 邮件确认</span></div></div>"
-          (nav-footer))))])))
+       (resp-html (subscribe-landing-page (site-data-dir site)))])))
 
 (define (pay-callback-h site)
   (λ (req)
@@ -295,7 +369,6 @@
             "<button type=\"submit\" class=\"btn-primary\" style=\"border:none;cursor:pointer\">绑定订阅</button></form>"))
        "</div>")))))
 
-;; GET with both params → attempt claim and show result
 (define (pay-claim-h site)
   (λ (req)
     (define u (url->string (request-uri req)))
@@ -399,6 +472,11 @@
 (define (me-h site)
   (λ (req)
     (define email (session-email-from-cookie req (site-data-dir site)))
+    (define latest-n
+      (let ([issues (filter values (published-issues (site-data-dir site)))])
+        (and (pair? issues)
+             (hash-ref (car (sort issues > #:key (λ (j) (hash-ref j 'number 0))))
+                       'number))))
     (cond
       [(not email)
        (resp-html
@@ -421,10 +499,11 @@
                 [(equal? (hash-ref rec 'status "") "unsubscribed") " · 已退订"]
                 [else " · 已过期"]) "</p>"
           (if active
-              (string-append "<a class=\"btn-primary\" href=\"/journal\">阅读最新一期</a> ")
+              (string-append "<a class=\"btn-primary\" href=\"/journal/" (~a (or latest-n ""))
+                             "\">阅读最新一期</a> ")
               (string-append "<a class=\"btn-primary\" href=\"/subscribe\">续订</a> "))
           "<a class=\"btn-primary\" style=\"background:var(--accent-bg);color:var(--accent)\" "
-          "href=\"/unsubscribe/" (esc (hash-ref rec 'unsub_token "missing")) "\">一键退订</a>"
+          "href=\"/unsubscribe/" (esc (hash-ref rec 'unsub_token "missing")) "\" target=\"_self\">一键退订</a>"
           "</div>"
           (nav-footer))))])))
 
@@ -510,9 +589,7 @@
         "<p class=\"item-meta\">还没有已发布期刊。</p>"
         (string-join
          (for/list ([j (in-list (sort published > #:key (λ (j) (hash-ref j 'number 0))))])
-           (format "<div class=\"toc-line\"><span class=\"name\">No.~a · ~a · ~a</span>"
-                   "<span><a href=\"/journal/~a\">查看</a> · "
-                   "<a href=\"/admin?action=notify&n=~a\">发刊通知邮件</a></span></div>"
+           (format "<div class=\"toc-line\"><span class=\"name\">No.~a · ~a · ~a</span><span><a href=\"/journal/~a\">查看</a> · <a href=\"/admin?action=notify&n=~a\">发刊通知邮件</a></span></div>"
                    (hash-ref j 'number 0)
                    (esc (hash-ref j 'date ""))
                    (esc (hash-ref (hash-ref j 'headline (hasheq)) 'title ""))
@@ -596,17 +673,21 @@
           (if j
               (let* ([subs (load-subs (site-data-dir site))]
                      [actives
-                      (for/list ([(k rec) (in-hash (hash-ref subs 'subscribers))]
+                      (for/list ([rec (in-list (hash-ref subs 'subscribers '()))]
                                  #:when (subscription-active? rec))
-                        k)]
+                        rec)]
                      [sent
-                      (for/list ([k (in-list actives)])
+                      (for/list ([rec (in-list actives)])
+                        (define k (hash-ref rec 'email ""))
                         (define tok (put-token! (site-data-dir site) "access" k (* 35 24 60)))
                         (define url
                           (string-append (base-url-param) "/journal/" (~a n) "?k=" tok))
+                        (define unsub
+                          (string-append (base-url-param) "/unsubscribe/"
+                                         (hash-ref rec 'unsub_token "")))
                         (send-mail! k
                                     (format "PITBOARD 周刊 · 第 ~a 期" (hash-ref j 'number))
-                                    (notify-html j url))
+                                    (notify-html j url unsub))
                         k)])
                 (resp-text-headers
                  (format "notify sent to ~a subscribers (~a)\n" (length sent) (length actives))

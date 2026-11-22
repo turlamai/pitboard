@@ -502,7 +502,14 @@
    ".site-footer{margin-top:64px;padding:24px 0 48px;border-top:1px solid var(--border);"
    "font-size:12px;color:var(--text-3);text-align:center}"
    ".site-footer a{color:var(--text-2);border-bottom:1px solid var(--border)}"
-   ".site-footer p{margin-bottom:6px}"))
+   ".site-footer p{margin-bottom:6px}"
+   ".faq{margin-top:24px}"
+   ".faq dt{font-family:var(--serif);font-weight:600;font-size:16px;margin-bottom:6px}"
+   ".faq dd{font-size:14px;line-height:1.75;color:var(--text-2);margin-bottom:20px;padding-left:0}"
+   ".value-item{margin-bottom:32px}"
+   ".value-item:last-child{margin-bottom:0}"
+   "@media print{body{background:#fff}.site-footer,.issue-nav,.subscribe-card,.btn-primary{display:none}"
+   ".masthead-rule{border-color:#1C1917}.prose,.item-summary,.timeline .fact{font-size:12pt}}}"))
 
 (define (page-shell title body)
   (format
@@ -518,7 +525,7 @@
   (format
    (string-append
     "<header>\n<div class=\"masthead-rule\"></div>\n"
-    "<h1 class=\"masthead-title\"><span class=\"en\">PITBOARD</span> 周刊</h1>\n"
+    "<h1 class=\"masthead-title\"><a href=\"/\" style=\"color:inherit\"><span class=\"en\">PITBOARD</span> 周刊</a></h1>\n"
     "<div class=\"masthead-issue\"><span>第 ~a 期 · ~a 年 ~a 月 ~a 日</span>"
     "<span class=\"tag\">汽车行业的一周</span></div>\n</header>")
    number (p 0) (p 1) (p 2)))

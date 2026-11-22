@@ -20,6 +20,7 @@
          "render.rkt"
          "journal.rkt"
          "site.rkt"
+         "mail.rkt"
          server-sent-events
          (only-in "render.rkt" render-admin-page)
          "util.rkt")
@@ -92,6 +93,10 @@
   ;; commercial face: journal pages, subscribe/pay/confirm flow,
   ;; magic-link login, subscription self-service and the editorial console
   (define site (make-site data-dir))
+
+  ;; mail templates build absolute links from the site address
+  (mail-base-param
+   (or (getenv "PITBOARD_BASE_URL") "https://pitboard.jrtx.site"))
 
   ;; Directory contents (names + per-file mtimes) as a change
   ;; fingerprint; directory mtime alone proved unreliable on APFS.
