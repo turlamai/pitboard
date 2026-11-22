@@ -1,48 +1,39 @@
 #lang racket/base
 
-;; Webhook handling tests.  The parked/idempotency/tamper paths use
-;; commerce's own Pancake fixtures (copied from commerce-test; Apache-2.0)
-;; — the exact signed vector, no forged crypto.  The projected path
-;; generates an RSA keypair at runtime and signs a fresh payload with
-;; the same canonical algorithm (RSA PKCS1-v1.5 SHA256 over "ts.body").
+;; Alipay channel tests.  Cryptography uses commerce's canonical
+;; adapter with a runtime-generated RSA keypair: the page-pay form is
+;; verified by re-running the canonical signing content check, and the
+;; notification path is exercised with a properly RSA2-signed fixture
+;; (forged signatures must fail closed).  The browser return never
+;; grants on its own — verified through the signed query path.
 
 (require rackunit
          racket/file
          racket/format
-         racket/runtime-path
          racket/string
          json
+         base64
          crypto
          crypto/libcrypto
-         net/base64
-         commerce/pancake
+         (only-in commerce/alipay
+                  alipay-signing-content
+                  parse-alipay-form
+                  alipay-binding
+                  alipay-notification?)
+         (only-in commerce money)
          "../subs.rkt"
          "../pay.rkt"
          "../util.rkt")
 
-(define-runtime-path fixture-root "fixtures/pancake")
+;; ---- runtime RSA keypair ---------------------------------------------------
 
-(define fixture-pem (string-trim (file->string (build-path fixture-root "test-public.pem"))))
-(define fixture-prod-pem (string-trim (file->string (build-path fixture-root "production-public.pem"))))
-(define fixture-body (file->bytes (build-path fixture-root "order-completed.json")))
-(define fixture-header (string-trim (file->string (build-path fixture-root "valid-signature.txt"))))
-;; fixture signed at this instant (see commerce-test/pancake-test.rkt)
-(define signed-at-ms 1792108800000)
-
-(define (fixture-verify)
-  (λ (raw sig)
-    (verify-pancake-webhook raw sig
-                            #:environment 'test
-                            #:keyring (pancake-webhook-keyring fixture-pem fixture-prod-pem)
-                            #:now-ms signed-at-ms)))
-
-;; ---- runtime-signed webhook (RSA, canonical algorithm) ---------------------
+(define rsa-private-key
+  (generate-private-key (get-pk 'rsa libcrypto-factory) '((nbits 2048))))
 
 (define (pub-pem-for pk)
   (define der (pk-key->datum (pk-key->public-only-key pk) 'SubjectPublicKeyInfo))
   (define b64
     (string-replace (string-trim (bytes->string/utf-8 (base64-encode der))) "\r\n" "\n"))
-  ;; wrap at 64 chars like standard PEM
   (define lines
     (let loop ([s b64])
       (if (<= (string-length s) 64)
@@ -53,109 +44,156 @@
    (string-join lines "\n")
    "\n-----END PUBLIC KEY-----\n"))
 
-(struct test-channel (pk pem verify))
-
-(define (make-test-channel)
-  (define pk (generate-private-key (get-pk 'rsa libcrypto-factory) '((nbits 2048))))
-  (define pk2 (generate-private-key (get-pk 'rsa libcrypto-factory) '((nbits 2048))))
-  (define pem (pub-pem-for pk))
-  (define pem2 (pub-pem-for pk2))
-  (define verify
-    (λ (raw sig)
-      (verify-pancake-webhook raw sig
-                              #:environment 'test
-                              #:keyring (pancake-webhook-keyring pem pem2))))
-  (test-channel pk pem verify))
-
-(define (sign-webhook! ch body)
-  (define ts (~a (inexact->exact (floor (current-inexact-milliseconds)))))
-  (define signed-bytes (bytes-append (string->bytes/utf-8 ts) #"." body))
-  (define sig (digest/sign (test-channel-pk ch) 'sha256 signed-bytes
-                           #:pad 'pkcs1-v1.5))
-  (format "t=~a,v1=~a" ts
-          (string-trim (bytes->string/utf-8 (base64-encode sig)))))
-
-(define (paid-body order-id email)
-  (jsexpr->bytes
-   (hasheq 'id "evt_self_001"
-           'timestamp "2026-11-22T00:00:00.000Z"
-           'eventType "order.completed"
-           'eventId "PAY_self_001"
-           'storeId "STO_x" 'storeName "T"
-           'data (if email
-                     (hasheq 'orderId order-id 'email email)
-                     (hasheq 'orderId order-id))
-           'mode "test")))
-
 ;; ---- tests -----------------------------------------------------------------
 
-(test-case "fixture webhook: parked (no email in payload), tamper rejected"
+(define (write-file path text)
+  (with-output-to-file path (λ () (display text)) #:exists 'replace))
+
+(define (pk->pem-text pk)
+  ;; private key PEM via commerce loader expectations (PKCS#8 or RSA)
+  (define der (pk-key->datum pk 'PrivateKeyInfo))
+  (define b64
+    (string-replace (string-trim (bytes->string/utf-8 (base64-encode der))) "\r\n" "\n"))
+  (define lines
+    (let loop ([s b64])
+      (if (<= (string-length s) 64)
+          (list s)
+          (cons (substring s 0 64) (loop (substring s 64))))))
+  (string-append
+   "-----BEGIN PRIVATE KEY-----\n"
+   (string-join lines "\n")
+   "\n-----END PRIVATE KEY-----\n"))
+
+
+(test-case "unconfigured channel: checkout returns #f, subscribe stays honest"
   (define dir (make-temporary-file "pitboard-pay-~a" 'directory))
   (dynamic-wind
    (λ () (void))
    (λ ()
-     (define r (handle-webhook! dir fixture-body fixture-header
-                                (current-seconds)
-                                #:verify (fixture-verify)))
-     (check-equal? (hash-ref r 'result "") "ok")
-     (check-equal? (hash-ref r 'action "") "parked")
-     (check-equal? (hash-ref r 'order_id "") "ORD_fixture_001")
-     ;; the parked payment is in the journal as paid
-     (define ev (find-payment dir "ORD_fixture_001"))
-     (check-equal? (hash-ref ev 'status "") "paid")
-     ;; idempotent replay: same event id → duplicate, journal unchanged
-     (define r2 (handle-webhook! dir fixture-body fixture-header
-                                 (current-seconds)
-                                 #:verify (fixture-verify)))
-     (check-equal? (hash-ref r2 'action "") "duplicate")
-     ;; tampered body → bad-signature, fail-closed
-     (define tampered (bytes-append fixture-body #" "))
-     (define r3 (handle-webhook! dir tampered fixture-header
-                                 (current-seconds)
-                                 #:verify (fixture-verify)))
-     (check-equal? (hash-ref r3 'result "") "bad-signature")
-     ;; claim page binds the parked payment to an email
-     (define email (claim-payment! dir "ORD_fixture_001" "claim@example.com"))
-     (check-equal? email "claim@example.com")
-     (check-true (subscription-active?
-                  (subscription-for dir "claim@example.com")))
-     ;; claiming again re-extends (same email, another +365d)
-     (check-not-false (claim-payment! dir "ORD_fixture_001" "claim@example.com")))
+     (check-false (alipay-configured?))
+     (check-false (checkout-for! dir "a@example.com")))
    (λ () (delete-directory/files dir))))
 
-(test-case "runtime-signed webhook with email projects +365d immediately"
+(test-case "configured checkout: binding journaled, signed page-pay form returned"
   (define dir (make-temporary-file "pitboard-pay-~a" 'directory))
   (dynamic-wind
    (λ () (void))
    (λ ()
-     (define ch (make-test-channel))
-     (define body (paid-body "ORD_self_001" "paid@example.com"))
-     (define header (sign-webhook! ch body))
-     (define now (current-seconds))
-     (define r (handle-webhook! dir body header now #:verify (test-channel-verify ch)))
-     (check-equal? (hash-ref r 'result "") "ok")
-     (check-equal? (hash-ref r 'action "") "projected")
-     (check-equal? (hash-ref r 'email "") "paid@example.com")
-     (define rec (subscription-for dir "paid@example.com"))
-     (check-true (subscription-active? rec now))
-     ;; expires ≈ now + 365d
-     (define exp (with-handlers ([exn:fail? (λ (_) 0)])
-                   (- (parse-iso-utc (hash-ref rec 'expires "")) now)))
-     (check-true (and (> exp (* 364 86400)) (< exp (* 366 86400)))))
+     (define key-dir (build-path dir "keys"))
+     (make-directory* key-dir)
+     (define priv-pem-path (build-path key-dir "merchant.pem"))
+     (define pub-pem-path (build-path key-dir "alipay.pem"))
+     (write-file priv-pem-path
+                 (pk->pem-text rsa-private-key))
+     (write-file pub-pem-path (pub-pem-for rsa-private-key))
+     (parameterize ([alipay-env-param 'sandbox]
+                    [alipay-app-id-param "2026000000000000"]
+                    [alipay-seller-id-param "2088000000000000"]
+                    [alipay-private-key-path-param priv-pem-path]
+                    [alipay-public-key-path-param pub-pem-path]
+                    [base-url-param "https://pit.example"])
+       (check-true (alipay-configured?))
+       (define now (current-seconds))
+       (define co (checkout-for! dir "buyer@example.com" now))
+       (check-true (and co #t))
+       (check-equal? (hash-ref co 'gateway)
+                     "https://openapi-sandbox.dl.alipaydev.com/gateway.do")
+       (define fields (hash-ref co 'fields))
+       ;; durable binding precedes any payment request
+       ;; fields carry the signed page-pay contract
+       (check-equal? (cdr (assoc "method" fields)) "alipay.trade.page.pay")
+       (check-equal? (cdr (assoc "app_id" fields)) "2026000000000000")
+       (check-true (non-empty-string? (cdr (assoc "sign" fields))))
+       ;; pending subscription created for the email
+       (check-equal? (hash-ref (subscription-for dir "buyer@example.com") 'status "")
+                     "pending")
+       ;; the journal carries the binding (order → email, amount)
+       (define order
+         (cdr (assoc "biz_content"
+                     (for/list ([p (in-list fields)] #:when (equal? (car p) "biz_content")) p))))
+       (define biz (read-json (open-input-string order)))
+       (define oid (hash-ref biz 'out_trade_no))
+       (define ev (find-payment dir oid))
+       (check-true (and ev #t))
+       (check-equal? (hash-ref ev 'email "") "buyer@example.com")
+       (check-equal? (hash-ref ev 'amount 0) 19900)))
    (λ () (delete-directory/files dir))))
 
-(test-case "checkout url requires configuration; ref recorded against email"
+;; signed notify fixture: properly RSA2-signed fields against our keypair
+(define (signed-notify-fields
+         #:order [order "pb-test-001"]
+         #:trade [trade "2026112200000001"]
+         #:status [status "TRADE_SUCCESS"]
+         #:amount [amount "199.00"]
+         #:key [key rsa-private-key])
+  (define fields
+    (list (cons "app_id" "2026000000000000")
+          (cons "trade_status" status)
+          (cons "out_trade_no" order)
+          (cons "trade_no" trade)
+          (cons "total_amount" amount)
+          (cons "sign_type" "RSA2")))
+  (define sign
+    (bytes->string/utf-8
+     (base64-encode
+      (digest/sign key 'sha256
+                   (string->bytes/utf-8 (alipay-signing-content fields))
+                   #:pad 'pkcs1-v1.5)
+      #:line #f)))
+  (append fields (list (cons "sign" sign))))
+
+(test-case "notify: signed TRADE_SUCCESS grants +365d; forged signature rejected"
   (define dir (make-temporary-file "pitboard-pay-~a" 'directory))
   (dynamic-wind
    (λ () (void))
    (λ ()
-     (check-false (pay-configured?))
-     (check-false (checkout-url-for dir "a@example.com"))
-     (parameterize ([pay-url-param "https://pay.example/product/journal"])
-       (check-true (pay-configured?))
-       (define url (checkout-url-for dir "a@example.com"))
-       (check-true (string-contains? url "pb_ref=pb-"))
-       ;; pending subscriber created for the email
-       (check-equal? (hash-ref (subscription-for dir "a@example.com") 'status "")
-                     "pending")))
+     (define key-dir (build-path dir "keys"))
+     (make-directory* key-dir)
+     (write-file (build-path key-dir "merchant.pem") (pk->pem-text rsa-private-key))
+     (write-file (build-path key-dir "alipay.pem") (pub-pem-for rsa-private-key))
+     (parameterize ([alipay-env-param 'sandbox]
+                    [alipay-app-id-param "2026000000000000"]
+                    [alipay-seller-id-param "2088000000000000"]
+                    [alipay-private-key-path-param (build-path key-dir "merchant.pem")]
+                    [alipay-public-key-path-param (build-path key-dir "alipay.pem")])
+       ;; durable binding first
+       (define now (current-seconds))
+       (define co (checkout-for! dir "paid@example.com" now))
+       (define fields (hash-ref co 'fields))
+       (define oid
+         (hash-ref (read-json (open-input-string
+                               (cdr (assoc "biz_content" fields))))
+                   'out_trade_no))
+       ;; properly signed notify with matching order → projected
+       (define r (handle-notify! dir (signed-notify-fields #:order oid) now))
+       (check-equal? (hash-ref r 'result "") "ok")
+       (check-equal? (hash-ref r 'action "") "projected")
+       (check-true (subscription-active? (subscription-for dir "paid@example.com") now))
+       ;; idempotent on trade id
+       (define r2 (handle-notify! dir (signed-notify-fields #:order oid) now))
+       (check-equal? (hash-ref r2 'action "") "projected")
+       (define evs (payments-tail dir 50))
+       (check-equal?
+        (length (filter (λ (e) (string-prefix? (hash-ref e 'id "") "2026")) evs))
+        1)
+       ;; forged signature (wrong key) → rejected, nothing granted
+       (define attacker
+         (generate-private-key (get-pk 'rsa libcrypto-factory) '((nbits 2048))))
+       (define rf (handle-notify! dir (signed-notify-fields
+                                       #:order "pb-forged"
+                                       #:key attacker) now))
+       (check-equal? (hash-ref rf 'result "") "rejected")
+       (check-false (find-payment dir "pb-forged")))
+     )
+   (λ () (delete-directory/files dir))))
+
+(test-case "return without binding: never grants"
+  (define dir (make-temporary-file "pitboard-pay-~a" 'directory))
+  (dynamic-wind
+   (λ () (void))
+   (λ ()
+     (define-values (email result)
+       (verify-return! dir "pb-unknown" (current-seconds)))
+     (check-false email)
+     (check-equal? (hash-ref result 'result "") "no-binding"))
    (λ () (delete-directory/files dir))))

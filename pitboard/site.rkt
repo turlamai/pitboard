@@ -328,40 +328,55 @@
                         "<p class=\"note\">请回到订阅页填写一个可收信的邮箱地址。</p>"
                         "<a class=\"btn-primary\" href=\"/subscribe\">返回订阅页</a></div>"
                         (nav-footer))))]
-         [(not (pay-configured?))
+         [(not (alipay-configured?))
           ;; channel not configured (dev/staging): honest state, no fake checkout
           (subscribe-pending! (site-data-dir site) email)
           (resp-html
-           (page-shell "订阅 — PITBOARD 周刊"
-                       (string-append
-                        "<div class=\"subscribe-card\"><h3>支付渠道未配置</h3>"
-                        "<p class=\"note\">你的邮箱已登记为待订阅（"
-                        (esc email) "），但支付渠道尚未上线——这是部署环境未配置 PITBOARD_PAY_URL 的诚实提示。</p>"
-                        "<a class=\"btn-primary\" href=\"/\">返回首页</a></div>")))]
+           (page-shell
+            "订阅 — PITBOARD 周刊"
+            (string-append
+             "<div class=\"subscribe-card\"><h3>支付渠道未配置</h3>"
+             "<p class=\"note\">你的邮箱已登记为待订阅（"
+             (esc email) "），但支付渠道尚未上线——这是部署环境未配置 Alipay 凭据的诚实提示。</p>"
+             "<a class=\"btn-primary\" href=\"/\">返回首页</a></div>")))]
          [else
-          (define url (checkout-url-for (site-data-dir site) email))
-          (resp-redirect (or url "/subscribe"))])]
+          (define co (checkout-for! (site-data-dir site) email))
+          (if co
+              (resp-html
+               (page-shell
+                "正在跳转支付宝 — PITBOARD 周刊"
+                (string-append
+                 "<noscript><p style=\"text-align:center\">正在跳转支付宝收银台…</p></noscript>"
+                 "<form method=\"post\" action=\"" (esc (hash-ref co 'gateway)) "\" id=\"alipay\">"
+                 (string-join
+                  (for/list ([pair (in-list (hash-ref co 'fields))])
+                    (format "<input type=\"hidden\" name=\"~a\" value=\"~a\">"
+                            (esc (car pair)) (esc (cdr pair))))
+                  "\n")
+                 "</form>"
+                 "<script>document.getElementById('alipay').submit();</script>")))
+              (resp-redirect "/subscribe"))])]
       [else
        (resp-html (subscribe-landing-page (site-data-dir site)))])))
 
 (define (pay-callback-h site)
+  ;; Alipay async notification: form-encoded POST; respond plain text.
   (λ (req)
     (cond
       [(not (equal? (request-method req) #"POST"))
        (resp-status 405 "POST only")]
       [else
-       (define sig
-         (for/first ([h (in-list (request-headers/raw req))]
-                     #:when (equal? (header-field h) #"x-waffo-signature"))
-           (bytes->string/utf-8 (header-value h))))
-       (define body (request-post-data/raw req))
+       (define fields
+         (for/list ([b (in-list (request-bindings/raw req))]
+                    #:when (binding:form? b))
+           (cons (bytes->string/utf-8 (binding-id b))
+                 (bytes->string/utf-8 (binding:form-value b)))))
        (define result
-         (handle-webhook! (site-data-dir site)
-                          (or body #"") (or sig "")
-                          (current-seconds)))
+         (handle-notify! (site-data-dir site) fields (current-seconds)))
+       ;; Alipay expects the literal body "success" for accepted notifications.
        (if (equal? (hash-ref result 'result "") "ok")
-           (resp-text-headers "ok\n" '())
-           (resp-status 401 (hash-ref result 'result "rejected")))])))
+           (resp-text-headers "success" '())
+           (resp-text-headers "failure" '()))])))
 
 (define (pay-return-h site)
   (λ (req)
@@ -391,27 +406,35 @@
        "</div>")))))
 
 (define (pay-claim-h site)
+  ;; Alipay sync return: independently verify via a signed trade query
+  ;; before granting — the browser return is never trusted on its own.
   (λ (req)
     (define u (url->string (request-uri req)))
     (define order (let ([m (regexp-match #px"[?&]order=([^&]+)" u)]) (and m (cadr m))))
-    (define email (let ([m (regexp-match #px"[?&]email=([^&]+)" u)]) (and m (cadr m))))
-    (if (and order email)
-        (let ([ok (claim-payment! (site-data-dir site) order email)])
-          (resp-html
-           (page-shell
-            "支付回执 — PITBOARD 周刊"
-            (string-append
-             "<div class=\"subscribe-card\">"
-             (if ok
-                 (string-append "<h3>订阅已激活</h3><p class=\"note\">" (esc email)
-                                " 的年订已生效，下期起每周六 08:00 你会收到出刊通知。</p>"
-                                "<a class=\"btn-primary\" href=\"/login\">登录查看订阅</a>")
-                 (string-append "<h3>暂时没能绑定</h3><p class=\"note\">订单 "
-                                (esc order) " 还没有到账记录——支付回调可能有几分钟延迟，稍后重试，"
-                                "或联系主编人工处理。</p>"
-                                "<a class=\"btn-primary\" href=\"/pay/return\">重新绑定</a>"))
-             "</div>"))))
-        ((pay-return-h site) req))))
+    (cond
+      [(not order) ((pay-return-h site) req)]
+      [else
+       (define-values (email result) (verify-return! (site-data-dir site) order))
+       (define granted? (equal? (hash-ref result 'result "") "ok"))
+       (resp-html
+        (page-shell
+         "支付回执 — PITBOARD 周刊"
+         (string-append
+          "<div class=\"subscribe-card\">"
+          (cond
+            [(and granted? email)
+             (string-append "<h3>订阅已激活</h3><p class=\"note\">" (esc email)
+                            " 的年订已生效，下期起每周六 08:00 你会收到出刊通知。</p>"
+                            "<a class=\"btn-primary\" href=\"/login\">登录查看订阅</a>")]
+            [(equal? (hash-ref result 'result "") "parked")
+             (string-append "<h3>支付处理中</h3><p class=\"note\">订单 "
+                            (esc order) " 已登记但绑定邮箱缺失——联系主编人工处理最快。</p>")]
+            [else
+             (string-append "<h3>暂时没能确认</h3><p class=\"note\">订单 "
+                            (esc (or order "")) " 的到账状态暂时查不到——支付可能有几分钟延迟，"
+                            "稍后重试，或联系主编人工处理。</p>"
+                            "<a class=\"btn-primary\" href=\"/pay/return\">重试</a>")])
+          "</div>")))])))
 
 (define (confirm-h site)
   (λ (req token)

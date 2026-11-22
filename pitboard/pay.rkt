@@ -1,17 +1,20 @@
 #lang racket/base
 
-;; Payment face of the paid journal.  Cryptographic webhook
-;; verification delegates to the commerce package's canonical Pancake
-;; implementation (RSA over "<timestamp>.<body>", official keyrings
-;; mirrored from Pancake's SDK) — pitboard never re-implements the
-;; trust chain.  Orders and their projection into subscriptions live
-;; here: append-only JSONL journal, idempotent on event id, email-keyed
-;; subscription extension of +365 days on a paid event.
+;; Payment face of the paid journal — Alipay Vibe Pay (basic web
+;; collection), the same rail publy uses.  Cryptography delegates to the
+;; commerce package's canonical Alipay adapter: RSA2-signed page-pay
+;; form, notification verification against the Alipay public key, and a
+;; signed trade query for the browser return.  pitboard never
+;; re-implements the trust chain.
 ;;
-;; Checkout is a merchant-configured product URL (env PITBOARD_PAY_URL):
-;; the subscriber's email is captured here, the pending order carries a
-;; pb_ref reference, and correlation happens on the webhook's email
-;; field or via the /pay/return claim page (order id + email).
+;; Orders live in an append-only JSONL journal: checkout binds
+;; out_trade_no ↔ email + amount durably before any payment request;
+;; projection is idempotent on trade id; a verified TRADE_SUCCESS
+;; grants +365 days to the bound email.
+;;
+;; Fail-closed: without configured credentials the subscribe page says
+;; the channel is not live, and the callback never grants anything it
+;; cannot verify.
 
 (require racket/string
          racket/list
@@ -20,149 +23,266 @@
          racket/format
          racket/match
          json
+         crypto
+         crypto/libcrypto
+         crypto/pem
+         (only-in commerce/alipay
+                  alipay-binding
+                  alipay-notification?
+                  verify-alipay-trade-query-response
+                  alipay-confirmed-order-status
+                  alipay-confirmed-order-order-id
+                  alipay-confirmed-order-trade-id
+                  verify-alipay-notification
+                  alipay-notification-order-id
+                  alipay-notification-trade-id
+                  alipay-notification-status
+                  alipay-notification-amount
+                  make-alipay-page-pay-parameters
+                  alipay-cny->fen)
+         (only-in commerce/alipay/client
+                  make-alipay-query-client
+                  fetch-alipay-trade-query-response)
+         (only-in commerce money)
          "util.rkt"
          "subs.rkt")
 
-(provide pay-configured?
-         pay-url-param
-         pay-env-param
-         checkout-url-for
-         handle-webhook!
-         webhook-email-from-data
-         success-event?
-         claim-payment!
-         pay-env)
+(provide base-url-param
+         alipay-env-param
+         alipay-app-id-param
+         alipay-seller-id-param
+         alipay-private-key-path-param
+         alipay-public-key-path-param
+         alipay-configured?
+         alipay-env
+         checkout-for!
+         handle-notify!
+         verify-return!
+         load-merchant-key)
 
 ;; ---- config ----------------------------------------------------------------
 
-(define pay-url-param (make-parameter (getenv "PITBOARD_PAY_URL")))
-(define pay-env-param (make-parameter
-                       (or (and (getenv "PITBOARD_PAY_ENV")
-                                (string->symbol (getenv "PITBOARD_PAY_ENV")))
-                           'test)))
+(define base-url-param
+  (make-parameter
+   (or (getenv "PITBOARD_BASE_URL") "https://pitboard.jrtx.site")))
+(define alipay-env-param
+  (make-parameter
+   (or (and (getenv "ALIPAY_ENV") (string->symbol (getenv "ALIPAY_ENV")))
+       'sandbox)))
+(define alipay-app-id-param (make-parameter (getenv "ALIPAY_APP_ID")))
+(define alipay-seller-id-param (make-parameter (getenv "ALIPAY_SELLER_ID")))
+(define alipay-private-key-path-param
+  (make-parameter (getenv "ALIPAY_PRIVATE_KEY_PATH")))
+(define alipay-public-key-path-param
+  (make-parameter (getenv "ALIPAY_PUBLIC_KEY_PATH")))
 
-(define (pay-configured?)
-  (and (pay-url-param) (non-empty-string? (pay-url-param)) #t))
+(define sandbox-gateway "https://openapi-sandbox.dl.alipaydev.com/gateway.do")
+(define production-gateway "https://openapi.alipay.com/gateway.do")
 
-(define (pay-env) (pay-env-param))
+(define (alipay-env) (alipay-env-param))
 
-;; ---- commerce bridge (optional dependency, degrade with a message) --------
+(define (alipay-configured?)
+  (and (alipay-app-id-param) (alipay-seller-id-param)
+       (alipay-private-key-path-param) (alipay-public-key-path-param)
+       #t))
 
-(define (commerce-fn name)
-  (with-handlers ([exn:fail:filesystem? (λ (_) #f)])
-    (dynamic-require '(lib "commerce/pancake.rkt") name)))
+;; ---- credentials (path-based; values never logged) ------------------------
 
-;; event types that count as a paid order (canonical fixture:
-;; "order.completed"; tolerate sibling spellings defensively)
-(define (success-event? event-type)
-  (or (equal? event-type "order.completed")
-      (and (string? event-type)
-           (or (string-contains? event-type "succeed")
-               (string-contains? event-type "paid")))))
+(define key-cache (box #f))
 
-;; Best-effort email extraction from the webhook payload — Pancake
-;; stores may nest it differently; the claim page is the fallback.
-(define (webhook-email-from-data data)
-  (and (hash? data)
-       (or (let ([v (hash-ref data 'email #f)]) (and (string? v) v))
-           (let ([c (hash-ref data 'customer #f)])
-             (and (hash? c)
-                  (let ([v (hash-ref c 'email #f)]) (and (string? v) v))))
-           (let ([v (hash-ref data 'customerEmail #f)]) (and (string? v) v))
-           (let ([m (hash-ref data 'metadata #f)])
-             (and (hash? m)
-                  (let ([v (hash-ref m 'email #f)]) (and (string? v) v)))))))
+;; commerce's canonical loader: PEM → datum → pk-key (libcrypto).
+(define (load-merchant-key)
+  (or (unbox key-cache)
+      (let ([pem (file->string (alipay-private-key-path-param))])
+        (define entry
+          (call-with-input-string
+           (string-replace pem "\r\n" "\n")
+           (λ (in)
+             (read-pem in #:only (list #"PRIVATE KEY" #"RSA PRIVATE KEY")))))
+        (unless (and (pair? entry)
+                     (member (car entry)
+                             (list #"PRIVATE KEY" #"RSA PRIVATE KEY")))
+          (error 'alipay "merchant private key is not a supported RSA PEM"))
+        (define format
+          (if (bytes=? (car entry) #"PRIVATE KEY")
+              'OneAsymmetricKey 'RSAPrivateKey))
+        (define key
+          (datum->pk-key (cdr entry) format (list libcrypto-factory)))
+        (unless (private-key? key)
+          (error 'alipay "merchant RSA key is invalid"))
+        (set-box! key-cache key)
+        key)))
 
-;; ---- webhook handling ------------------------------------------------------
+(define (alipay-public-key-pem)
+  (file->string (alipay-public-key-path-param)))
 
-;; Default verifier: commerce's canonical Pancake verification against
-;; the official built-in keyrings, environment from PITBOARD_PAY_ENV.
-(define (default-verify)
-  (define verify (commerce-fn 'verify-pancake-webhook))
-  (and verify
-       (λ (raw-body signature-header)
-         (verify raw-body signature-header
-                 #:environment (pay-env-param)))))
+;; ---- checkout binding ------------------------------------------------------
 
-;; Returns a response jsexpr: {result: ok|bad-signature|miss-commerce,
-;; action: projected|parked|ignored, email: ...}.  Projection: a paid
-;; event with a resolvable email extends that subscription by a year;
-;; without an email it parks in the journal for claim/admin binding.
-;; #:verify is injectable so tests can pin a fixture keyring.
-(define (handle-webhook! data-dir raw-body signature-header
-                         [now (current-seconds)]
-                         #:verify [verify (default-verify)])
-  (define et-fn (commerce-fn 'pancake-webhook-event-type))
-  (define eid-fn (commerce-fn 'pancake-webhook-event-id))
-  (define data-fn (commerce-fn 'pancake-webhook-data))
-  (cond
-    [(or (not verify) (not et-fn) (not eid-fn) (not data-fn))
-     (hasheq 'result "miss-commerce"
-             'message "commerce package not installed — payment channel disabled")]
-    [else
-     (with-handlers
-         ([exn:fail? (λ (e)
-                       (hasheq 'result "bad-signature"
-                               'message (format "~a" (exn-message e))))])
-       (define webhook (verify raw-body signature-header))
-       (define event-type (format "~a" (et-fn webhook)))
-       (define event-id (format "~a" (eid-fn webhook)))
-       (define data (data-fn webhook))
-       (define order-id
-         (format "~a" (hash-ref data 'orderId
-                                (hash-ref data 'order_id ""))))
-       (define email (webhook-email-from-data data))
-       (define was-seen (payment-seen? data-dir event-id))
-       (record-payment!
-        data-dir
-        (hasheq 'id event-id
-                'event event-type
-                'order_id order-id
-                'email (or email "")
-                'status (if (success-event? event-type) "paid" "recorded"))
-        now)
-       (cond
-         [(and was-seen (success-event? event-type))
-          (hasheq 'result "ok" 'action "duplicate" 'email email)]
-         [(and (success-event? event-type) email)
-          (grant-subscription! data-dir email 365 now)
-          (hasheq 'result "ok" 'action "projected" 'email email)]
-         [(success-event? event-type)
-          (hasheq 'result "ok" 'action "parked" 'order_id order-id)]
-         [else
-          (hasheq 'result "ok" 'action "ignored" 'event event-type)]))]))
+;; Annual offer: CNY ¥199 = 19900 minor units.  out_trade_no is
+;; generated here and journaled against the subscriber's email before
+;; any payment request, so the async notification can bind without an
+;; email from Alipay.
+(define annual-minor-units 19900)
+
+(define (annual-binding order-id email)
+  (alipay-binding (alipay-app-id-param)
+                  (alipay-seller-id-param)
+                  order-id
+                  "journal-annual"
+                  email
+                  (money "CNY" annual-minor-units)))
+
+(define (alipay-timestamp [secs (current-seconds)])
+  ;; Alipay's API expects UTC+08:00 wall time regardless of host zone.
+  (define d (seconds->date (+ secs (* 8 3600)) #t))
+  (define (p2 n) (~r n #:min-width 2 #:pad-string "0"))
+  (format "~a-~a-~a ~a:~a:~a"
+          (date-year d) (p2 (date-month d)) (p2 (date-day d))
+          (p2 (date-hour d)) (p2 (date-minute d)) (p2 (date-second d))))
+
+(define (web-gateway-url)
+  (if (eq? (alipay-env-param) 'production)
+      production-gateway sandbox-gateway))
+
+(define (notify-url-for)
+  (string-append (base-url-param) "/pay/callback"))
 
 ;; ---- checkout ---------------------------------------------------------------
 
-;; Pending order for the email, then the merchant-configured checkout
-;; URL with a reference suffix.  Without PITBOARD_PAY_URL this returns
-;; #f — the subscribe page explains the channel is not configured.
-(define (checkout-url-for data-dir email [now (current-seconds)])
-  (and (pay-configured?)
+;; Creates the pending subscription + durable binding, returns
+;; {gateway, fields} — site renders an auto-submitting form posting the
+;; signed fields to the gateway.  Without credentials returns #f.
+(define (checkout-for! data-dir email [now (current-seconds)])
+  (unless (alipay-configured?) #f)
+  (and (alipay-configured?)
        (let* ([k (string-downcase (string-trim email))]
-              [_ (subscribe-pending! data-dir k now)]
-              [ref (string-append "pb-" (number->string now) "-"
-                                  (substring (new-token) 0 8))]
-              [base (pay-url-param)]
-              [sep (if (string-contains? base "?") "&" "?")]
-              [url (string-append base sep "pb_ref=" ref)])
-         ;; the reference is recorded against the email for the claim page
+              [order-id
+               (string-append "pb-" (number->string now) "-"
+                              (substring (new-token) 0 10))]
+              [binding (annual-binding order-id k)]
+              [fields
+               (make-alipay-page-pay-parameters
+                binding
+                (load-merchant-key)
+                #:title "PITBOARD 周刊 · 年订"
+                #:notify-url (notify-url-for)
+                #:return-url (string-append (base-url-param)
+                                            "/pay/return?order=" order-id)
+                #:timestamp (alipay-timestamp now))])
+         (subscribe-pending! data-dir k now)
          (record-payment!
           data-dir
-          (hasheq 'id (string-append "ref:" ref)
-                  'event "checkout.opened"
-                  'order_id ref
+          (hasheq 'id (string-append "ref:" order-id)
+                  'event "checkout.created"
+                  'order_id order-id
                   'email k
+                  'amount annual-minor-units
                   'status "pending")
           now)
-         url)))
+         (hasheq 'gateway (web-gateway-url) 'fields fields))))
 
-;; ---- claim (pay/return page) ------------------------------------------------
+;; ---- async notification -----------------------------------------------------
 
-;; Bind a parked/paid payment to an email the subscriber supplies.
-;; The claim is honored only when the journal already carries a paid
-;; event for that order id (webhook arrived) — the claim page never
-;; fabricates a paid status.
+;; fields: raw form bindings Alipay POSTs, as (cons "name" "value")
+;; pairs with decoded spelling preserved.  Verifies the RSA2 signature
+;; against the Alipay public key, matches out_trade_no to the journaled
+;; binding and the amount to the offer, then grants.  Idempotent on
+;; trade id.  Payment events whose binding is missing park in the
+;; journal for the claim page.
+(define (handle-notify! data-dir fields [now (current-seconds)])
+  (with-handlers
+      ([exn:fail? (λ (e)
+                    (hasheq 'result "rejected"
+                            'message (format "~a" (exn-message e))))])
+    (define notice (verify-alipay-notification fields (alipay-public-key-pem)))
+    (define out-trade-no (alipay-notification-order-id notice))
+    (define trade-id (alipay-notification-trade-id notice))
+    (define status (alipay-notification-status notice))
+    (define ev-id (if (and (string? trade-id) (non-empty-string? trade-id))
+                      trade-id
+                      (string-append "notif:" out-trade-no)))
+    (define binding-ev (find-payment data-dir out-trade-no))
+    (define bound-email
+      (and binding-ev
+           (let ([v (hash-ref binding-ev 'email "")])
+             (and (non-empty-string? v) v))))
+    (define paid? (equal? status "TRADE_SUCCESS"))
+    (record-payment!
+     data-dir
+     (hasheq 'id ev-id
+             'event "alipay.notify"
+             'order_id out-trade-no
+             'email (or bound-email "")
+             'status (if paid? "paid" "recorded"))
+     now)
+    (cond
+      [(and paid? bound-email)
+       (grant-subscription! data-dir bound-email 365 now)
+       (hasheq 'result "ok" 'action "projected" 'email bound-email)]
+      [(and paid? (not bound-email))
+       (hasheq 'result "ok" 'action "parked" 'order_id out-trade-no)]
+      [paid?
+       (hasheq 'result "ok" 'action "unbound" 'order_id out-trade-no)]
+      [else
+       (hasheq 'result "ok" 'action "ignored" 'status status)])))
+
+;; ---- sync return: signed trade query ----------------------------------------
+
+;; The browser return is never trusted on its own: independently query
+;; the gateway with a signed trade query, verify the response against
+;; the Alipay public key and the durable binding, then grant.  Returns
+;; (values email result) where result names the outcome.
+(define (verify-return! data-dir order-id [now (current-seconds)]
+                        #:query-client [client #f])
+  (define binding-ev (find-payment data-dir order-id))
+  (define bound-email
+    (and binding-ev
+         (let ([v (hash-ref binding-ev 'email "")])
+           (and (non-empty-string? v) v))))
+  (cond
+    [(not (and binding-ev (alipay-configured?)))
+     (values #f (hasheq 'result "no-binding"))]
+    [(not bound-email)
+     (values #f (hasheq 'result "parked" 'order_id order-id))]
+    [else
+     (with-handlers
+         ([exn:fail? (λ (e)
+                       (values #f (hasheq 'result "query-failed"
+                                          'message (format "~a" (exn-message e)))))])
+       (define binding (annual-binding order-id bound-email))
+       (define client*
+         (or client
+             (make-alipay-query-client
+              #:app-id (alipay-app-id-param)
+              #:merchant-private-key (load-merchant-key)
+              #:alipay-public-key (alipay-public-key-pem)
+              #:environment (alipay-env-param))))
+       (define raw (fetch-alipay-trade-query-response client* binding))
+       (define confirmed
+         (verify-alipay-trade-query-response
+          raw (alipay-public-key-pem) binding))
+       ;; canonical cross-checks, per commerce's own confirm contract
+       (unless (equal? (alipay-confirmed-order-status confirmed)
+                       "TRADE_SUCCESS")
+         (error 'alipay "query status is not TRADE_SUCCESS"))
+       (unless (equal? (alipay-confirmed-order-order-id confirmed) order-id)
+         (error 'alipay "queried order does not match binding"))
+       (record-payment!
+        data-dir
+        (hasheq 'id (string-append "query:" (alipay-confirmed-order-trade-id confirmed))
+                'event "alipay.query"
+                'order_id order-id
+                'email bound-email
+                'status "paid")
+        now)
+       (grant-subscription! data-dir bound-email 365 now)
+       (values bound-email (hasheq 'result "ok" 'action "granted")))]))
+
+;; ---- claim (unbound parked payments) ----------------------------------------
+
+;; Bind a parked/paid payment to an email the subscriber supplies; the
+;; grant happens only when the journal already carries a paid event for
+;; that order (notify landed) or the signed query confirms it.
 (define (claim-payment! data-dir order-id email [now (current-seconds)])
   (define ev (find-payment data-dir order-id))
   (and ev

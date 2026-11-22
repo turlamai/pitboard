@@ -249,11 +249,14 @@
   (check-false (string-contains? (bytes->string/utf-8 (response-body after))
                                  "小鹏端到端 OTA 全量推送")))
 
-(test-case "webhook callback rejects tampered payloads"
+(test-case "alipay notify: tampered payload answers failure (and never grants)"
   (define r (post (string-append base "/pay/callback")
-                  #:data #"tampered"
-                  #:headers (hasheq 'X-Waffo-Signature "t=1,v1=x")))
-  (check-equal? (response-status-code r) 401))
+                  #:data #"out_trade_no=pb-x&trade_status=TRADE_SUCCESS"
+                  #:headers (hasheq 'Content-Type "application/x-www-form-urlencoded")))
+  ;; Alipay protocol: reply the literal body "failure"; no subscription
+  ;; may appear for the forged order.
+  (check-equal? (bytes->string/utf-8 (response-body r)) "failure")
+  (check-false (find-payment dir "pb-x")))
 
 ;; ---- shutdown ---------------------------------------------------------------
 
