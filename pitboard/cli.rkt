@@ -27,12 +27,6 @@
 
 (provide cli-main)
 
-;; watch topics from config (or the built-in default):
-;; (list (cons group-name (listof term)))
-(define (watch-topics config-path)
-  (define cfg (load-config config-path))
-  (normalize-watch-topics (hash-ref cfg 'watch_topics #f)))
-
 ;; ---- pipeline --------------------------------------------------------------
 
 (define (run-fetch date-override data-dir config-path use-llm?)
@@ -115,18 +109,13 @@
 (define (serve-cmd)
   (define port-p (make-parameter 8090))
   (define dir (make-parameter "data"))
-  (define assets-p (make-parameter "assets"))
-  (define cfg (make-parameter "config/sources.json"))
   (command-line
    #:program "raco pitboard serve"
    #:once-each
    [("--port") n "监听端口（默认 8090）" (port-p (string->number n))]
    [("--data") p "数据目录（默认 data/）" (dir p)]
-   [("--assets") p "静态资源目录（默认 assets/）" (assets-p p)]
-   [("--config") p "话题词配置（默认 config/sources.json）" (cfg p)]
    #:args _ (void))
-  (start-server #:port (port-p) #:data-dir (dir) #:assets-dir (assets-p)
-                #:topics (watch-topics (cfg))))
+  (start-server #:port (port-p) #:data-dir (dir)))
 
 ;; ---- weekly journal (paid product; fail-closed without LLM) -----------------
 

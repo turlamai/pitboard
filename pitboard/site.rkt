@@ -112,14 +112,7 @@
 (define (access-email! dir token [now (current-seconds)])
   ;; peek without popping: access tokens accompany every issue link of
   ;; their notify email and may be reused within the window
-  (define subs (load-subs dir))
-  (define entry (hash-ref (hash-ref subs 'tokens) token #f))
-  (and entry
-       (equal? (hash-ref entry 'kind "") "access")
-       (let ([e (and (not (eq? (hash-ref entry 'expires 'null) 'null))
-                     (parse-date-any (hash-ref entry 'expires "")))])
-         (and e (<= now e))
-         (hash-ref entry 'email #f))))
+  (peek-token! dir "access" token now))
 
 (define (subscriber-authenticated? req data-dir)
   (or (let ([email (session-email-from-cookie req data-dir)])
@@ -386,14 +379,14 @@
             "<form method=\"get\" action=\"/pay/return\">"
             "<input type=\"hidden\" name=\"order\" value=\"" (esc order) "\">"
             "<input type=\"email\" name=\"email\" required placeholder=\"你的邮箱\" "
-            "style=\"width:260px;padding:10px 12px;border:1px solid var(--border);border-radius:8px\"> "
+            "style=\"width:260px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text)\"> "
             "<button type=\"submit\" class=\"btn-primary\" style=\"border:none;cursor:pointer\">绑定订阅</button></form>")
            (string-append
             "<form method=\"get\" action=\"/pay/return\">"
             "<input type=\"text\" name=\"order\" required placeholder=\"订单号\" "
-            "style=\"width:180px;padding:10px 12px;border:1px solid var(--border);border-radius:8px\"> "
+            "style=\"width:180px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text)\"> "
             "<input type=\"email\" name=\"email\" required placeholder=\"你的邮箱\" "
-            "style=\"width:220px;padding:10px 12px;border:1px solid var(--border);border-radius:8px\"> "
+            "style=\"width:220px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text)\"> "
             "<button type=\"submit\" class=\"btn-primary\" style=\"border:none;cursor:pointer\">绑定订阅</button></form>"))
        "</div>")))))
 
@@ -570,7 +563,8 @@
         "")
     "<form method=\"post\" action=\"/admin\">"
     "<input type=\"password\" name=\"password\" required placeholder=\"工作台密码\" "
-    "style=\"width:220px;padding:10px 12px;border:1px solid var(--border);border-radius:8px\"> "
+    "style=\"width:220px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;"
+    "background:var(--surface);color:var(--text)\"> "
     "<button type=\"submit\" class=\"btn-primary\" style=\"border:none;cursor:pointer\">进入</button>"
     "</form></div>")))
 
@@ -675,7 +669,7 @@
      "<span class=\"section-count\">dry-run 时写 data/mail-out/</span></div>"
      "<form method=\"post\" action=\"/admin\" enctype=\"multipart/form-data\">"
      "<input type=\"email\" name=\"test_to\" placeholder=\"收件邮箱\" "
-     "style=\"width:220px;padding:10px 12px;border:1px solid var(--border);border-radius:8px\"> "
+     "style=\"width:220px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text)\"> "
      "<input type=\"hidden\" name=\"action\" value=\"test-mail\">"
      "<button type=\"submit\" class=\"btn-primary\" style=\"border:none;cursor:pointer\">发测试邮件</button>"
      "</form></section>"

@@ -39,6 +39,7 @@
          grant-subscription!
          put-token!
          take-token!
+         peek-token!
          put-session!
          session-email!
          end-sessions-for!
@@ -301,6 +302,17 @@
                               (tokens-remove (hash-ref subs 'tokens) token)))
         (hash-ref entry 'email)]
        [else #f]))))
+
+;; Read-many token check (access tokens accompany every issue link of
+;; their notify email and may be reused within the window) — unlike
+;; take-token! which pops.
+(define (peek-token! dir kind token [now (current-seconds)])
+  (define subs (load-subs dir))
+  (define entry (tokens-get (hash-ref subs 'tokens) token))
+  (and entry
+       (equal? (hash-ref entry 'kind "") kind)
+       (not (token-expired? entry now))
+       (hash-ref entry 'email #f)))
 
 (define (put-session! dir email [now (current-seconds)])
   (put-token! dir "session" email (* 7 24 60) now))
