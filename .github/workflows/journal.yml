@@ -11,6 +11,11 @@ on:
   schedule:
     - cron: '0 0 * * 6'   # Saturday 08:00 Beijing time
   workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "期号（留空则按 ISO 周数）"
+        required: false
+        type: string
 
 concurrency:
   group: journal
@@ -44,9 +49,10 @@ jobs:
             echo "::notice::no LLM key configured — journal is fail-closed, skipping"
             exit 0
           fi
+          ISSUE_NO="${{ github.event.inputs.issue_number }}"
           raco pitboard journal --data data --out journal-build \
             --from "$(date -u -d '6 days ago' +%F)" --to "$(date -u +%F)" \
-            --issue "$(( $(date -u +%-V) ))"
+            --issue "${ISSUE_NO:-$(( $(date -u +%-V) ))}"
       - name: Leak sweep on the locked public view
         if: hashFiles('journal-build/locked.json') != ''
         run: |
