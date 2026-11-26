@@ -2,8 +2,11 @@
    Tokens 逐值沿 yinwang-archive 提取的家族 site-kit palette（王垠纸感调色）。
    原型零外部依赖：衬线用系统宋体栈，不嵌字体文件。 */
 :root {
+  color-scheme: light;
   --bg: #F9F7F4; --surface: #FFFFFF;
-  --text: #1C1917; --text-2: #57534E; --text-3: #A8A29E;
+  /* --text-3 is the one value off the site-kit sheet: site-kit #A8A29E is 2.36:1 on --bg
+     and 2.52:1 on --surface; #776F6A is 4.60:1 / 4.92:1, keeping the third text tier. */
+  --text: #1C1917; --text-2: #57534E; --text-3: #776F6A;
   --accent: #D97757; --accent-hover: #C25F3D; --accent-bg: #FBEDE7;
   --border: #E7E5E4; --border-strong: #D6D3D1; --selection: #F3DCBE;
   --shadow-md: 0 4px 6px -1px rgba(28,25,23,.07), 0 2px 4px -2px rgba(28,25,23,.05);
@@ -14,8 +17,11 @@
   --max-w: clamp(720px, 14vw + 560px, 820px);
 }
 .dark {
+  color-scheme: dark;
   --bg: #171412; --surface: #231F1D;
-  --text: #E7E5E4; --text-2: #A8A29E; --text-3: #78716C;
+  --text: #E7E5E4; --text-2: #A8A29E;
+  /* site-kit #78716C is 3.82:1 on --bg and 3.41:1 on --surface; #8D8782 is 5.17:1 / 4.61:1. */
+  --text-3: #8D8782;
   --accent: #D4915C; --accent-hover: #E0A06D; --accent-bg: #2D2218;
   --border: #3D3835; --border-strong: #4A443F; --selection: #56401F;
   --shadow-md: 0 4px 6px -1px rgba(0,0,0,.3), 0 2px 4px -2px rgba(0,0,0,.25);
@@ -32,6 +38,14 @@ body {
 a { color: var(--accent); text-decoration: none; transition: color .15s; }
 a:hover { color: var(--accent-hover); }
 .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
 /* ---- 期刊阅读排版（衬线内核） ---- */
 .prose {
@@ -85,7 +99,8 @@ a:hover { color: var(--accent-hover); }
 .item-why { font-size: 13px; line-height: 1.7; color: var(--text-2); margin-bottom: 6px; }
 .item-why .why-label { color: var(--text-3); letter-spacing: .06em; margin-right: 6px; }
 .item-meta { font-size: 12px; color: var(--text-3); }
-.item-meta a { color: var(--text-2); border-bottom: 1px solid var(--border); }
+/* Meta, nav and footer links sit next to --text-3 text: the underline carries the link cue. */
+.item-meta a { color: var(--text-2); border-bottom: 1px solid currentColor; }
 .item-meta a:hover { color: var(--accent); border-color: var(--accent); }
 
 /* ---- 头条 ---- */
@@ -185,7 +200,8 @@ a:hover { color: var(--accent-hover); }
 }
 @media (max-width: 600px) {
   .arc-row { flex-wrap: wrap; }
-  .arc-meta { margin-left: 72px; width: 100%; }
+  /* width: 100% next to the 72px indent pushed the meta line 48px past the viewport. */
+  .arc-meta { margin-left: 72px; width: calc(100% - 72px); }
 }
 
 /* ---- 期际导航 ---- */
@@ -194,7 +210,7 @@ a:hover { color: var(--accent-hover); }
   margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--border);
   font-size: 13px;
 }
-.issue-nav a { color: var(--text-2); border-bottom: 1px solid var(--border); }
+.issue-nav a { color: var(--text-2); border-bottom: 1px solid currentColor; }
 .issue-nav a:hover { color: var(--accent); border-color: var(--accent); }
 .issue-nav .current { color: var(--text-3); }
 
@@ -203,21 +219,32 @@ a:hover { color: var(--accent-hover); }
   margin-top: 64px; padding: 24px 0 48px; border-top: 1px solid var(--border);
   font-size: 12px; color: var(--text-3); text-align: center;
 }
-.site-footer a { color: var(--text-2); border-bottom: 1px solid var(--border); }
+.site-footer a { color: var(--text-2); border-bottom: 1px solid currentColor; }
 .site-footer a:hover { color: var(--accent); border-color: var(--accent); }
 
 /* ---- 评审工具条（非产品 UI，验收后移除） ---- */
 .proto-bar {
   position: fixed; left: 16px; bottom: 16px; z-index: 400;
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 7px 14px; border-radius: 100px;
+  display: inline-flex; align-items: center; flex-wrap: wrap; gap: 4px 10px;
+  max-width: calc(100vw - 32px);
+  padding: 4px 14px 4px 6px; border-radius: 100px;
   background: var(--surface); border: 1px solid var(--border);
   box-shadow: var(--shadow-md); font-size: 12px; color: var(--text-2);
 }
 .proto-bar a { color: var(--text-2); }
 .proto-bar a:hover { color: var(--accent); }
-.proto-bar button {
-  border: none; background: var(--accent-bg); color: var(--accent);
-  font: 600 12px var(--font-ui); padding: 3px 10px; border-radius: 99px; cursor: pointer;
+/* Theme toggle: the icon is the theme you are in (driven by the root class from CSS);
+   the accessible name and tooltip name the theme a click switches to. */
+.proto-theme {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 30px; height: 30px; border: 0; border-radius: 999px;
+  background: transparent; color: var(--text-2); cursor: pointer;
+  transition: background .15s, color .15s;
 }
-.proto-bar button:hover { background: var(--accent); color: #fff; }
+.proto-theme:hover { background: var(--accent-bg); color: var(--text); }
+.proto-theme svg {
+  width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+html:not(.dark) .proto-theme .icon-moon { display: none; }
+html.dark .proto-theme .icon-sun { display: none; }

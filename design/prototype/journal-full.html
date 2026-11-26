@@ -10,6 +10,14 @@ function toggleTheme() {
   document.documentElement.classList.toggle('dark');
   document.documentElement.dataset.forced = '1';
 }
+// The toggle's icon follows the root class from CSS; its accessible name and tooltip
+// name the theme a click switches to, so both are kept in step with the same class.
+new MutationObserver(function () {
+  var label = document.documentElement.classList.contains('dark') ? '切换浅色主题' : '切换深色主题';
+  document.querySelectorAll('.proto-theme').forEach(function (b) {
+    b.setAttribute('aria-label', label); b.title = label;
+  });
+}).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 </script>
 </head>
 <body>
@@ -172,7 +180,10 @@ function toggleTheme() {
 
 <!-- 评审工具条（非产品 UI） -->
 <div class="proto-bar">
-  <button onclick="toggleTheme()">亮 / 暗</button>
+  <button class="proto-theme" type="button" onclick="toggleTheme()" aria-label="切换深色主题" title="切换深色主题">
+    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"></path></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.2A8.2 8.2 0 0 1 8.8 4a8.4 8.4 0 1 0 11.2 11.2Z"></path></svg>
+  </button>
   <a href="../index.html">目录</a> · <a href="journal.html">锁定态</a> · <a href="journal-full.html">解锁态</a> · <a href="landing.html">落地页</a> · <a href="notify.html">通知邮件</a> · <a href="archive.html">归档</a> · <a href="confirm.html">确认邮件</a>
 </div>
 
