@@ -11,10 +11,10 @@
   --border: #E7E5E4; --border-strong: #D6D3D1; --selection: #F3DCBE;
   --shadow-md: 0 4px 6px -1px rgba(28,25,23,.07), 0 2px 4px -2px rgba(28,25,23,.05);
   --radius: 12px;
-  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", sans-serif;
   --font-serif: "Songti SC", "Noto Serif SC", "SimSun", Georgia, serif;
-  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Cascadia Mono", monospace;
-  --max-w: clamp(720px, 14vw + 560px, 820px);
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Cascadia Mono", "Noto Sans Mono CJK SC", "Noto Sans CJK SC", "Microsoft YaHei", monospace;
+  --max-w: clamp(680px, 14vw + 520px, 699px);
 }
 .dark {
   color-scheme: dark;
@@ -248,3 +248,10 @@ a:hover { color: var(--accent-hover); }
 }
 html:not(.dark) .proto-theme .icon-moon { display: none; }
 html.dark .proto-theme .icon-sun { display: none; }
+
+/* ---- temperament profile pass ---- */
+/* typography baseline (family standard 2026-11-26-temperament-profiles): CJK/Latin spacing and kinsoku come from the rendering layer,
+   never from typed spaces (§4, §10). Values stay in the token block above. */
+body { text-autospace: normal; line-break: strict; }
+/* Paired neutral scrollbar for both themes; thin and non-distracting. */
+html { scrollbar-color: var() transparent; }
