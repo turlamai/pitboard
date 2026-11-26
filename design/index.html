@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PITBOARD 周刊 — 原型目录</title>
+<!-- Tokens, focus ring and reduced motion come from the prototype sheet (single token truth). -->
+<link rel="stylesheet" href="prototype/shared.css">
 <style>
-:root { --bg:#F9F7F4; --text:#1C1917; --text-2:#57534E; --text-3:#A8A29E; --accent:#D97757; --border:#E7E5E4; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans SC",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; padding:64px 24px; }
 .wrap { max-width:640px; margin:0 auto; }
@@ -26,12 +27,12 @@ span { display:block; color:var(--text-2); font-size:13px; font-weight:400; marg
   <h1>PITBOARD 周刊 — 原型</h1>
   <p class="sub">付费汽车行业期刊订阅站 · 设计契约见 DESIGN.md · 亮暗主题在各页左下角切换</p>
   <ol>
-    <li><a href="prototype/journal.html">期刊页 · 锁定态</a><span>访客视角：卷首按语 + 本周头条全文 + 订阅卡 + 本期目录（付费墙只显示一部分）+ 期际导航</span></li>
-    <li><a href="prototype/journal-full.html">期刊页 · 解锁态</a><span>订阅者视角：完整一期（四条线 + 数据版 + 大事记 + 期际导航），评版式全貌看这页</span></li>
-    <li><a href="prototype/landing.html">订阅落地页</a><span>价值三点 + 样刊预览 + 定价（¥199/年示例）+ 订阅流程 + FAQ</span></li>
-    <li><a href="prototype/notify.html">出刊通知邮件</a><span>订阅者每周六收到的触达邮件：报头 + 卷首一句 + 头条标题 + 免登录直达链接（全文在网页）</span></li>
-    <li><a href="prototype/archive.html">往期归档</a><span>年份分组 + 期号 + 头条标题 + 可见性；锁定期标题仍可读（标题是获客面）</span></li>
-    <li><a href="prototype/confirm.html">订阅确认邮件</a><span>double opt-in：支付 ≠ 生效，magic link 72 小时有效，确认后才入名单</span></li>
+    <li><a href="prototype/journal.html">期刊 · 第 42 期（锁定态） — PITBOARD 周刊</a><span>访客视角：卷首按语 + 本周头条全文 + 订阅卡 + 本期目录（付费墙只显示一部分）+ 期际导航</span></li>
+    <li><a href="prototype/journal-full.html">期刊 · 第 42 期（解锁态） — PITBOARD 周刊</a><span>订阅者视角：完整一期（四条线 + 数据版 + 大事记 + 期际导航），评版式全貌看这页</span></li>
+    <li><a href="prototype/landing.html">订阅 — PITBOARD 周刊</a><span>订阅落地页：价值三点 + 样刊预览 + 定价（¥199/年示例）+ 订阅流程 + FAQ</span></li>
+    <li><a href="prototype/notify.html">出刊通知邮件 — PITBOARD 周刊</a><span>订阅者每周六收到的触达邮件：报头 + 卷首一句 + 头条标题 + 免登录直达链接（全文在网页）</span></li>
+    <li><a href="prototype/archive.html">往期归档 — PITBOARD 周刊</a><span>年份分组 + 期号 + 头条标题 + 可见性；锁定期标题仍可读（标题是获客面）</span></li>
+    <li><a href="prototype/confirm.html">订阅确认邮件 — PITBOARD 周刊</a><span>double opt-in：支付 ≠ 生效，magic link 72 小时有效，确认后才入名单</span></li>
   </ol>
   <p class="doc">设计契约：<a href="DESIGN.md">DESIGN.md</a>（王垠排版内核 × 家族 HIG · Exit 条件在文末）</p>
 </div>
