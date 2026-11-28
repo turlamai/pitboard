@@ -254,4 +254,6 @@ html.dark .proto-theme .icon-sun { display: none; }
    never from typed spaces (§4, §10). Values stay in the token block above. */
 body { text-autospace: normal; line-break: strict; }
 /* Paired neutral scrollbar for both themes; thin and non-distracting. */
-html { scrollbar-color: var() transparent; }
+html { scrollbar-color: var(--border-strong) transparent; }
+
+.reading-index{margin:24px 0 32px;padding:16px 0;border-block:1px solid var(--border);font-size:14px}.reading-index div{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:8px}.reading-index a{color:var(--text-2);text-decoration:underline;text-underline-offset:4px}.reading-index a:hover{color:var(--accent)}.prototype-note{font-size:12px;color:var(--text-2);margin:16px 0}.data-scroll{max-width:100%;overflow-x:auto}.data-scroll table{min-width:480px}.section[id],.headline[id]{scroll-margin-top:20px}.reading-index a:focus-visible,.data-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:4px}

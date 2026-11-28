@@ -40,8 +40,10 @@ new MutationObserver(function () {
     <div class="foreword-by">主编 · 2026-11-21</div>
   </section>
 
+  <p class="prototype-note">原型样刊 · 内容及数字均为未核验的示例，不作为实际新闻或法规依据。</p>
+  <nav class="reading-index" aria-label="本期目录"><strong>本期目录</strong><div><a href="#headline">本周头条</a><a href="#policy">政策与法规</a><a href="#intelligence">智能化</a><a href="#supply">三电与供应链</a><a href="#market">整车与市场</a><a href="#data">数据版</a><a href="#timeline">大事记</a></div></nav>
   <!-- 本周头条 -->
-  <article class="headline">
+  <article class="headline" id="headline">
     <h2 class="headline-title">L3 准入试点扩容：智能驾驶责任从车企话术变成法规条款</h2>
     <div class="headline-meta">政策与法规 · 综合 14 家信源 · 约 8 分钟 · <a href="#">原文链接</a></div>
     <div class="prose">
@@ -52,7 +54,7 @@ new MutationObserver(function () {
   </article>
 
   <!-- 条线：政策与法规 -->
-  <section class="section">
+  <section class="section" id="policy">
     <div class="section-head"><span class="section-title">政策与法规</span><span class="section-count">2 条</span></div>
     <div class="item">
       <h3 class="item-title">欧盟电池护照进入实卡阶段：2027 年 2 月起动力电池须携数字护照出厂</h3>
@@ -69,7 +71,7 @@ new MutationObserver(function () {
   </section>
 
   <!-- 条线：智能化 -->
-  <section class="section">
+  <section class="section" id="intelligence">
     <div class="section-head"><span class="section-title">智能化</span><span class="section-count">3 条</span></div>
     <div class="item">
       <h3 class="item-title">乾崑 ADS 5 首批量产车型上市，城区领航延续免费策略</h3>
@@ -92,7 +94,7 @@ new MutationObserver(function () {
   </section>
 
   <!-- 条线：三电与供应链 -->
-  <section class="section">
+  <section class="section" id="supply">
     <div class="section-head"><span class="section-title">三电与供应链</span><span class="section-count">3 条</span></div>
     <div class="item">
       <h3 class="item-title">神行 Pro 开始批量交付：4C 快充下探到 15 万元级车型</h3>
@@ -115,7 +117,7 @@ new MutationObserver(function () {
   </section>
 
   <!-- 条线：整车与市场 -->
-  <section class="section">
+  <section class="section" id="market">
     <div class="section-head"><span class="section-title">整车与市场</span><span class="section-count">3 条</span></div>
     <div class="item">
       <h3 class="item-title">10 月新能源渗透率首破 60%，插混增速首次超过纯电</h3>
@@ -138,9 +140,9 @@ new MutationObserver(function () {
   </section>
 
   <!-- 数据版 -->
-  <section class="section">
+  <section class="section" id="data">
     <div class="section-head"><span class="section-title">数据版</span><span class="section-count">5 项</span></div>
-    <table class="data-table">
+    <div class="data-scroll" tabindex="0" role="region" aria-label="数据版表格，可横向滚动"><table class="data-table">
       <thead><tr><th>指标</th><th>本期</th><th>环比</th><th>备注</th></tr></thead>
       <tbody>
         <tr><td>新能源零售渗透率</td><td class="num">60.8%</td><td class="up">+2.1pp</td><td>首破 60%</td></tr>
@@ -149,12 +151,12 @@ new MutationObserver(function () {
         <tr><td>碳酸锂现货</td><td class="num">7.4 万元/吨</td><td class="up">+3.5%</td><td>触底反弹信号</td></tr>
         <tr><td>L3 试点累计</td><td class="num">21 家</td><td class="up">+8 家</td><td>第二批名单</td></tr>
       </tbody>
-    </table>
+    </table></div>
     <div class="item-meta" style="margin-top:10px">数据口径见 <a href="#">各信源原文</a>；环比单位见备注。</div>
   </section>
 
   <!-- 大事记 -->
-  <section class="section">
+  <section class="section" id="timeline">
     <div class="section-head"><span class="section-title">大事记</span><span class="section-count">6 条</span></div>
     <ul class="timeline">
       <li><span class="date">11-16</span><span class="fact">工信部公布第二批 L3 准入试点名单，新增 8 家企业</span></li>
@@ -172,7 +174,7 @@ new MutationObserver(function () {
   </nav>
 
   <footer class="site-footer">
-    <p>PITBOARD 周刊 · 汽车行业的一周 · <a href="landing.html">订阅</a> · <a href="#">往期归档</a> · <a href="#">退订</a> · <a href="#">更正声明</a></p>
+    <p>PITBOARD 周刊 · 汽车行业的一周 · <a href="landing.html">订阅</a> · <a href="archive.html">往期归档</a> · <a href="#">退订</a> · <a href="#">更正声明</a></p>
     <p>所有条目附原文链接；AI 汇编 + 主编复核，发现错误当期更正、下期刊登。本页条目为示例数据。</p>
   </footer>
 
